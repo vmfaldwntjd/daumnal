@@ -14,12 +14,12 @@ public class PlaylistMusic {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @Column(name = "playlist_id")
+    @JoinColumn(name = "playlist_id", nullable = false)
     private Playlist playlist;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @Column(name = "music_id")
+    @JoinColumn(name = "music_id", nullable = false)
     private Music music;
 }
