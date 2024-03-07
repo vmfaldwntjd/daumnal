@@ -1,6 +1,6 @@
-package com.ssafy.daumnal.member.controller;
+package com.ssafy.daumnal.diary.controller;
 
-import com.ssafy.daumnal.member.service.MemberService;
+import com.ssafy.daumnal.diary.service.DiaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/members")
-public class MemberController {
+@RequestMapping("/diaries")
+public class DiaryController {
 
-    private final MemberService memberService;
+    private final DiaryService diaryService;
 }
