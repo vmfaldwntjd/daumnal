@@ -72,6 +72,18 @@ public class S3ServiceImpl implements S3Service {
     }
 
     /**
+     * s3에 업로드된 파일 삭제
+     *
+     * @param url s3에 업로드된 파일 url
+     */
+    public void delete(String url) {
+        String fileName = url.split("https://" + bucket + ".s3." + region + ".amazonaws.com/")[1];
+        if (amazonS3Client.doesObjectExist(bucket, fileName)) {
+            amazonS3Client.deleteObject(bucket, fileName);
+        }
+    }
+
+    /**
      * s3에 플레이리스트 커버 업로드
      *
      * @param playlistCoverFile 업로드할 플레이리스트 커버 파일
