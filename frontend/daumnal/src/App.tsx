@@ -6,7 +6,7 @@ function App() {
   return (
     // <div >App</div>
     <h1 className="text-3xl font-bold underline">
-    Jieun world!
+    Jieun world2!
     </h1>
 //     <FontAwesomeIcon icon={faHeart} />
 
