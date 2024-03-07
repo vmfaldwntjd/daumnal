@@ -53,6 +53,18 @@ public class S3ServiceImpl implements S3Service {
     }
 
     /**
+     * s3에 업로드된 파일 삭제
+     *
+     * @param url s3에 업로드된 파일 url
+     */
+    public void delete(String url) {
+        String fileName = url.split("https://" + bucket + ".s3." + region + ".amazonaws.com/")[1];
+        if (amazonS3Client.doesObjectExist(bucket, fileName)) {
+            amazonS3Client.deleteObject(bucket, fileName);
+        }
+    }
+
+    /**
      * s3에 일기 내용 중 사진 업로드
      *
      * @param diaryPhotoFile 업로드할 일기 사진 파일
@@ -69,18 +81,6 @@ public class S3ServiceImpl implements S3Service {
             return upload(diaryPhotoFile, "diaryPhoto");
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * s3에 업로드된 파일 삭제
-     *
-     * @param url s3에 업로드된 파일 url
-     */
-    public void delete(String url) {
-        String fileName = url.split("https://" + bucket + ".s3." + region + ".amazonaws.com/")[1];
-        if (amazonS3Client.doesObjectExist(bucket, fileName)) {
-            amazonS3Client.deleteObject(bucket, fileName);
         }
     }
 
