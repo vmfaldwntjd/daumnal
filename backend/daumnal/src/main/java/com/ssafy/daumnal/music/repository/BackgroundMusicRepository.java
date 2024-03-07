@@ -1,6 +1,6 @@
-package com.ssafy.daumnal.backgroundmusic.repository;
+package com.ssafy.daumnal.music.repository;
 
-import com.ssafy.daumnal.backgroundmusic.entity.BackgroundMusic;
+import com.ssafy.daumnal.music.entity.BackgroundMusic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

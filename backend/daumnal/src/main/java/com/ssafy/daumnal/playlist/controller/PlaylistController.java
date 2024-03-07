@@ -1,6 +1,6 @@
-package com.ssafy.daumnal.backgroundmusic.controller;
+package com.ssafy.daumnal.playlist.controller;
 
-import com.ssafy.daumnal.backgroundmusic.service.BackgroundMusicService;
+import com.ssafy.daumnal.playlist.service.PlaylistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/background-musics")
-public class BackgroundMusicController {
+@RequestMapping("/playlists")
+public class PlaylistController {
 
-    private final BackgroundMusicService backgroundMusicService;
+    private final PlaylistService playlistService;
 }

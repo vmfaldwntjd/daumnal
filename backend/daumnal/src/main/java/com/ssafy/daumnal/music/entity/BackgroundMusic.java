@@ -1,4 +1,4 @@
-package com.ssafy.daumnal.backgroundmusic.entity;
+package com.ssafy.daumnal.music.entity;
 
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import jakarta.persistence.*;
