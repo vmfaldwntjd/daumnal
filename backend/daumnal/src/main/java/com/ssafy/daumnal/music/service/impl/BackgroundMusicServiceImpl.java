@@ -1,7 +1,7 @@
-package com.ssafy.daumnal.backgroundmusic.service.impl;
+package com.ssafy.daumnal.music.service.impl;
 
-import com.ssafy.daumnal.backgroundmusic.repository.BackgroundMusicRepository;
-import com.ssafy.daumnal.backgroundmusic.service.BackgroundMusicService;
+import com.ssafy.daumnal.music.repository.BackgroundMusicRepository;
+import com.ssafy.daumnal.music.service.BackgroundMusicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
