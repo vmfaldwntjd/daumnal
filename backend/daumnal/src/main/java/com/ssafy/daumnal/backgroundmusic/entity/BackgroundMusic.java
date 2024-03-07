@@ -1,4 +1,4 @@
-package com.ssafy.daumnal.diary.entity;
+package com.ssafy.daumnal.backgroundmusic.entity;
 
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -9,8 +9,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Getter
 @OnDelete(action = OnDeleteAction.CASCADE)
-@Table(name = "diary")
-public class Diary extends BaseEntity {
+@Table(name = "background-music")
+public class BackgroundMusic extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
