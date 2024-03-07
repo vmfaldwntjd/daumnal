@@ -38,6 +38,9 @@ dependencies {
 
     // Database
     runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // AWS
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 }
 
 tasks.named('test') {
