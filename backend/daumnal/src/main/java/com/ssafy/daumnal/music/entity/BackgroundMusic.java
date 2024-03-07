@@ -13,4 +13,14 @@ public class BackgroundMusic extends BaseEntity {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "youtube_id", nullable = false)
+    private String youtubeId;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "category", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private String category;
 }
