@@ -1,4 +1,4 @@
-package com.ssafy.daumnal.music.entity;
+package com.ssafy.daumnal.emotion.entity;
 
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@Table(name = "background-music")
-public class BackgroundMusic extends BaseEntity {
+@Table(name = "emotion")
+public class Emotion extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
