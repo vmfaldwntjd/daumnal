@@ -1,6 +1,6 @@
-package com.ssafy.daumnal.playlist.controller;
+package com.ssafy.daumnal.music.controller;
 
-import com.ssafy.daumnal.playlist.service.PlaylistService;
+import com.ssafy.daumnal.music.service.PlaylistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
