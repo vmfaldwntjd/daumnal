@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -101,5 +102,16 @@ public class S3ServiceImpl implements S3Service {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * uuid를 이용해 파일 이름 만들기
+     *
+     * @param fileName 파일 기존 이름
+     * @return uuid를 이용해 만들어진 파일 이름
+     */
+    public String getFileUuidName(String fileName) {
+
+        return UUID.randomUUID() + fileName.substring(fileName.lastIndexOf('.'));
     }
 }
