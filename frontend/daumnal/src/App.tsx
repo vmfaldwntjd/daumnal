@@ -1,16 +1,20 @@
-import React from 'react'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navigation from "./components/Navigation";
+import CalendarPage from "./pages/CalendarPage"; 
+import CreateDiaryPage from "./pages/CreateDiaryPage";
+import PlaylistListPage from "./pages/PlaylistListPage";
+import SettingPage from "./pages/SettingPage";
 
-function App() {
+export default function App() {
   return (
-    // <div >App</div>
-    <h1 className="text-3xl font-bold underline">
-    Hello world!
-    </h1>
-//     <FontAwesomeIcon icon={faHeart} />
-
-  )
+    <BrowserRouter>
+      <Navigation />
+      <Routes>
+        <Route path="/calendarpage" element={<CalendarPage />} />
+        <Route path="/creatediarypage" element={<CreateDiaryPage />} />
+        <Route path="/playlistlistpage" element={<PlaylistListPage />} />
+        <Route path="/settingpage" element={<SettingPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
-export default App
