@@ -22,5 +22,5 @@ public class BackgroundMusic extends BaseEntity {
 
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
-    private String category;
+    private BackgroundMusicCategory category;
 }

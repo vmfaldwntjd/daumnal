@@ -36,7 +36,7 @@ public class Music extends BaseEntity {
 
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
-    private String category;
+    private MusicCategory category;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emotion_id", nullable = false)
