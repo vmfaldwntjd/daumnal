@@ -20,7 +20,7 @@ public class Member extends BaseEntity {
 
     @Column(name = "social_provider", nullable = false)
     @Enumerated(EnumType.STRING)
-    private String socialProvider;
+    private SocialProvider socialProvider;
 
     @Column(name = "nickname")
     private String nickname;
@@ -28,5 +28,5 @@ public class Member extends BaseEntity {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     @ColumnDefault("1")
-    private int status;
+    private MemberStatus status;
 }
