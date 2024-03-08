@@ -5,12 +5,17 @@ import com.ssafy.daumnal.global.entity.BaseEntity;
 import com.ssafy.daumnal.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@DynamicUpdate
 @Table(name = "diary")
 public class Diary extends BaseEntity {
 

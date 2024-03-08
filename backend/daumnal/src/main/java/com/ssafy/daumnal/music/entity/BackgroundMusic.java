@@ -2,9 +2,12 @@ package com.ssafy.daumnal.music.entity;
 
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "background-music")
 public class BackgroundMusic extends BaseEntity {

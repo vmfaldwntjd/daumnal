@@ -1,11 +1,14 @@
 package com.ssafy.daumnal.music.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @IdClass(PlaylistMusicId.class)
 @Table(name = "playlist_music")

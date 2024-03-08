@@ -3,13 +3,18 @@ package com.ssafy.daumnal.music.entity;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@DynamicInsert
 @Table(name = "music")
 public class Music extends BaseEntity {
 
