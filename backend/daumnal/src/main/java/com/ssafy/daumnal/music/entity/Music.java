@@ -36,7 +36,7 @@ public class Music extends BaseEntity {
     private String singerName;
 
     @Column(name = "cover_url")
-    @ColumnDefault("https://daumnal.s3.ap-northeast-2.amazonaws.com/musicCover/basic_cover.jpg")
+    @ColumnDefault("'https://daumnal.s3.ap-northeast-2.amazonaws.com/musicCover/basic_cover.jpg'")
     private String coverUrl;
 
     @Column(name = "category")

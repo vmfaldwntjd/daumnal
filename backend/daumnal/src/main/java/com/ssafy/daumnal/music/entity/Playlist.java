@@ -26,7 +26,7 @@ public class Playlist extends BaseEntity {
     private String name;
 
     @Column(name = "cover_url")
-    @ColumnDefault("https://daumnal.s3.ap-northeast-2.amazonaws.com/playlistCover/basic_cover.jpg")
+    @ColumnDefault("'https://daumnal.s3.ap-northeast-2.amazonaws.com/playlistCover/basic_cover.jpg'")
     private String coverUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
