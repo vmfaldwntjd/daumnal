@@ -1,40 +1,66 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faPenToSquare, faHashtag, faTimes } from "@fortawesome/free-solid-svg-icons";
-import InputHashTag from '../components/diary/InputHashTag';
+import { faVolumeHigh, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
+import QuillEditor from '../components/diary/createDiaryPage/QuillEditor';
 
 
 const CreateDiary: React.FC = () => {
 
+  // 오늘의 날짜
   const today = new Date();
-  const date = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+  const date:string = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
   
+  // 변수 지정
   const [title, setTitle] = useState<string>('')
+  const [hashTag, setHashTag] = useState<string>('')
+  const [content, setContent] = useState<string>('')
+  const [image, setImage] = useState<string | null>(null);
 
 
-  const [content, setContent] = useState()
-  const [image, setImage] = useState()
-
-
-
+  // 일기 제목 변경 이벤트 핸들러
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    console.log(title)
+    // console.log('title:', title)
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Diary 저장 로직을 여기에 작성하실 수 있습니다.
+  // 해시태그 변경 이벤트 핸들러
+  const handleTagsChange = (newTags: string[]) => {
+    setHashTag(newTags.join(' '));
+    // console.log('hashTag:', hashTag)
+  }
+
+  // 일기 내용 변경 이벤트 핸들러
+  const handleContentChange = (newContent: string) => {
+    setContent(newContent);
+    // console.log('content:', content)
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
+  // 입력된 일기에서 태그 삭제 함수
+  const removeHTMLTags = (str: string) => {
+    return str.replace(/<[^>]*>?/gm, '');
   };
-  // handleChange, handleSubmit 함수는 이전과 동일하게 작성하시면 됩니다.
+
+  const removeTagsContent: string = removeHTMLTags(content);
+
+  // 이미지 첨부 변경 이벤트 처리
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+
+    if (e.target.files && e.target.files.length > 0) {
+      const uploadImage:File = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadImage);
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        setImage(dataUrl);
+      };     
+    }
+
+  };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form>
         {/* 오늘 날짜 */}
         <label>
           <input className="bg-bg_main" type="text" name="date" value={date} readOnly />
@@ -51,15 +77,15 @@ const CreateDiary: React.FC = () => {
         </div>
         {/* 해시태그입력 */}
         <div>
-         <InputHashTag></InputHashTag>
+         <InputHashTag onTagsChange={handleTagsChange}/>
         </div>
         {/* 일기 내용 작성 */}
         <div>
-          <input className="bg-bg_main border-2 border-black" type="text" placeholder='일기 내용 작성 에디터'/>
+          <QuillEditor onChange={handleContentChange}/>
         </div>
         {/* 이미지 첨부 */}
         <div>
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" onChange={handleImageChange} />
         </div> 
       </form>
     </div>
