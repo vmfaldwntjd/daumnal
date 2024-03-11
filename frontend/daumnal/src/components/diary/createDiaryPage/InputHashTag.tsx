@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHashtag, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const InputHashTag: React.FC = () => {
+interface InputHashTagProps {
+  onTagsChange: (tags: string[]) => void;
+}
+
+const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState<string>('');
 
@@ -20,7 +24,9 @@ const InputHashTag: React.FC = () => {
 
   const handleAddTag = () => {
     if (tags.length < 3 && currentTag !== '') {
-      setTags([...tags, currentTag]);
+      const newTags = [...tags, currentTag];
+      setTags(newTags);
+      onTagsChange(newTags); 
       setCurrentTag('');
     }
   }
@@ -29,11 +35,12 @@ const InputHashTag: React.FC = () => {
     const newTags = [...tags];
     newTags.splice(index, 1);
     setTags(newTags);
+    onTagsChange(newTags);
   }
 
   useEffect(() => {
-    console.log(tags);
-  }, [tags]);
+    onTagsChange(tags);
+  }, [tags])
 
   return (
     <div>
