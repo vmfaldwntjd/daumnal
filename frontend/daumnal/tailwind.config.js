@@ -17,7 +17,10 @@ export const theme = {
       emo_hate: '00AF7E',
       emo_surprise: 'CC9CFF',
       emo_middle: 'ADADAD',
-    }
+    },
+    fontFamily:{
+      'NanumSquare': ['NanumSquare'],
+    },
   },
 };
 export const plugins = [];

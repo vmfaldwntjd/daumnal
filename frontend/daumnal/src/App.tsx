@@ -3,6 +3,7 @@ import Navigation from "./components/Navigation";
 import CalendarPage from "./pages/CalendarPage"; 
 import CreateDiaryPage from "./pages/CreateDiaryPage";
 import SelectCharacterPage from "./pages/SelectCharacterPage";
+import MusicResultPage from "./pages/MusicResultPage";
 import PlaylistListPage from "./pages/PlaylistListPage";
 import SettingPage from "./pages/SettingPage";
 
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/calendarpage" element={<CalendarPage />} />
         <Route path="/creatediarypage" element={<CreateDiaryPage />} />
         <Route path="/selectcharacterpage" element={<SelectCharacterPage />} />
+        <Route path="/musicresultpage" element={<MusicResultPage />} />
         <Route path="/playlistlistpage" element={<PlaylistListPage />} />
         <Route path="/settingpage" element={<SettingPage />} />
       </Routes>
