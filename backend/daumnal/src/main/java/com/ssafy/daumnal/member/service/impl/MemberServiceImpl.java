@@ -3,6 +3,7 @@ package com.ssafy.daumnal.member.service.impl;
 import com.ssafy.daumnal.global.exception.ExistException;
 import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.entity.SocialProvider;
@@ -11,6 +12,8 @@ import com.ssafy.daumnal.member.service.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 
@@ -62,6 +65,17 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         memberRepository.save(member);
+    }
+
+    @Transactional
+    @Override
+    public void addMemberNickname(String memberId, AddMemberNicknameRequest nicknameRequest) {
+        // 회원 pk 찾아오기
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        String nickname = nicknameRequest.getMemberNickname();
+        member.updateNickname(nickname);
     }
 
     private SocialProvider getProvider(String socialProvider) {
