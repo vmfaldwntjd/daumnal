@@ -1,6 +1,6 @@
 // KakaoRedirectHandler.tsx
-import React, { useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
+import { useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const { Kakao } = window;
