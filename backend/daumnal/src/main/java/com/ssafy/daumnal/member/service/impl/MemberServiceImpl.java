@@ -1,10 +1,13 @@
 package com.ssafy.daumnal.member.service.impl;
 
+import com.ssafy.daumnal.global.dto.TokenResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
 import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
+import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberResponse;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.entity.MemberStatus;
@@ -33,6 +36,7 @@ public class MemberServiceImpl implements MemberService {
     private static final int NICKNAME_MAX_LENGTH = 15;
 
     private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     @Override
@@ -155,7 +159,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void updateMemberStatusLogin(String socialId, String socialProvider) {
+    public GetMemberLoginResponse updateMemberStatusLogin(String socialId, String socialProvider) {
 
         if (socialId == null) {
             throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_ID);
@@ -186,6 +190,14 @@ public class MemberServiceImpl implements MemberService {
         }
 
         member.updateMemberStatus(MemberStatus.LOGIN);
+
+        // access token 발급해주기
+        TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(), Long.parseLong(socialId), socialProvider);
+
+        return GetMemberLoginResponse.builder()
+                .memberNickname(member.getNickname())
+                .memberAccessToken(tokenResponse.getAccessToken())
+                .build();
     }
 
     private SocialProvider getProvider(String socialProvider) {
