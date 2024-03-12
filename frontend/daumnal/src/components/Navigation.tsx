@@ -13,7 +13,7 @@ interface NavItem {
 const navigationItems: NavItem[] = [
   { name: 'Calendar', path: '/calendarpage' },
   { name: 'CreateDiary', path: '/creatediarypage' },
-  { name: 'PlaylistList', path: '/playlistlistpage' },
+  { name: 'Playlist', path: '/playlistpage' },
   { name: 'Setting', path: '/settingpage' },
 ];
 
