@@ -18,7 +18,7 @@ const RightBox = styled.div`
 
 const PlaylistListPage: React.FC = () => {
   return (
-    <div className='flex'>
+    <div className='flex -mr-4'>
       <LeftBox>
         <Routes>
           {/* 플레이리스트 목록 */}
