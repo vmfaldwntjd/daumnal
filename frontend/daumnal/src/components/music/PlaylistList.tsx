@@ -3,24 +3,24 @@ import styled from 'styled-components';
 import PlaylistCard from './PlaylistCard';
 
 const Wrapper = styled.div`
-  width: 88%;
+  width: 90%;
   display: flex;
   justify-content: space-between;
-  margin-top: 50px;
-  margin-bottom: 21.5px;
+  margin-top: 35px;
+  margin-bottom: 22.5px;
 `;
 
 const Playlists = styled.div`
-  width: 88%;
-  max-height: 83vh; /* Playlists의 최대 높이 지정 */
+  width: 90%;
+  max-height: 85vh; /* Playlists의 최대 높이 지정 */
   background-color: #F8F6EE;
   /* border-radius: 10px; */
   font-family: 'NanumSquare';
   overflow-y: auto; /* 세로 스크롤 추가 */
   display: flex;
   flex-wrap: wrap;
-  gap: 55px;
-  padding: 55px;
+  gap: 50px;
+  padding: 53px;
 `;
 
 const Button = styled.button`
