@@ -9,4 +9,9 @@ public class MemberDTO {
         private String socialId;
         private String socialProvider;
     }
+
+    @Getter
+    public static class AddMemberNicknameRequest {
+        private String memberNickname;
+    }
 }
