@@ -1,6 +1,8 @@
 // 플레이리스트 페이지 우측 노래 재생
 import React from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRepeat, faBackwardFast, faPlay, faPause, faForwardFast, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
 const Container = styled.div`
   width: 100%;
@@ -27,8 +29,16 @@ const MusicPlay: React.FC = () => {
       <p className="text-xl mb-8">아티스트</p>
       <img className="w-72 mb-8 rounded-full" src="/image/playlist_default.png" alt="앨범 커버" />
       <Wrapper>
+        {/* 컨트롤박스 */}
         <p className="mb-4">재생바</p>
-        <p>반복재생버튼 조작버튼 가사모달버튼</p>
+        <p className="flex w-full justify-around">
+          <button><FontAwesomeIcon className="text-2xl" icon={faRepeat} /></button>
+          <button><FontAwesomeIcon className="text-2xl" icon={faBackwardFast} /></button>
+          <button><FontAwesomeIcon className="text-2xl" icon={faPlay} /></button>
+          <button><FontAwesomeIcon className="text-2xl" icon={faPause} /></button>
+          <button><FontAwesomeIcon className="text-2xl" icon={faForwardFast} /></button>
+          <button><FontAwesomeIcon className="text-2xl" icon={faFileLines} /></button>
+        </p>
       </Wrapper>
     </Container>
   );
