@@ -2,6 +2,7 @@ package com.ssafy.daumnal.member.controller;
 
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
+import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
 import com.ssafy.daumnal.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,12 @@ public class MemberController {
     public ApiResponse<?> addMember(@RequestBody AddMemberRequest addMemberRequest) {
         memberService.addMember(addMemberRequest);
         return ApiResponse.success(SuccessCode.CREATE_MEMBER);
+    }
+
+    @PostMapping("/{memberId}/nickname")
+    public ApiResponse<?> addMemberNickname(@PathVariable String memberId,
+                                            @RequestBody AddMemberNicknameRequest nicknameRequest) {
+        memberService.addMemberNickname(memberId, nicknameRequest);
+        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME);
     }
 }
