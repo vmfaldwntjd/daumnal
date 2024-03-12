@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const { Kakao } = window;
 
-export const handleKakaoLogin = async (navigate: (path: string) => void) => {
+const handleKakaoLogin = async (navigate: (path: string) => void) => {
   try {
     const params = new URL(document.location.toString()).searchParams;
     const code = params.get('code');
@@ -14,24 +14,29 @@ export const handleKakaoLogin = async (navigate: (path: string) => void) => {
       return;
     }
 
-    const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-
-    const response = await axios.post(
-      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${process.env.REACT_APP_FRONTEND_BASE_URL}/oauth&code=${code}`,      {},
-      {
-        headers: {
-          'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-        },
-      }
-    );
 
     // 서버로 소셜 ID를 전송하는 로직을 추가
     // axios.post('/api/save-social-id', { socialId: response.data.access_token });
 
-    Kakao.Auth.setAccessToken(response.data.access_token);
 
     // 사용자 정보 가져오기
-    const userInfoResponse = await Kakao.API.request({
+    else {
+
+      const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
+      const redirect_uri = `${process.env.REACT_APP_FRONTEND_BASE_URL}/oauth`;
+
+      const response = await axios.post(
+        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,      {},
+        {
+          headers: {
+            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+          },
+        }
+      );
+
+      window.Kakao.Auth.setAccessToken(response.data.access_token); 
+
+      const userInfoResponse = await Kakao.API.request({
       url: '/v2/user/me',
     });
 
@@ -45,6 +50,7 @@ export const handleKakaoLogin = async (navigate: (path: string) => void) => {
 
     // 로그인이 성공하면 mainpage로 이동
     navigate('/mainpage');
+  }
   } catch (error: any) {
     console.log('사용자 정보:', error);
   }
@@ -54,12 +60,10 @@ const KakaoRedirectHandler = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 컴포넌트 마운트 시에도 handleKakaoLogin 호출
     handleKakaoLogin(navigate);
-  }, [navigate]); // navigate를 의존성 배열에 추가
+  }, []); 
 
   return <div>kakao login 완료</div>;
 };
 
 export default KakaoRedirectHandler
-

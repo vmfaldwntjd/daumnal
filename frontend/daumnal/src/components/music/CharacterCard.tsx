@@ -5,16 +5,14 @@ import styled from 'styled-components';
 const Container = styled.button`
   display: flex;
   flex-direction: column;
-  width: 270px;
-  height: 440px;
   align-items: center;
   justify-content: space-between;
   position: relative;
 `;
 
 const Text = styled.p`
-  width: 200px;
-  height: 200px;
+  width: 260px;
+  height: 300px;
   background-color: #F8F6EE;
   border-radius: 30px;
   display: flex;
@@ -23,9 +21,8 @@ const Text = styled.p`
 `;
 
 const Image = styled.img`
-  margin-top: -40%;
-  width: 90%;
-  height: 70%;
+  margin-top: -50%;
+  width: 300px;
 `;
 
 interface CharacterCardProps {
@@ -43,11 +40,13 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, context }
 
   return (
     <Container onClick={handleCharacterClick(name)}>
+      {/* 캐릭터 설명 */}
       <Text>
-        <p className="mt-4 text-xl">{name}</p>
-        <p className="text-xl">- - - - - - - - - - - - -</p>
-        <p>{context}</p>
+        <p className="mt-4 text-3xl">{name}</p>
+        <p className="text-2xl">- - - - - - - - - - - - - - -</p>
+        <p className="text-xl">{context}</p>
       </Text>
+      {/* 캐릭터 이미지 */}
       <Image src={imageUrl} alt="캐릭터 이미지" />
     </Container>
   );

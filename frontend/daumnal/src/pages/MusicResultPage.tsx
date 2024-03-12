@@ -20,14 +20,15 @@ const Result = styled.div`
 `;
 
 const Text = styled.p`
-  width: 500px;
-  height: 300px;
+  width: 600px;
+  height: 360px;
   border-radius: 100px;
   background-color: #F5F5EB;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 60px;
 `;
 
 const Music = styled.p`
@@ -35,11 +36,12 @@ const Music = styled.p`
 `;
 
 const Button = styled.button`
-  width: 100px;
+  width: 120px;
   height: 40px;
   border-radius: 10px;
   border: 1px solid rgba(156, 155, 150, 0.5);
   background-color: #FFF1DD;
+  font-size: large;
 `;
 
 interface MusicResultPageProps {
@@ -77,7 +79,7 @@ const MusicResultPage: React.FC = () => {
       <Container>
         <Result>
           <Text>
-            <p className="text-4xl mb-8">{selectedCharacter}이가 추천해 준 노래는</p>
+            <p className="text-4xl mb-14">{selectedCharacter}이가 추천해 준 오늘의 노래는</p>
             <Music>
               <FontAwesomeIcon className="mr-6" icon={faQuoteLeft} />
 
@@ -93,7 +95,7 @@ const MusicResultPage: React.FC = () => {
               <FontAwesomeIcon className="ml-6" icon={faQuoteRight} />
             </Music>
           </Text>
-          <img className="w-80" src={characterImageUrl} alt="캐릭터 이미지" />
+          <img className="w-80 ml-3" src={characterImageUrl} alt="캐릭터 이미지" />
         </Result>
         <Button onClick={handleResultClick}>확인</Button>
       </Container>
