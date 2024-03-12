@@ -4,7 +4,7 @@ import CalendarPage from "./pages/CalendarPage";
 import CreateDiaryPage from "./pages/CreateDiaryPage";
 import SelectCharacterPage from "./pages/SelectCharacterPage";
 import MusicResultPage from "./pages/MusicResultPage";
-import PlaylistListPage from "./pages/PlaylistListPage";
+import PlaylistPage from "./pages/PlaylistPage";
 import SettingPage from "./pages/SettingPage";
 import LoginPage from "./pages/LoginPage";
 import KakaoRedirectHandler from "./pages/KakaoRedirectHandler";
@@ -23,7 +23,7 @@ export default function App() {
         <Route path="/creatediarypage" element={<CreateDiaryPage />} />
         <Route path="/selectcharacterpage" element={<SelectCharacterPage />} />
         <Route path="/musicresultpage" element={<MusicResultPage />} />
-        <Route path="/playlistlistpage" element={<PlaylistListPage />} />
+        <Route path="/playlistpage" element={<PlaylistPage />} />
         <Route path="/settingpage" element={<SettingPage />} />
       </Routes>
       </div>
