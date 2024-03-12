@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import './QuillEditor.css'
 
 interface QuillEditorProps {
   onChange: (content: string) => void; // 입력 내용 변경 시 호출될 함수
+  placeholder: string
 }
 
-const QuillEditor: React.FC<QuillEditorProps> = ({ onChange }) => {
+const QuillEditor: React.FC<QuillEditorProps> = ({ onChange, placeholder }) => {
 
   const [inputContent, setInputContent] = useState<string>('');
 
@@ -35,7 +36,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ onChange }) => {
 
   return <ReactQuill theme="snow" modules={modules}
   value={inputContent}
-  onChange={handleContentChange} />;
+  onChange={handleContentChange} 
+  placeholder='감정을 담아 솔직한 일기를 작성해주세요'/>; 
 }
 
 export default QuillEditor;
