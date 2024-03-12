@@ -7,6 +7,7 @@ import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberResponse;
 import com.ssafy.daumnal.member.entity.Member;
+import com.ssafy.daumnal.member.entity.MemberStatus;
 import com.ssafy.daumnal.member.entity.SocialProvider;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.service.MemberService;
@@ -150,6 +151,41 @@ public class MemberServiceImpl implements MemberService {
                 .socialProvider(member.getSocialProvider().getName())
                 .memberNickname(member.getNickname())
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public void updateMemberStatusLogin(String socialId, String socialProvider) {
+
+        if (socialId == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_ID);
+        }
+
+        if (socialProvider == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_PROVIDER);
+        }
+
+        if (!socialId.matches(NUMBER_REGEX)) {
+            throw new InvalidException(INVALID_MEMBER_SOCIAL_ID);
+        }
+
+        if (!(KAKAO.equals(socialProvider) || NAVER.equals(socialProvider))) {
+            throw new InvalidException(INVALID_MEMBER_SOCIAL_PROVIDER);
+        }
+
+        Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId),
+                        getProvider(socialProvider))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+
+        if (member.getStatus() == MemberStatus.DELETE) {
+            throw new InvalidException(INVALID_MEMBER_STATUS_ON_DELETE);
+        }
+
+        if (member.getStatus() == MemberStatus.LOGIN) {
+            throw new InvalidException(INVALID_MEMBER_STATUS_ON_LOGIN);
+        }
+
+        member.updateMemberStatus(MemberStatus.LOGIN);
     }
 
     private SocialProvider getProvider(String socialProvider) {
