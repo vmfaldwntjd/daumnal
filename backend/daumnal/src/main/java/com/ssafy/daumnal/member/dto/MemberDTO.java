@@ -1,5 +1,7 @@
 package com.ssafy.daumnal.member.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 public class MemberDTO {
@@ -8,5 +10,20 @@ public class MemberDTO {
     public static class AddMemberRequest {
         private String socialId;
         private String socialProvider;
+    }
+
+    @Getter
+    public static class AddMemberNicknameRequest {
+        private String memberNickname;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class GetMemberResponse {
+        private Long memberId;
+        private Long socialId;
+        private String socialProvider;
+        private String memberNickname;
     }
 }

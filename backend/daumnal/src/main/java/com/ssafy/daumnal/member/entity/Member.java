@@ -40,4 +40,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.ORDINAL)
     @ColumnDefault("1")
     private MemberStatus status;
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
