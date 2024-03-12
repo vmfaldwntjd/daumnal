@@ -22,6 +22,7 @@ public enum SuccessCode {
     UPDATE_MEMBER_NICKNAME(OK, "닉네임 정보 변경에 성공하였습니다!"),
     UPDATE_MEMBER_LOGOUT(OK, "로그아웃에 성공하였습니다!"),
     UPDATE_MEMBER_STATUS_DELETE(OK, "회원 탈퇴 처리를 완료하였습니다!"),
+    UPDATE_MEMBER_STATUS_LOGIN(OK, "로그인에 성공하였습니다!"),
 
     //일기
     UPLOAD_DIARY_PHOTO(CREATED, "일기 내용 중 사진 업로드 성공"),

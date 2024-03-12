@@ -5,6 +5,7 @@ import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberResponse;
+import com.ssafy.daumnal.member.dto.MemberDTO.LoginMemberRequest;
 import com.ssafy.daumnal.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +36,13 @@ public class MemberController {
                                     @RequestParam String socialProvider) {
         GetMemberResponse memberResponse = memberService.getMemberBySocialIdAndSocialProvider(socialId, socialProvider);
         return ApiResponse.success(SuccessCode.GET_MEMBER, memberResponse);
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<?> login(@RequestBody LoginMemberRequest loginMemberRequest) {
+        memberService.updateMemberStatusLogin(loginMemberRequest.getSocialId(),
+                loginMemberRequest.getSocialProvider());
+
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_STATUS_LOGIN);
     }
 }

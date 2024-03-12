@@ -10,4 +10,6 @@ public interface MemberService {
     void addMemberNickname(String memberId, AddMemberNicknameRequest nicknameRequest);
 
     GetMemberResponse getMemberBySocialIdAndSocialProvider(String socialId, String socialProvider);
+
+    void updateMemberStatusLogin(String socialId, String socialProvider);
 }

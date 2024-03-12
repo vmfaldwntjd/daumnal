@@ -18,6 +18,12 @@ public class MemberDTO {
     }
 
     @Getter
+    public static class LoginMemberRequest {
+        private String socialId;
+        private String socialProvider;
+    }
+
+    @Getter
     @AllArgsConstructor
     @Builder
     public static class GetMemberResponse {
@@ -25,5 +31,13 @@ public class MemberDTO {
         private Long socialId;
         private String socialProvider;
         private String memberNickname;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class GetMemberLoginResponse {
+        private String memberNickname;
+        private String memberAccessToken;
     }
 }
