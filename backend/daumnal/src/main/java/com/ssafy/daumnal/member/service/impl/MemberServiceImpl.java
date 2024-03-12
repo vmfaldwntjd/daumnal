@@ -5,6 +5,7 @@ import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
+import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberResponse;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.entity.SocialProvider;
 import com.ssafy.daumnal.member.repository.MemberRepository;
@@ -118,6 +119,37 @@ public class MemberServiceImpl implements MemberService {
         }
 
         member.updateNickname(nickname);
+    }
+
+    @Override
+    public GetMemberResponse getMemberBySocialIdAndSocialProvider(String socialId,
+                                                                  String socialProvider) {
+
+        if (socialId == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_ID);
+        }
+
+        if (socialProvider == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_PROVIDER);
+        }
+
+        if (!socialId.matches(NUMBER_REGEX)) {
+            throw new InvalidException(INVALID_MEMBER_SOCIAL_ID);
+        }
+
+        if (!(KAKAO.equals(socialProvider) || NAVER.equals(socialProvider))) {
+            throw new InvalidException(INVALID_MEMBER_SOCIAL_PROVIDER);
+        }
+
+        Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId), getProvider(socialProvider))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+
+        return GetMemberResponse.builder()
+                .memberId(member.getId())
+                .socialId(member.getSocialId())
+                .socialProvider(member.getSocialProvider().getName())
+                .memberNickname(member.getNickname())
+                .build();
     }
 
     private SocialProvider getProvider(String socialProvider) {
