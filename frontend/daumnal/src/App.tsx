@@ -7,7 +7,7 @@ import MusicResultPage from "./pages/MusicResultPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import SettingPage from "./pages/SettingPage";
 import LoginPage from "./pages/LoginPage";
-import KakaoRedirectHandler from "./pages/KakaoRedirectHandler";
+import KakaoRedirectHandler from "./components/user/KakaoRedirectHandler";
 import MainPage from "./pages/MainPage";
 
 export default function App() {
