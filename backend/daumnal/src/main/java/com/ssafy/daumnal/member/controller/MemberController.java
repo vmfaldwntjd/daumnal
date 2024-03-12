@@ -4,6 +4,7 @@ import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
+import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberResponse;
 import com.ssafy.daumnal.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,12 @@ public class MemberController {
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
         memberService.addMemberNickname(memberId, nicknameRequest);
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME);
+    }
+
+    @GetMapping
+    public ApiResponse<?> getMemberBySocialIdAndSocialProvider(@RequestParam String socialId,
+                                    @RequestParam String socialProvider) {
+        GetMemberResponse memberResponse = memberService.getMemberBySocialIdAndSocialProvider(socialId, socialProvider);
+        return ApiResponse.success(SuccessCode.GET_MEMBER, memberResponse);
     }
 }
