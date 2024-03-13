@@ -1,7 +1,8 @@
 version: "3.8"
 services:
   spring:
-    container_name: daumnal-spring
+    container_name: daumnal-develop-spring
+    image: spring-develop-image
     build:
       context: ./daumnal
       dockerfile: Dockerfile
@@ -14,7 +15,8 @@ services:
       - redis
     restart: always
   fastapi:
-    container_name: daumnal-fastapi
+    container_name: daumnal-develop-fastapi
+    image: fastapi-develop-image
     build:
       context: ./fastapi
       dockerfile: Dockerfile
@@ -25,6 +27,3 @@ services:
     depends_on:
       - mysql
     restart: always
-volumes:
-  jenkins-volume:
-    external: true
