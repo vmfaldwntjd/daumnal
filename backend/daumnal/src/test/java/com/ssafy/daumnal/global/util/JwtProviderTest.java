@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.global.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -15,6 +16,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 import static com.ssafy.daumnal.global.constants.JwtConstants.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Slf4j
@@ -62,7 +64,34 @@ class JwtProviderTest {
         log.info("accessTokenAnother={}", accessTokenAnother);
 
         //then
-        Assertions.assertThat(accessToken)
+        assertThat(accessToken)
                 .isEqualTo(accessTokenAnother);
+    }
+
+    @DisplayName("jwt 검증 테스트")
+    @Test
+    void getMemberData() {
+        //given
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJkYXVtbmFsVXJsIiwic3ViIjoiMSIsImlhdCI6MTcxMDMxMTI0NywiZXhwIjoxNzEwNjExMjQ3LCJzb2NpYWxJZCI6MTIsInNvY2lhbFByb3ZpZGVyIjoia2FrYW8ifQ.I39C7iuumUWgxDBuLeoOB-pdgSxtwFKy9em0u2WWFG9P_VYVrUYHIxMaBzPJtYzbG3heuBzSXLGQEGL2PL7_9w";
+        log.info("accessToken={}", accessToken);
+        String socialIdResult = "12";
+        String memberIdResult = "1";
+        String socialProviderResult = "kakao";
+
+        //when
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(accessToken)
+                .getPayload();
+
+        String id_category = String.valueOf(claims.get(ID_CATEGORY));
+        String memberId = claims.getSubject();
+        String socialProvider = String.valueOf(claims.get(PROVIDER_CATEGORY));
+        
+        //then
+        assertThat(id_category).isEqualTo(socialIdResult);
+        assertThat(memberId).isEqualTo(memberIdResult);
+        assertThat(socialProvider).isEqualTo(socialProviderResult);
     }
 }
