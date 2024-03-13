@@ -79,7 +79,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public void addMemberNickname(String memberId, AddMemberNicknameRequest nicknameRequest) {
+    public GetMemberLoginResponse addMemberNickname(String memberId,
+                                                    AddMemberNicknameRequest nicknameRequest) {
         // 회원 pk 입력이 올바른지 확인하기
         if (!memberId.matches(NUMBER_REGEX)) {
             throw new InvalidException(INVALID_MEMBER_ID);
@@ -124,6 +125,15 @@ public class MemberServiceImpl implements MemberService {
         }
 
         member.updateNickname(nickname);
+
+        // access token 생성하기
+        TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(), member.getSocialId(),
+                member.getSocialProvider().getName());
+
+        return GetMemberLoginResponse.builder()
+                .memberNickname(nickname)
+                .memberAccessToken(tokenResponse.getAccessToken())
+                .build();
     }
 
     @Override
