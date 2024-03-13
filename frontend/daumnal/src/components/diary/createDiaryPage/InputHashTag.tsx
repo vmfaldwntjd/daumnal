@@ -14,7 +14,7 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
     let newValue = e.target.value.replace(/\s/g,'');
     const regex = /[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣_]/g;
 
-    if (newValue.length >= 10 || regex.test(newValue)) {
+    if (newValue.length > 10 || regex.test(newValue)) {
       return;
     }
 
@@ -48,28 +48,38 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
   }, [tags])
 
   return (
-    <div>
-        <FontAwesomeIcon icon={faHashtag} className='text-2xl'/>
-        <input className="bg-bg_main w-60 p-2 text-xl border-none focus:outline-none " value={currentTag} onChange={handleHashTagChange}  
+    <div className='w-full'>
+    <div className='w-full flex items-center justify-between border-b-2 border-font_main'>
+        <FontAwesomeIcon icon={faHashtag} className='text-3xl'/>
+        <input className="bg-bg_main w-2/3 p-2 text-center ml-2 text-2xl border-none focus:outline-none " value={currentTag} onChange={handleHashTagChange}  
         onKeyPress={(event) => {
             if (event.key === 'Enter') {
               handleAddTag();
               event.preventDefault();
             }
           }} type="text" placeholder='해시태그를 입력해 주세요'/>
-        <button type="button" onClick={handleAddTag} className='px-1 border border-gray-900 rounded-md bg'>추가</button>
-        {isAlert && <div className='text-red-500 px-6'>해시태그는 최대 3개까지 입력 가능합니다.</div>}
+        <button type="button" onClick={handleAddTag} className='px-1 border border-button_border bg-bg_button rounded-lg text-font_main'>추가</button>
+        
+    </div>  
+    <div>
+      {isAlert && <div className='text-red-500 px-6'>해시태그는 최대 3개까지 입력 가능합니다.</div>}
+      <div className='flex flex-wrap px-6 mt-4'>
         {tags.map((tag, index) => (
-          <div key={index} className='px-6 '>
-            <div className=' px-2 border border-font_main rounded-full inline-flex items-center'>
+          <div key={index} className='mr-2 mb-2'>
+            <div className='bg-bg_hashtag border border-font_main text-font_main px-2 rounded-full inline-flex items-center'>
               <span>{tag}</span>
               <button type="button" onClick={() => handleDeleteTag(index)} className='ml-2'>x</button>
-            </div>
-            
+            </div>            
           </div>
-        ))}
-
+        ))}    
+      </div>
+    </div>   
     </div>
+
+
+
+    
+
   );
 };
 
