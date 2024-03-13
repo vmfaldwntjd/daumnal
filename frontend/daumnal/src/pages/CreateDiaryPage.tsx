@@ -8,8 +8,11 @@ import QuillEditor from '../components/diary/createDiaryPage/QuillEditor';
 const CreateDiary: React.FC = () => {
 
   // 오늘의 날짜
-  const today = new Date();
-  const date:string = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+  const today:Date = new Date();
+  const weekdays:string[] = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+  const dayOfWeek:string = weekdays[today.getDay()];
+  const date:string = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일 ${dayOfWeek}`;
+  
   
   // 변수 지정
   const [title, setTitle] = useState<string>('')
@@ -60,31 +63,31 @@ const CreateDiary: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <form className=" max-w-[700px] "> {/* 폼의 최대 너비를 설정해 주어서 내용이 너무 퍼지지 않게 합니다. */}
+      <form className=" max-w-[700px] mt-20 flex flex-col items-center justify-center ">
         {/* 오늘 날짜 */}
-        <label className="flex flex-col items-center">
-          <input className="bg-bg_main text-3xl text-center" type="text" name="date" value={date} readOnly />
+        <label className="w-full flex flex-col items-center mt-10">
+          <input className="bg-bg_main text-3xl text-center w-full" type="text" name="date" value={date} readOnly />
         </label>
         {/* 오늘의 일기 */}
-        <div className="flex items-center gap-4 justify-center">
+        <div className="flex items-center gap-4 justify-center mt-10">
           <p className='text-4xl'>오늘의 일기</p>
           <FontAwesomeIcon icon={faVolumeHigh} />
         </div>
         {/* 제목 입력 */}
-        <div className="flex items-center justify-center mr-8">
-          <FontAwesomeIcon icon={faPenToSquare} className='text-2xl' />
-          <input value={title} onChange={handleTitleChange} className="bg-bg_main w-60 text-xl p-2 border-none focus:outline-none " type="text" placeholder='제목을 입력해 주세요' />
+        <div className="w-2/3 flex items-center justify-center mt-20 border-b-2 border-font_main">
+          <FontAwesomeIcon icon={faPenToSquare} className='text-3xl' />
+          <input value={title} onChange={handleTitleChange} className="bg-bg_main w-full text-2xl p-2 border-none focus:outline-none " type="text" placeholder='제목을 입력해 주세요' />
         </div>
         {/* 해시태그입력 */}
-        <div className="flex items-center justify-center">
+        <div className="w-2/3 flex items-center justify-center mt-10 border-b-2 border-font_main">
           <InputHashTag onTagsChange={handleTagsChange}/>
         </div>
         {/* 일기 내용 작성 */}
-        <div className="flex items-center justify-center boder rounded-lg">
+        <div className="mt-20">
           <QuillEditor onChange={handleContentChange} placeholder={''} />
         </div>
         {/* 이미지 첨부 */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mt-20 ">
           <input type="file" onChange={handleImageChange} />
         </div> 
       </form>
