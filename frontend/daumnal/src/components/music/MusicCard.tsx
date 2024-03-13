@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faCompactDisc } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const MusicInfo = styled.div`
-  width: 310px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   margin-left: 15px;
