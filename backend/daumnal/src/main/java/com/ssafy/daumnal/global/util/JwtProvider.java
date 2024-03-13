@@ -36,7 +36,7 @@ public class JwtProvider {
                 .issuer(ISSUER)
                 .subject(String.valueOf(memberId))
                 .issuedAt(new Date())
-                .expiration(new Date(accessExpiresIn))
+                .expiration(new Date(new Date().getTime() + accessExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
                 .claim(MEMBER_NICK, memberNickname)
