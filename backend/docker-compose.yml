@@ -1,5 +1,32 @@
 version: "3.8"
 services:
+  mysql:
+    container_name: daumnal-develop-mysql
+    image: mysql-develop-image
+    build:
+      context: ./db/mysql
+      dockerfile: Dockerfile
+    ports:
+      - 3306:3306
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - mysql-develop-volume:/var/lib/mysql
+    restart: always
+  redis:
+    container_name: daumnal-develop-redis
+    image: redis-develop-image
+    build:
+      context: ./db/redis
+      dockerfile: Dockerfile
+    ports:
+      - 6379:6379
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - redis-develop-conf-volume:/usr/local/etc/redis
+      - redis-develop-data-volume:/data
+    restart: always
   spring:
     container_name: daumnal-develop-spring
     image: spring-develop-image
@@ -22,3 +49,10 @@ services:
     environment:
       - TZ=Asia/Seoul
     restart: always
+volumes:
+  mysql-develop-volume:
+    external: true
+  redis-develop-conf-volume:
+    external: true
+  redis-develop-data-volume:
+    external: true
