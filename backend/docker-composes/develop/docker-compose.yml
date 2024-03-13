@@ -4,7 +4,7 @@ services:
     container_name: daumnal-develop-spring
     image: spring-develop-image
     build:
-      context: daumnal
+      context: ../../daumnal
       dockerfile: Dockerfile
     ports:
       - 8080:8080
@@ -15,7 +15,7 @@ services:
     container_name: daumnal-develop-fastapi
     image: fastapi-develop-image
     build:
-      context: fastapi
+      context: ../../fastapi
       dockerfile: Dockerfile
     ports:
       - 5000:5000
