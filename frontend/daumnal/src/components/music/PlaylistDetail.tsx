@@ -16,12 +16,12 @@ const Top = styled.div`
   width: 77%;
   display: flex;
   justify-content: space-between;
-  margin-top: 39px;
+  margin-top: 40px;
 `;
 
 const Musics = styled.div`
   width: 70%;
-  height: 49vh;
+  height: 48vh;
   overflow-y: auto; /* 세로 스크롤 추가 */
   background-color: #F8F6EE;
   display: flex;
@@ -57,6 +57,38 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
     },
     {
       musicId: 2,
+      musicYoutubeId: "16784",
+      musicTitle: "Lovesick Girls",
+      musicSingerName: "BLACKPINK",
+      musicCoverUrl: null,
+      musicLyrics: "Lovesick girls\nLovesick girls\n영원한 밤\n창문 없는 방에 우릴 가둔 love (love)\nWhat can we say?\n매번 아파도 외치는 love (love)\n"
+    },
+    {
+      musicId: 3,
+      musicYoutubeId: "234232",
+      musicTitle: "11:11",
+      musicSingerName: "태연",
+      musicCoverUrl: null,
+      musicLyrics: "It’s 11:11\n오늘이 한 칸이 채 안 남은 그런 시간\n우리 소원을 빌며 웃던 그 시간\n별 게 다 널 떠오르게 하지\n",
+    },
+    {
+      musicId: 4,
+      musicYoutubeId: "16784",
+      musicTitle: "Lovesick Girls",
+      musicSingerName: "BLACKPINK",
+      musicCoverUrl: null,
+      musicLyrics: "Lovesick girls\nLovesick girls\n영원한 밤\n창문 없는 방에 우릴 가둔 love (love)\nWhat can we say?\n매번 아파도 외치는 love (love)\n"
+    },
+    {
+      musicId: 5,
+      musicYoutubeId: "234232",
+      musicTitle: "11:11",
+      musicSingerName: "태연",
+      musicCoverUrl: null,
+      musicLyrics: "It’s 11:11\n오늘이 한 칸이 채 안 남은 그런 시간\n우리 소원을 빌며 웃던 그 시간\n별 게 다 널 떠오르게 하지\n",
+    },
+    {
+      musicId: 6,
       musicYoutubeId: "16784",
       musicTitle: "Lovesick Girls",
       musicSingerName: "BLACKPINK",
