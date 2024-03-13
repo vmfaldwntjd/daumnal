@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -27,8 +28,9 @@ class JwtProviderTest {
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
+    @DisplayName("두 개의 jwt 토큰 비교 테스트")
     @Test
-    void generateToken() {
+    void token_same_test() {
         //given
         Long memberId = 1L;
         Long socialId = 12L;
@@ -40,7 +42,7 @@ class JwtProviderTest {
                 .issuer(ISSUER)
                 .subject(String.valueOf(memberId))
                 .issuedAt(new Date())
-                .expiration(new Date(accessExpiresIn))
+                .expiration(new Date(new Date().getTime() + accessExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -50,7 +52,7 @@ class JwtProviderTest {
                 .issuer(ISSUER)
                 .subject(String.valueOf(memberId))
                 .issuedAt(new Date())
-                .expiration(new Date(accessExpiresIn))
+                .expiration(new Date(new Date().getTime() + accessExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
                 .signWith(key, SignatureAlgorithm.HS512)
