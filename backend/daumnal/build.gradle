@@ -49,6 +49,10 @@ dependencies {
 
     // AWS
     implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+
+    //test
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
