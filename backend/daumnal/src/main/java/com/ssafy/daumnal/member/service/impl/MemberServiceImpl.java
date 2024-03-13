@@ -128,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
 
         // access token 생성하기
         TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(), member.getSocialId(),
-                member.getSocialProvider().getName());
+                member.getSocialProvider().getName(), member.getNickname());
 
         return GetMemberLoginResponse.builder()
                 .memberNickname(nickname)
@@ -202,7 +202,8 @@ public class MemberServiceImpl implements MemberService {
         member.updateMemberStatus(MemberStatus.LOGIN);
 
         // access token 발급해주기
-        TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(), Long.parseLong(socialId), socialProvider);
+        TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(),
+                Long.parseLong(socialId), socialProvider, member.getNickname());
 
         return GetMemberLoginResponse.builder()
                 .memberNickname(member.getNickname())
