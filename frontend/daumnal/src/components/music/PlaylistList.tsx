@@ -12,11 +12,10 @@ const Wrapper = styled.div`
 
 const Playlists = styled.div`
   width: 90%;
-  max-height: 85vh; /* Playlists의 최대 높이 지정 */
-  background-color: #F8F6EE;
-  /* border-radius: 10px; */
-  font-family: 'NanumSquare';
+  height: 85vh;
   overflow-y: auto; /* 세로 스크롤 추가 */
+  background-color: #F8F6EE;
+  font-family: 'NanumSquare';
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
@@ -32,7 +31,11 @@ const Button = styled.button`
   font-size: large;
 `;
 
-const PlaylistList: React.FC = () => {
+interface PlaylistListProps {
+  onPlaylistSelect: (id: number) => void;
+}
+
+const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
   // 가상의 플레이리스트 데이터
   const playlists = [
     { playlistId: 1, playlistName: 'Playlist 1', playlistCoverUrl: null },
@@ -43,7 +46,7 @@ const PlaylistList: React.FC = () => {
     { playlistId: 6, playlistName: 'Playlist 6', playlistCoverUrl: null },
     { playlistId: 7, playlistName: 'Playlist 7', playlistCoverUrl: null },
     { playlistId: 8, playlistName: 'Playlist 8', playlistCoverUrl: null },
-  ];
+  ]
 
   const handleCreatePlaylist = () => {
     alert("플레이리스트 생성 모달 띄우기!");
@@ -58,7 +61,13 @@ const PlaylistList: React.FC = () => {
       {/* 플레이리스트 목록 */}
       <Playlists>
         {playlists.map((playlist) => (
-          <PlaylistCard key={playlist.playlistId} playlistId={playlist.playlistId} playlistName={playlist.playlistName} playlistCoverUrl={playlist.playlistCoverUrl} />
+          <PlaylistCard
+            key={playlist.playlistId}
+            playlistId={playlist.playlistId}
+            playlistName={playlist.playlistName}
+            playlistCoverUrl={playlist.playlistCoverUrl}
+            onPlaylistClick={onPlaylistSelect}
+          />
         ))}
       </Playlists>
     </div>

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Routes, Route } from 'react-router-dom';
 import MusicPlay from '../components/music/MusicPlay';
 import PlaylistList from '../components/music/PlaylistList';
 import PlaylistDetail from '../components/music/PlaylistDetail';
@@ -16,16 +15,34 @@ const RightBox = styled.div`
   background-color: #FFFCF7;
 `;
 
-const PlaylistListPage: React.FC = () => {
+const PlaylistPage: React.FC = () => {
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
+  const [selectedMusicId, setSelectedMusicId] = useState<number | null>(null);
+
+  const handlePlaylistSelect = (id: number) => {
+    setSelectedPlaylistId(id);
+  };
+
+  const handleMusicSelect = (id: number) => {
+    setSelectedMusicId(id);
+  };
+
   return (
-    <div className='flex -mr-4'>
+    <div className='flex'>
       <LeftBox>
-        <Routes>
-          {/* 플레이리스트 목록 */}
-          <Route path="/" element={<PlaylistList />} />
-          {/* 플레이리스트 상세 */}
-          <Route path="/:playlistId" element={<PlaylistDetail />} />
-        </Routes>
+        {/* 플레이리스트 선택 상태에 따라서 */}
+        {selectedPlaylistId !== null ? (
+          // 플레이리스트 상세 컴포넌트 렌더링
+          <PlaylistDetail 
+            selectedPlaylistId={selectedPlaylistId} 
+            setSelectedPlaylistId={setSelectedPlaylistId} 
+            onMusicSelect={handleMusicSelect} 
+            playlistId={selectedPlaylistId} 
+          />
+        ) : (
+          // 플레이리스트 목록 컴포넌트 렌더링
+          <PlaylistList onPlaylistSelect={handlePlaylistSelect} />
+        )}
       </LeftBox>
       <RightBox>
         {/* 노래 재생 */}
@@ -35,4 +52,4 @@ const PlaylistListPage: React.FC = () => {
   );
 };
 
-export default PlaylistListPage;
+export default PlaylistPage;

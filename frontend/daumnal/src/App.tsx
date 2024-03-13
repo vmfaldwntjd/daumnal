@@ -14,7 +14,7 @@ export default function App() {
   return (
     <BrowserRouter>
     <div className="flex justify-between" >
-      <div className="flex-grow">
+      <div className="flex-grow mr-[134px]">
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/oauth" element={<KakaoRedirectHandler />} />
