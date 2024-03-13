@@ -39,7 +39,7 @@ services:
       - redis
     restart: always
   fastapi:
-    container_name: daumnal-flask
+    container_name: daumnal-fastapi
     build:
       context: ./fastapi
       dockerfile: Dockerfile
