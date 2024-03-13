@@ -6,7 +6,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -88,7 +87,7 @@ class JwtProviderTest {
         String id_category = String.valueOf(claims.get(ID_CATEGORY));
         String memberId = claims.getSubject();
         String socialProvider = String.valueOf(claims.get(PROVIDER_CATEGORY));
-        
+
         //then
         assertThat(id_category).isEqualTo(socialIdResult);
         assertThat(memberId).isEqualTo(memberIdResult);
