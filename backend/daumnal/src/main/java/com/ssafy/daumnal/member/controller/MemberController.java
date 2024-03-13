@@ -24,8 +24,8 @@ public class MemberController {
     @PostMapping("/{memberId}/nickname")
     public ApiResponse<?> addMemberNickname(@PathVariable String memberId,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        memberService.addMemberNickname(memberId, nicknameRequest);
-        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME);
+        GetMemberLoginResponse memberLoginResponse = memberService.addMemberNickname(memberId, nicknameRequest);
+        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME,memberLoginResponse);
     }
 
     @GetMapping
