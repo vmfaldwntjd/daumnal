@@ -59,9 +59,9 @@ public class JwtProvider {
         TokenMemberDTO tokenMemberDTO = TokenMemberDTO.accessToken(Long.parseLong(claims.getSubject()),
                 Long.parseLong(String.valueOf(claims.get(ID_CATEGORY))),
                 String.valueOf(claims.get(PROVIDER_CATEGORY)),
-                String.valueOf(claims.get(MEMBER_NICK)),
+                String.valueOf(claims.get(MEMBER_NICK))
                 );
-        
+
         return tokenMemberDTO;
     }
 }
