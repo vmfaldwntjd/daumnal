@@ -1,22 +1,26 @@
 package com.ssafy.daumnal.global.util;
 
+import com.ssafy.daumnal.global.dto.TokenMemberDTO;
 import com.ssafy.daumnal.global.dto.TokenResponse;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 import static com.ssafy.daumnal.global.constants.JwtConstants.*;
 
 @Component
+@Slf4j
 public class JwtProvider {
 
-    private final Key key;
+    private final SecretKey key;
 
     @Value("${spring.jwt.live.access}")
     private Long accessExpiresIn;
@@ -26,7 +30,7 @@ public class JwtProvider {
     }
 
     // 토큰 생성하기
-    public TokenResponse generateToken(Long memberId, Long socialId, String socialProvider) {
+    public TokenResponse generateToken(Long memberId, Long socialId, String socialProvider, String memberNickname) {
 
         String accessToken = Jwts.builder()
                 .issuer(ISSUER)
@@ -35,11 +39,29 @@ public class JwtProvider {
                 .expiration(new Date(accessExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
+                .claim(MEMBER_NICK, memberNickname)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .build();
+    }
+
+    // jwt payload 정보 가져오는 로직 구현하기
+    public TokenMemberDTO getMemberData(String accessToken) {
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(accessToken)
+                .getPayload();
+
+        TokenMemberDTO tokenMemberDTO = TokenMemberDTO.accessToken(Long.parseLong(claims.getSubject()),
+                Long.parseLong(String.valueOf(claims.get(ID_CATEGORY))),
+                String.valueOf(claims.get(PROVIDER_CATEGORY)),
+                String.valueOf(claims.get(MEMBER_NICK)),
+                );
+        
+        return tokenMemberDTO;
     }
 }
