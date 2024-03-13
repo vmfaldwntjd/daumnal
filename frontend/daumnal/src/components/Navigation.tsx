@@ -28,7 +28,7 @@ const Navigation: React.FC = () => {
 
   return (
     <nav className="h-screen flex justify-center items-center">
-        <div className="flex w-[150px] h-screen">
+        <div className="flex w-[150px] h-screen fixed top-0 right-0">
             <div className="w-4 h-screen flex flex-col justify-center">
               {navigationItems.map((_, index) => (
                 <div className="h-20" key={index} style={{backgroundColor: getBackgroundColor(index) }}></div>
