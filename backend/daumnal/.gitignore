@@ -38,3 +38,4 @@ out/
 
 ### Dockerfile ###
 ../Dockerfiles/mysql/Dockerfile
+../Dockerfiles/nginx/
