@@ -2,8 +2,6 @@ package com.ssafy.daumnal.member.util;
 
 import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
-import com.ssafy.daumnal.member.entity.Member;
-import com.ssafy.daumnal.member.entity.MemberStatus;
 import org.springframework.stereotype.Component;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
