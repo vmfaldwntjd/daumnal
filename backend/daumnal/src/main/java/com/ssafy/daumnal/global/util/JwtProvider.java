@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.time.Duration;
 import java.util.Date;
 
 import static com.ssafy.daumnal.global.constants.JwtConstants.*;
@@ -21,12 +22,18 @@ import static com.ssafy.daumnal.global.constants.JwtConstants.*;
 public class JwtProvider {
 
     private final SecretKey key;
+    private final RedisRepository redisRepository;
 
     @Value("${spring.jwt.live.access}")
     private Long accessExpiresIn;
 
-    public JwtProvider(@Value("${spring.jwt.secret}") String secret) {
+    @Value("${spring.jwt.live.refresh}")
+    private Long refreshExpiresIn;
+
+    public JwtProvider(@Value("${spring.jwt.secret}") String secret,
+                       RedisRepository redisRepository) {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        this.redisRepository = redisRepository;
     }
 
     // 토큰 생성하기
@@ -42,6 +49,19 @@ public class JwtProvider {
                 .claim(MEMBER_NICK, memberNickname)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+
+        String refreshToken = Jwts.builder()
+                .issuer(ISSUER)
+                .subject(String.valueOf(memberId))
+                .issuedAt(new Date())
+                .expiration(new Date(new Date().getTime() + refreshExpiresIn))
+                .claim(ID_CATEGORY, socialId)
+                .claim(PROVIDER_CATEGORY, socialProvider)
+                .claim(MEMBER_NICK, memberNickname)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+
+        redisRepository.setValues(memberNickname, refreshToken, Duration.ofMillis(refreshExpiresIn));
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
