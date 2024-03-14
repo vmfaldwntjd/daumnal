@@ -10,33 +10,47 @@ import static com.ssafy.daumnal.member.constants.MemberConstants.*;
 @Component
 public class MemberUtilService {
 
-    // socialId가 null인지 확인하기
+
+    /**
+     * socialId가 null인지 확인하기
+     * @param socialId
+     */
     public void validateExistsSocialId(String socialId) {
         if (socialId == null) {
             throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_ID);
         }
     }
 
-    // socialId가 자연수 형태인지 확인하기
+
+    /**
+     * socialId가 자연수 형태인지 확인하기
+     * @param socialId
+     */
     public void validateSocialIdNumber(String socialId) {
         if (!socialId.matches(NUMBER_REGEX)) {
             throw new InvalidException(INVALID_MEMBER_SOCIAL_ID);
         }
     }
 
-    // socialProvider가 null인지 확인하기
+
+    /**
+     * socialProvider가 null인지 확인하기
+     * @param socialProvider
+     */
     public void validateExistsSocialProvider(String socialProvider) {
         if (socialProvider == null) {
             throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_PROVIDER);
         }
     }
 
-    // socialProvider가 카카오인지, 네이버인지 검증하기
+    /**
+     * socialProvider가 카카오인지, 네이버인지 검증하기
+     * @param socialProvider
+     */
     public void validateSocialProvider(String socialProvider) {
         if (!(KAKAO.equals(socialProvider) || NAVER.equals(socialProvider))) {
             throw new InvalidException(INVALID_MEMBER_SOCIAL_PROVIDER);
         }
     }
-
-    //
+    
 }
