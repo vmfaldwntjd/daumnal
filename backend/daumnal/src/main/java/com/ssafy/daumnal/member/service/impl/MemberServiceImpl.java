@@ -121,21 +121,10 @@ public class MemberServiceImpl implements MemberService {
     public GetMemberResponse getMemberBySocialIdAndSocialProvider(String socialId,
                                                                   String socialProvider) {
 
-        if (socialId == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_ID);
-        }
-
-        if (socialProvider == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_PROVIDER);
-        }
-
-        if (!socialId.matches(NUMBER_REGEX)) {
-            throw new InvalidException(INVALID_MEMBER_SOCIAL_ID);
-        }
-
-        if (!(KAKAO.equals(socialProvider) || NAVER.equals(socialProvider))) {
-            throw new InvalidException(INVALID_MEMBER_SOCIAL_PROVIDER);
-        }
+        memberUtilService.validateExistsSocialId(socialId);
+        memberUtilService.validateExistsSocialProvider(socialProvider);
+        memberUtilService.validateSocialIdNumber(socialId);
+        memberUtilService.validateSocialProvider(socialProvider);
 
         Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId), getProvider(socialProvider))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
