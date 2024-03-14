@@ -80,58 +80,65 @@ const CreateDiary: React.FC = () => {
   
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <form className=" w-full max-w-[700px] mt-10 flex flex-col items-center justify-center ">
+    <div className="flex flex-col items-center justify-center w-full h-screen py-16">
+      <div className='w-full'>
         {/* 오늘 날짜 */}
-        <label className="w-full flex flex-col items-center mt-10">
-          <input className="bg-bg_main text-3xl text-center w-full" type="text" name="date" value={date} readOnly />
-        </label>
-        {/* 오늘의 일기 */}
-        <div className="flex items-center gap-4 justify-center mt-10">
-          <p className='text-4xl'>오늘의 일기</p>
-          <FontAwesomeIcon icon={faVolumeHigh} />
-        </div>
-        {/* 제목 입력 */}
-        <div className="w-full flex items-center justify-center mt-10 border-b-2 border-font_main">
-          <FontAwesomeIcon icon={faPenToSquare} className='text-3xl' />
-          <input value={title} onChange={handleTitleChange} className="bg-bg_main w-full text-center mr-6 text-2xl p-2 border-none focus:outline-none " type="text" placeholder='제목을 입력해 주세요' />
-        </div>
-        {/* 해시태그입력 */}
-        <div className="w-full flex items-center justify-center mt-10">
-          <InputHashTag onTagsChange={handleTagsChange}/>
-        </div>
-        {/* 일기 내용 작성 */}
-        <div className="w-full mt-10">
-          <QuillEditor onChange={handleContentChange} placeholder={''} />
-        </div>
-        {/* 이미지 첨부 */}
-        <div className="w-full flex items-center justify-center mt-20 ">
-          {/* 숨겨진 파일 입력 */}
-          <input type="file" onChange={handleImageChange} className="hidden" id="fileInput" />
-          {/* 사용자에게 보이는 버튼 */}
-          <div className="relative w-full h-72"> {/* SVG의 크기에 맞추어 조정 */}
-            {imagePreview && <img src={imagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-full max-h-full" />}
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0" style={{ pointerEvents: 'none' }}>
-              <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"
-                style={{ 
-                  fill: "none", 
-                  stroke: imagePreview ? 'rgba(105, 104, 100, 0.5)' : 'rgba(156, 155, 150, 0.7)' , 
-                  strokeWidth: imagePreview ? 1 : 2, 
-                  strokeDasharray: imagePreview ? "none" : "10, 5" // 이미지가 있으면 'none', 없으면 '10, 5'
-                }} />
-            </svg>
-            <button type='button' onClick={handleClick}
-              className="w-full h-full rounded-lg flex flex-col items-center justify-center bg-transparent focus:outline-none">
-                <FontAwesomeIcon icon={faImage} style={{color: "rgba(105, 104, 100, 0.5)", fontSize: "60px"}} />
-                <p className='mt-8'>오늘의 일기를 대표할 이미지를 첨부해 보세요</p>            
-            </button>
+          <label className="flex items-center gap-4 justify-center">
+            <p className="bg-bg_main text-3xl text-center">{date}</p>
+            <FontAwesomeIcon icon={faVolumeHigh} />
+            <button className="mt-10 border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>
+          </label>         
+      </div>
+      <div className="flex w-full h-full justify-between pt-16"> 
+        <div className="w-1/2 flex flex-col items-center px-16"> {/* 왼쪽 구역 */}          
+          {/* 오늘의 일기 */}
+          {/* <div className="flex items-center gap-4 justify-center mt-6">
+            <p className='text-3xl'>오늘의 일기</p>
+            <FontAwesomeIcon icon={faVolumeHigh} />
+          </div> */}
+          {/* 제목 입력 */}
+          <div className="w-full flex items-center justify-center border-b-2 border-font_main">
+            <FontAwesomeIcon icon={faPenToSquare} className='text-2xl' />
+            <input value={title} onChange={handleTitleChange} className="bg-bg_main w-full text-center mr-6 text-xl p-2 border-none focus:outline-none " type="text" placeholder='제목을 입력해 주세요' />
           </div>
-        </div> 
-      </form>
-      <button className="mt-10 mb-10 border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button> {/* 버튼을 폼 밖에 위치시키고, 마진을 주어서 간격을 조정합니다. */}
+          {/* 해시태그입력 */}
+          <div className="w-full flex items-center justify-center mt-10">
+            <InputHashTag onTagsChange={handleTagsChange}/>
+          </div>
+          {/* 이미지 첨부 */}
+          <div className="w-full h-full flex items-center justify-center mt-10 ">
+            <input type="file" onChange={handleImageChange} className="hidden" id="fileInput" />
+            <div className="relative w-full h-full ">
+              {imagePreview && <img src={imagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-full max-h-full" />}
+              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0" style={{ pointerEvents: 'none' }}>
+                <rect x="1" y="1" width="98%" height="98%" rx="8" ry="8"
+                  style={{ 
+                    fill: "none", 
+                    stroke: imagePreview ? 'none' : 'rgba(156, 155, 150, 0.7)' , 
+                    strokeWidth: imagePreview ? 1 : 2, 
+                    strokeDasharray: imagePreview ? "none" : "10, 5"
+                  }} />
+              </svg>
+              <button type='button' onClick={handleClick}
+                className="w-full h-full rounded-lg flex flex-col items-center justify-center bg-transparent focus:outline-none">
+                  <FontAwesomeIcon icon={faImage} style={{color: "rgba(105, 104, 100, 0.5)", fontSize: "60px"}} />
+                  <p className='mt-8 px-2'>오늘의 일기를 대표할 이미지를 첨부해 보세요</p>            
+              </button>
+            </div>
+          </div> 
+        </div>
+
+        <div className="w-px bg-gray-400 h-full pt-20 pb-10"></div> 
+
+        <div className="w-1/2 flex flex-col items-center px-16"> {/* 오른쪽 구역 */}
+          {/* 일기 내용 작성 */}
+          <div className="w-full ">
+            <QuillEditor onChange={handleContentChange} placeholder={''} />
+          </div>
+        </div>
+      </div>
     </div>
 
-    
   );
 };
 
