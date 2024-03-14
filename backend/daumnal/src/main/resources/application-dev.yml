@@ -20,7 +20,11 @@ spring:
     secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUasjioejalksdjfaoigjioejfakls123diojseoifjdklfjwogjdfkjgoszzdjfeiofjoidjf4'
     live:
       access: 300000
+      refresh: 300000000
 
+  cache:
+    type: redis
+    
   data:
     redis:
       host: localhost
