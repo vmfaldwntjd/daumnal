@@ -41,7 +41,7 @@ const Navigation: React.FC = () => {
                 <div className="h-20" key={index} style={{backgroundColor: getBackgroundColor(index) }}></div>
               ))}
             </div>
-            <div className="flex flex-grow h-screen justify-center items-center" style={{ backgroundColor: '#F3EEEA' }}>
+            <div className="flex flex-grow h-screen justify-center items-center bg-bg_nav">
               <div className='w-full'>
                 {navigationItems.map((item) => (
                     <NavItem
