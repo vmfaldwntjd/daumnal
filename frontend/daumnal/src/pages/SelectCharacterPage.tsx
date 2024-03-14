@@ -1,3 +1,4 @@
+// 캐릭터 선택 페이지
 import React from 'react';
 import styled from 'styled-components';
 import CharacterCard from '../components/music/CharacterCard';
@@ -10,9 +11,8 @@ const Characters = styled.div`
 const SelectCharacterPage: React.FC = () => {
   return (
     <div className="p-9">
-      {/* 페이지 문구 */}
       <p className="text-4xl mb-7">오늘의 나무를 골라 주세요!</p>
-      {/* 캐릭터들 */}
+      {/* 캐릭터 목록 */}
       <Characters>
         <CharacterCard imageUrl="/image/dabom.png" name="다봄" context="다봄이 설명" />
         <CharacterCard imageUrl="/image/dareum.png" name="다름" context="다름이 설명" />
