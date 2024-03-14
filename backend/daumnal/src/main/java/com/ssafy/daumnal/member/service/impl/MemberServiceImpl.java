@@ -19,21 +19,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
+import static com.ssafy.daumnal.member.constants.MemberConstants.*;
 
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-
-    private static final String KAKAO = "kakao";
-    private static final String NAVER = "naver";
-    private static final String NUMBER_REGEX = "^[1-9]\\d*$";
-    private static final String KOREAN_REGEX = "^[가-힣]+$";
-    private static final String ENGLISH_REGEX = "^[a-zA-Z]+$";
-
-    private static final int MEMBER_DELETE = 0;
-    private static final int MEMBER_LOGOUT = 2;
-
-    private static final int NICKNAME_MAX_LENGTH = 15;
 
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
