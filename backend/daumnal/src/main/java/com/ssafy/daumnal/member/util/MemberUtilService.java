@@ -2,6 +2,7 @@ package com.ssafy.daumnal.member.util;
 
 import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.member.entity.SocialProvider;
 import org.springframework.stereotype.Component;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
@@ -108,5 +109,23 @@ public class MemberUtilService {
         if (nickname.length() > NICKNAME_MAX_LENGTH) {
             throw new InvalidException(INVALID_MEMBER_NICKNAME_LENGTH);
         }
+    }
+
+    /**
+     * 제공된 문자열 형태의 socialProvider를 알맞은 SocialProvider 객체 형태로 반환해줍니다.
+     * @param socialProvider
+     * @return
+     */
+    public SocialProvider getProvider(String socialProvider) {
+
+        SocialProvider providerResult = null;
+
+        if (socialProvider.equals(KAKAO)) {
+            providerResult = SocialProvider.KAKAO;
+        } else if (socialProvider.equals(NAVER)) {
+            providerResult = SocialProvider.NAVER;
+        }
+
+        return providerResult;
     }
 }

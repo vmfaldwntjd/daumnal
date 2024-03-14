@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
-import static com.ssafy.daumnal.member.constants.MemberConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateExistsSocialProvider(socialProvider);
         memberUtilService.validateSocialProvider(socialProvider);
 
-        SocialProvider provider = getProvider(socialProvider);
+        SocialProvider provider = memberUtilService.getProvider(socialProvider);
 
         if (memberRepository.existsMemberBySocialIdAndSocialProvider(
                 Long.parseLong(socialId),
@@ -100,7 +99,8 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateSocialIdNumber(socialId);
         memberUtilService.validateSocialProvider(socialProvider);
 
-        Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId), getProvider(socialProvider))
+        Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId),
+                        memberUtilService.getProvider(socialProvider))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
 
         return GetMemberResponse.builder()
@@ -121,7 +121,7 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateSocialProvider(socialProvider);
 
         Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId),
-                        getProvider(socialProvider))
+                        memberUtilService.getProvider(socialProvider))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
 
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
@@ -137,18 +137,5 @@ public class MemberServiceImpl implements MemberService {
                 .memberNickname(member.getNickname())
                 .memberAccessToken(tokenResponse.getAccessToken())
                 .build();
-    }
-
-    private SocialProvider getProvider(String socialProvider) {
-
-        SocialProvider providerResult = null;
-
-        if (socialProvider.equals(KAKAO)) {
-            providerResult = SocialProvider.KAKAO;
-        } else if (socialProvider.equals(NAVER)) {
-            providerResult = SocialProvider.NAVER;
-        }
-
-        return providerResult;
     }
 }
