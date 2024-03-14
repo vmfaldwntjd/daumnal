@@ -1,3 +1,4 @@
+// 플레이리스트 목록 컴포넌트
 import React from 'react';
 import styled from 'styled-components';
 import PlaylistCard from './PlaylistCard';
@@ -48,6 +49,7 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
     { playlistId: 8, playlistName: 'Playlist 8', playlistCoverUrl: null },
   ]
 
+  // 플레이리스트 생성 모달 띄우는 함수
   const handleCreatePlaylist = () => {
     alert("플레이리스트 생성 모달 띄우기!");
   }

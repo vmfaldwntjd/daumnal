@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// 플레이리스트 목록 내부 단일 플레이리스트 컴포넌트
+import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
@@ -27,14 +28,17 @@ interface PlaylistCardProps {
 }
 
 const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, playlistCoverUrl, onPlaylistClick }) => {
+  // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
 
+  // 해당 플레이리스트 수정/삭제 모달 띄우는 함수
   const handleEditClick = (playlistId: number) => () => {
-    alert(`${playlistId}번 플레이리스트 수정/삭제 모달 띄우기!`);
+    alert(`${playlistId}번 플레이리스트 수정/삭제 모달 띄우기!`);  // 콜백 함수 호출
   }
 
+  // 클릭한 플레이리스트 상세 컴포넌트로 교체하는 함수
   const handleMovePlaylist = (playlistId: number) => () => {
-    onPlaylistClick(playlistId); // 콜백 함수 호출
+    onPlaylistClick(playlistId);  // 콜백 함수 호출
   }
 
   return (
