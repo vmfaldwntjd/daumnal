@@ -14,6 +14,7 @@ import com.ssafy.daumnal.member.entity.MemberStatus;
 import com.ssafy.daumnal.member.entity.SocialProvider;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.service.MemberService;
+import com.ssafy.daumnal.member.util.MemberUtilService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
+    private final MemberUtilService memberUtilService;
 
     @Transactional
     @Override
@@ -35,21 +37,10 @@ public class MemberServiceImpl implements MemberService {
         String socialId = addMemberRequest.getSocialId();
         String socialProvider = addMemberRequest.getSocialProvider();
 
-        if (socialId == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_ID);
-        }
-
-        if (socialProvider == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_PROVIDER);
-        }
-
-        if (!socialId.matches(NUMBER_REGEX)) {
-            throw new InvalidException(INVALID_MEMBER_SOCIAL_ID);
-        }
-
-        if (!(KAKAO.equals(socialProvider) || NAVER.equals(socialProvider))) {
-            throw new InvalidException(INVALID_MEMBER_SOCIAL_PROVIDER);
-        }
+        memberUtilService.validateExistsSocialId(socialId);
+        memberUtilService.validateSocialIdNumber(socialId);
+        memberUtilService.validateExistsSocialProvider(socialProvider);
+        memberUtilService.validateSocialProvider(socialProvider);
 
         SocialProvider provider = getProvider(socialProvider);
 
