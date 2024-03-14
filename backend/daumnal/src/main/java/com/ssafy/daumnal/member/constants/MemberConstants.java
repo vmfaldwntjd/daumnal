@@ -8,6 +8,7 @@ public interface MemberConstants {
     String KOREAN_REGEX = "^[가-힣]+$";
     String ENGLISH_REGEX = "^[a-zA-Z]+$";
     int MEMBER_DELETE = 0;
+    int MEMBER_LOGIN = 1;
     int MEMBER_LOGOUT = 2;
     int NICKNAME_MAX_LENGTH = 15;
 }

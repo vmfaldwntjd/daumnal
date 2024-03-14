@@ -2,6 +2,8 @@ package com.ssafy.daumnal.member.util;
 
 import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.member.entity.Member;
+import com.ssafy.daumnal.member.entity.MemberStatus;
 import org.springframework.stereotype.Component;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
@@ -9,7 +11,6 @@ import static com.ssafy.daumnal.member.constants.MemberConstants.*;
 
 @Component
 public class MemberUtilService {
-
 
     /**
      * socialId가 null인지 확인하기
@@ -64,16 +65,32 @@ public class MemberUtilService {
     }
 
     /**
-     * 회원 상태가 로그인 상태인지 검증하기
+     * 회원탈퇴 상태 검증
      * @param memberStatus
      */
-    public void validateMemberStatusLogin(int memberStatus) {
+    public void validateMemberStatusNotDelete(int memberStatus) {
         if (memberStatus == MEMBER_DELETE) {
             throw new InvalidException(INVALID_MEMBER_STATUS_ON_DELETE);
         }
+    }
 
+    /**
+     * 로그아웃 상태 검증
+     * @param memberStatus
+     */
+    public void validateMemberStatusNotLogout(int memberStatus) {
         if (memberStatus == MEMBER_LOGOUT) {
             throw new InvalidException(INVALID_MEMBER_STATUS_ON_LOGOUT);
+        }
+    }
+
+    /**
+     * 재로그인 한 상황 검증
+     * @param memberStatus
+     */
+    public void validateMemberStatusReLogin(int memberStatus) {
+        if (memberStatus == MEMBER_LOGIN) {
+            throw new InvalidException(INVALID_MEMBER_STATUS_ON_LOGIN);
         }
     }
 

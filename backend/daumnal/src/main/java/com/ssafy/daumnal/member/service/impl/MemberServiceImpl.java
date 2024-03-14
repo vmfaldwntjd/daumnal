@@ -69,7 +69,8 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
         int memberStatus = member.getStatus().getValue();
-        memberUtilService.validateMemberStatusLogin(memberStatus);
+        memberUtilService.validateMemberStatusNotDelete(memberStatus);
+        memberUtilService.validateMemberStatusNotLogout(memberStatus);
 
         String nickname = nicknameRequest.getMemberNickname();
         memberUtilService.validateInputMemberNickname(nickname);
@@ -115,33 +116,17 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public GetMemberLoginResponse updateMemberStatusLogin(String socialId, String socialProvider) {
 
-        if (socialId == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_ID);
-        }
-
-        if (socialProvider == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER_SOCIAL_PROVIDER);
-        }
-
-        if (!socialId.matches(NUMBER_REGEX)) {
-            throw new InvalidException(INVALID_MEMBER_SOCIAL_ID);
-        }
-
-        if (!(KAKAO.equals(socialProvider) || NAVER.equals(socialProvider))) {
-            throw new InvalidException(INVALID_MEMBER_SOCIAL_PROVIDER);
-        }
+        memberUtilService.validateExistsSocialId(socialId);
+        memberUtilService.validateExistsSocialProvider(socialProvider);
+        memberUtilService.validateSocialIdNumber(socialId);
+        memberUtilService.validateSocialProvider(socialProvider);
 
         Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId),
                         getProvider(socialProvider))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
 
-        if (member.getStatus() == MemberStatus.DELETE) {
-            throw new InvalidException(INVALID_MEMBER_STATUS_ON_DELETE);
-        }
-
-        if (member.getStatus() == MemberStatus.LOGIN) {
-            throw new InvalidException(INVALID_MEMBER_STATUS_ON_LOGIN);
-        }
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusReLogin(member.getStatus().getValue());
 
         member.updateMemberStatus(MemberStatus.LOGIN);
 
