@@ -15,11 +15,11 @@ const Wrapper = styled.div`
 `;
 
 const MusicInfo = styled.div`
-  width: 400px;
+  width: 450px;
   display: flex;
   flex-direction: column;
   margin-left: 15px;
-  gap: 10px;
+  gap: 5px;
 `;
 
 const Buttons = styled.div`
@@ -54,7 +54,7 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
     <div>
       <Container>
         {/* 앨범 이미지 */}
-        <img className="w-20"
+        <img className="w-16 ml-2"
           src={musicCoverUrl || defaultImageUrl}
           alt="앨범 커버 이미지"
         />
@@ -67,9 +67,9 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
           </MusicInfo>
           <Buttons>
             {/* 노래 재생 버튼 */}
-            <button className="text-3xl" onClick={handlePlayMusic(musicId)}><FontAwesomeIcon icon={faPlay} /></button>
+            <button className="text-2xl" onClick={handlePlayMusic(musicId)}><FontAwesomeIcon icon={faPlay} /></button>
             {/* 플레이리스트 추가/삭제 모달 버튼 */}
-            <button className="text-3xl" onClick={handlePlaylistClick(musicId)}><FontAwesomeIcon icon={faCompactDisc} /></button>
+            <button className="text-2xl" onClick={handlePlaylistClick(musicId)}><FontAwesomeIcon icon={faCompactDisc} /></button>
           </Buttons>
         </Wrapper>
       </Container>
