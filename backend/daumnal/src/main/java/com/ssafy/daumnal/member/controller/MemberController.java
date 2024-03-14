@@ -37,9 +37,9 @@ public class MemberController {
 
     @PostMapping("/login")
     public ApiResponse<?> login(@RequestBody LoginMemberRequest loginMemberRequest) {
-        GetMemberLoginResponse memberLoginresponse = memberService.updateMemberStatusLogin(loginMemberRequest.getSocialId(),
+        GetMemberLoginResponse memberLoginResponse = memberService.updateMemberStatusLogin(loginMemberRequest.getSocialId(),
                 loginMemberRequest.getSocialProvider());
 
-        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_STATUS_LOGIN, memberLoginresponse);
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_STATUS_LOGIN, memberLoginResponse);
     }
 }
