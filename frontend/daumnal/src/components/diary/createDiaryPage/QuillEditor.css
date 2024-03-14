@@ -1,6 +1,7 @@
 .quill {
     width: 100% !important;
-    height: 500px !important;
+    height: 468px !important;
+    max-height: 468px !important;
   
   }
   
@@ -20,6 +21,7 @@
     border-bottom-right-radius: 10px !important;
     font-family: 'Cafe24Oneprettynight' !important;
     font-size: 15px !important;
+    height: 428px !important;
   }
   
   .ql-snow.ql-toolbar button:hover,

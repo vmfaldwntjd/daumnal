@@ -50,8 +50,8 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
   return (
     <div className='w-full'>
     <div className='w-full flex items-center justify-between border-b-2 border-font_main'>
-        <FontAwesomeIcon icon={faHashtag} className='text-3xl'/>
-        <input className="bg-bg_main w-2/3 p-2 text-center ml-2 text-2xl border-none focus:outline-none " value={currentTag} onChange={handleHashTagChange}  
+        <FontAwesomeIcon icon={faHashtag} className='text-2xl'/>
+        <input className="bg-bg_main w-2/3 p-2 text-center ml-2 text-xl border-none focus:outline-none " value={currentTag} onChange={handleHashTagChange}  
         onKeyPress={(event) => {
             if (event.key === 'Enter') {
               handleAddTag();
