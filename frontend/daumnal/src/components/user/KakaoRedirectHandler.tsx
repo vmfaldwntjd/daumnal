@@ -14,45 +14,36 @@ const handleKakaoLogin = async (navigate: (path: string) => void) => {
       return;
     }
 
+    const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
+    const redirect_uri = `${process.env.REACT_APP_FRONTEND_BASE_URL}/oauth`;
 
-    // 서버로 소셜 ID를 전송하는 로직을 추가
-    // axios.post('/api/save-social-id', { socialId: response.data.access_token });
+    const response = await axios.post(
+      `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
+      {},
+      {
+        headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+        },
+      }
+    );
 
+    window.Kakao.Auth.setAccessToken(response.data.access_token);
 
-    // 사용자 정보 가져오기
-    else {
-
-      const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      const redirect_uri = `${process.env.REACT_APP_FRONTEND_BASE_URL}/oauth`;
-
-      const response = await axios.post(
-        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,      {},
-        {
-          headers: {
-            'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-          },
-        }
-      );
-
-      window.Kakao.Auth.setAccessToken(response.data.access_token); 
-
-      const userInfoResponse = await Kakao.API.request({
+    const userInfoResponse = await Kakao.API.request({
       url: '/v2/user/me',
     });
 
     console.log('사용자 정보:', userInfoResponse);
 
-    // 닉네임 정보 추출
-    const nickname = userInfoResponse.kakao_account.profile.nickname;
+    // // 서버로 소셜 ID와 소셜 제공자 정보 전송
+    // const serverResponse = await axios.get(`${process.env.REACT_APP_FRONTEND_BASE_URL}/members?socialId=${userInfoResponse.id}&socialProvider=kakao`);
 
-    // 서버로 닉네임 정보 전송하는 로직 추가
-    // axios.post('/api/save-nickname', { nickname });
+    // console.log('서버 응답:', serverResponse.data);
 
     // 로그인이 성공하면 mainpage로 이동
     navigate('/mainpage');
-  }
   } catch (error: any) {
-    console.log('사용자 정보:', error);
+    console.error('로그인 과정에서 오류가 발생했습니다:', error);
   }
 };
 

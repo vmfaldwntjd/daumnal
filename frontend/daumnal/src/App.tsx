@@ -28,7 +28,7 @@ export default function App() {
       </Routes>
       </div>
 
-      <div className="h-screen">
+      <div>
         <Navigation />
       </div>      
     </div>     
