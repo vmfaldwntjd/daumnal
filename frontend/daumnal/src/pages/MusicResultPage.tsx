@@ -1,3 +1,4 @@
+// 추천 노래 결과 페이지
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -51,12 +52,16 @@ interface MusicResultPageProps {
 const MusicResultPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // 캐릭터 선택 페이지에서 선택된 캐릭터 정보 가져오기
   const { selectedCharacter } = location.state as MusicResultPageProps;
 
+  // 결과 확인 후 확인 버튼 클릭시 캘린더 페이지로 이동시키는 함수
   const handleResultClick = () => {
     navigate("/calendarpage");
   }
 
+  // 캐릭터 이름에 따라서 이미지 경로 설정하는 함수
   const getCharacterImageUrl = (characterName: string): string => {
     switch (characterName) {
       case "다봄":
@@ -72,6 +77,7 @@ const MusicResultPage: React.FC = () => {
     }
   };
 
+  // 캐릭터 이미지 경로 지정
   const characterImageUrl = getCharacterImageUrl(selectedCharacter);
 
   return (

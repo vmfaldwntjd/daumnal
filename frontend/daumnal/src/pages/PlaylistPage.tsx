@@ -1,3 +1,4 @@
+// 플레이리스트 페이지
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import MusicPlay from '../components/music/MusicPlay';
@@ -19,10 +20,12 @@ const PlaylistPage: React.FC = () => {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
   const [selectedMusicId, setSelectedMusicId] = useState<number | null>(null);
 
+  // 선택한 플레이리스트 상세 컴포넌트로 교체하는 함수
   const handlePlaylistSelect = (id: number) => {
     setSelectedPlaylistId(id);
   };
 
+  
   const handleMusicSelect = (id: number) => {
     setSelectedMusicId(id);
   };

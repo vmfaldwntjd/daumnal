@@ -1,3 +1,4 @@
+// 플레이리스트 상세 내부 단일 노래 컴포넌트
 import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -40,12 +41,15 @@ interface MusicCardProps {
 }
 
 const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTitle, musicSingerName, musicCoverUrl, musicLyrics }) => {
+  // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
 
-  const handlePlaylistClick = (playlistId: number) => () => {
-    alert(`${playlistId}번 플레이리스트 수정/삭제 모달 띄우기!`);
+  // 해당 노래 추가/삭제할 플레이리스트 정하는 모달 띄우는 함수
+  const handlePlaylistClick = (musicId: number) => () => {
+    alert(`${musicId}번 노래 추가/삭제할 플레이리스트 설정 모달 띄우기!`);  // 콜백 함수 호출
   }
 
+  // 클릭한 노래 재생하는 함수
   const handlePlayMusic = (musicId: number) => () => {
     alert(`${musicId}번 노래 재생!`);  // 콜백 함수 호출
   }
@@ -73,7 +77,8 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
           </Buttons>
         </Wrapper>
       </Container>
-      <hr />
+      {/* 구분선 */}
+      <hr className="border-neutral-200" />
     </div>
   );
 };

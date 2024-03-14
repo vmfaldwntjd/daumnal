@@ -26,7 +26,7 @@ const Musics = styled.div`
   background-color: #F8F6EE;
   display: flex;
   flex-direction: column;
-  padding: 0px 10px;
+  padding: 10px 10px 0px 10px;
 `;
 
 interface PlaylistDetailProps {
@@ -37,11 +37,12 @@ interface PlaylistDetailProps {
 }
 
 const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPlaylistId, setSelectedPlaylistId }) => {
+  // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
 
   // 가상의 playlistId 플레이리스트 데이터
   const playlist = {
-    playlistName: "밤양갱도 갱이다",
+    playlistName: "매일의 조각",
     playlistCoverUrl: null
   }
 
@@ -82,25 +83,28 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
     {
       musicId: 5,
       musicYoutubeId: "234232",
-      musicTitle: "11:11",
-      musicSingerName: "태연",
+      musicTitle: "소행성",
+      musicSingerName: "레인보우 노트",
       musicCoverUrl: null,
       musicLyrics: "It’s 11:11\n오늘이 한 칸이 채 안 남은 그런 시간\n우리 소원을 빌며 웃던 그 시간\n별 게 다 널 떠오르게 하지\n",
     },
     {
       musicId: 6,
       musicYoutubeId: "16784",
-      musicTitle: "Lovesick Girls",
-      musicSingerName: "BLACKPINK",
+      musicTitle: "밤양갱",
+      musicSingerName: "비비",
       musicCoverUrl: null,
       musicLyrics: "Lovesick girls\nLovesick girls\n영원한 밤\n창문 없는 방에 우릴 가둔 love (love)\nWhat can we say?\n매번 아파도 외치는 love (love)\n"
     }
   ]
 
+  // 플레이리스트 목록 컴포넌트로 교체하는 함수
   const handleModifySelectedPlaylistId = () => {
+    // 선택된 플레이리스트가 없는 상태로 만들어서 플레이리스트 목록 컴포넌트가 보여지도록
     setSelectedPlaylistId(null);
   };
 
+  // 해당 플레이리스트 수정/삭제 모달 띄우는 함수
   const handleEditClick = (playlistId: number) => () => {
     alert(`${playlistId}번 플레이리스트 수정/삭제 모달 띄우기!`);
   };
@@ -118,7 +122,7 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
             alt="플레이리스트 커버 이미지"
           />
           {/* 플레이리스트 수정/삭제 버튼 */}
-          <button className="self-end text-3xl pb-[150px]" onClick={handleEditClick(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+          <button className="self-end text-3xl pb-[155px] pl-[15px]" onClick={handleEditClick(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
         </Top>
         <p className="text-2xl mt-2 mb-3">{playlist.playlistName}</p>
       </Wrapper>
