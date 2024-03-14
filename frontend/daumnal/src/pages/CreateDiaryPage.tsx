@@ -110,9 +110,15 @@ const CreateDiary: React.FC = () => {
           <input type="file" onChange={handleImageChange} className="hidden" id="fileInput" />
           {/* 사용자에게 보이는 버튼 */}
           <div className="relative w-full h-72"> {/* SVG의 크기에 맞추어 조정 */}
+            {imagePreview && <img src={imagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-full max-h-full" />}
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0" style={{ pointerEvents: 'none' }}>
               <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"
-                style={{ fill: "none", stroke: 'rgba(156, 155, 150, 0.7)', strokeWidth: 2, strokeDasharray: "10, 5" }} />
+                style={{ 
+                  fill: "none", 
+                  stroke: imagePreview ? 'rgba(105, 104, 100, 0.5)' : 'rgba(156, 155, 150, 0.7)' , 
+                  strokeWidth: imagePreview ? 1 : 2, 
+                  strokeDasharray: imagePreview ? "none" : "10, 5" // 이미지가 있으면 'none', 없으면 '10, 5'
+                }} />
             </svg>
             <button type='button' onClick={handleClick}
               className="w-full h-full rounded-lg flex flex-col items-center justify-center bg-transparent focus:outline-none">
@@ -122,7 +128,7 @@ const CreateDiary: React.FC = () => {
           </div>
         </div> 
       </form>
-      <button className="mt-10 mb-10 border-2 text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button> {/* 버튼을 폼 밖에 위치시키고, 마진을 주어서 간격을 조정합니다. */}
+      <button className="mt-10 mb-10 border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button> {/* 버튼을 폼 밖에 위치시키고, 마진을 주어서 간격을 조정합니다. */}
     </div>
 
     
@@ -130,7 +136,4 @@ const CreateDiary: React.FC = () => {
 };
 
 export default CreateDiary;
-
-
-
 

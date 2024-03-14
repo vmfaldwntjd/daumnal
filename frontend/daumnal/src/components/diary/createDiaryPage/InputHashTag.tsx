@@ -66,7 +66,7 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
       <div className='flex flex-wrap px-6 mt-4'>
         {tags.map((tag, index) => (
           <div key={index} className='mr-2 mb-2'>
-            <div className='bg-bg_hashtag border border-font_main text-font_main px-2 rounded-full inline-flex items-center'>
+            <div className='bg-bg_hashtag  text-font_main px-2 rounded-full inline-flex items-center'>
               <span>{tag}</span>
               <button type="button" onClick={() => handleDeleteTag(index)} className='ml-2'>x</button>
             </div>            
