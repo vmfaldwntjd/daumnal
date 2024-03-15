@@ -33,19 +33,19 @@ const LoadingPage: React.FC = () => {
         <Image src="/image/dabom.png" />
         <Image src="/image/dareum.png" />
         <Image src="/image/daeul.png" />
-        <Image src="/image/dagyeol.png" />
+        <Image src="/image/daseol.png" />
         <Image src="/image/dabom.png" />
         <Image src="/image/dareum.png" />
         <Image src="/image/daeul.png" />
-        <Image src="/image/dagyeol.png" />
+        <Image src="/image/daseol.png" />
       </Images>
       <Text>오늘 적은 일기에서 감정을 추출하고 있어요!</Text>
       <Images>
-        <Image src="/image/dagyeol.png" />
+        <Image src="/image/daseol.png" />
         <Image src="/image/daeul.png" />
         <Image src="/image/dareum.png" />
         <Image src="/image/dabom.png" />
-        <Image src="/image/dagyeol.png" />
+        <Image src="/image/daseol.png" />
         <Image src="/image/daeul.png" />
         <Image src="/image/dareum.png" />
         <Image src="/image/dabom.png" />

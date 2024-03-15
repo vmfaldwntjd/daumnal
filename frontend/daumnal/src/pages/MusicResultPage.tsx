@@ -70,8 +70,8 @@ const MusicResultPage: React.FC = () => {
         return "/image/dareum.png";
       case "다을":
         return "/image/daeul.png";
-      case "다결":
-        return "/image/dagyeol.png";
+      case "다설":
+        return "/image/daseol.png";
       default:
         return "/image/dabom.png";
     }
