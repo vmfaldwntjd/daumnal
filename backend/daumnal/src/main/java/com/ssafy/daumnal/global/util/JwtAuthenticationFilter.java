@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (!Objects.isNull(authorization)) {
             String accessToken = authorization.substring(7);
             TokenMemberDTO memberData = jwtProvider.getMemberData(accessToken);
-            UserDetails memberDetails = memberDetailsService.loadUserByUsername(memberData.getMemberNickname());
+            UserDetails memberDetails = memberDetailsService.loadUserByUsername(String.valueOf(memberData.getMemberId()));
             Authentication token = new UsernamePasswordAuthenticationToken(memberDetails,
                     "", memberDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(token);

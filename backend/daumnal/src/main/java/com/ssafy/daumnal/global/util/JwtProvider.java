@@ -9,6 +9,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -37,7 +38,9 @@ public class JwtProvider {
     }
 
     // 토큰 생성하기
-    public TokenResponse generateToken(Long memberId, Long socialId, String socialProvider, String memberNickname) {
+    public TokenResponse generateToken(Long memberId, Long socialId, String socialProvider) {
+
+        StringBuilder sb = new StringBuilder();
 
         String accessToken = Jwts.builder()
                 .issuer(ISSUER)
@@ -46,7 +49,6 @@ public class JwtProvider {
                 .expiration(new Date(new Date().getTime() + accessExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
-                .claim(MEMBER_NICK, memberNickname)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
@@ -57,11 +59,15 @@ public class JwtProvider {
                 .expiration(new Date(new Date().getTime() + refreshExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
-                .claim(MEMBER_NICK, memberNickname)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        redisRepository.setValues(memberNickname, refreshToken, Duration.ofMillis(refreshExpiresIn));
+        String refreshId = sb.append(memberId).append("_refresh").toString();
+        sb.setLength(0);
+        String accessId = sb.append(memberId).append("_access").toString();
+
+        redisRepository.setValues(accessId, accessToken, Duration.ofMillis(accessExpiresIn));
+        redisRepository.setValues(refreshId, refreshToken, Duration.ofMillis(refreshExpiresIn));
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -78,10 +84,14 @@ public class JwtProvider {
 
         TokenMemberDTO tokenMemberDTO = TokenMemberDTO.accessToken(Long.parseLong(claims.getSubject()),
                 Long.parseLong(String.valueOf(claims.get(ID_CATEGORY))),
-                String.valueOf(claims.get(PROVIDER_CATEGORY)),
-                String.valueOf(claims.get(MEMBER_NICK))
+                String.valueOf(claims.get(PROVIDER_CATEGORY))
                 );
 
         return tokenMemberDTO;
+    }
+
+    // accessToken 가져오기
+    public String getAccessToken(Authentication authentication) {
+        return authentication.getName();
     }
 }
