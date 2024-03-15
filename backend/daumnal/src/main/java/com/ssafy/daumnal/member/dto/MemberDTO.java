@@ -21,8 +21,16 @@ public class MemberDTO {
     @AllArgsConstructor
     @Builder
     public static class GetMemberLoginResponse {
-        private String memberNickname;
+        private String memberId;
         private String memberAccessToken;
         private Boolean firstLogin;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class GetMemberNicknameResponse {
+        private String memberId;
+        private String memberNickname;
     }
 }
