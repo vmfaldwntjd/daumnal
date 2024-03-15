@@ -89,4 +89,9 @@ public class JwtProvider {
 
         return tokenMemberDTO;
     }
+
+    // accessToken 가져오기
+    public String getAccessToken(Authentication authentication) {
+        return authentication.getName();
+    }
 }
