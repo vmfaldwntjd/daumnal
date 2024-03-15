@@ -82,7 +82,7 @@ public class MemberServiceImpl implements MemberService {
 
         // access token 생성하기
         TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(), member.getSocialId(),
-                member.getSocialProvider().getName(), member.getNickname());
+                member.getSocialProvider().getName());
 
         return GetMemberLoginResponse.builder()
                 .memberNickname(nickname)
@@ -113,29 +113,57 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public GetMemberLoginResponse updateMemberStatusLogin(String socialId, String socialProvider) {
+    public GetMemberLoginResponse login(String socialId, String socialProvider) {
+
 
         memberUtilService.validateExistsSocialId(socialId);
         memberUtilService.validateExistsSocialProvider(socialProvider);
         memberUtilService.validateSocialIdNumber(socialId);
         memberUtilService.validateSocialProvider(socialProvider);
 
-        Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId),
-                        memberUtilService.getProvider(socialProvider))
-                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+        return getGetMemberLoginResponse(socialId, socialProvider);
+    }
 
-        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
-        memberUtilService.validateMemberStatusReLogin(member.getStatus().getValue());
+    private GetMemberLoginResponse getGetMemberLoginResponse(String socialId, String socialProvider) {
 
-        member.updateMemberStatus(MemberStatus.LOGIN);
+        SocialProvider provider = memberUtilService.getProvider(socialProvider);
 
-        // access token 발급해주기
-        TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(),
-                Long.parseLong(socialId), socialProvider, member.getNickname());
+        if (!memberRepository.existsMemberBySocialIdAndSocialProvider(
+                Long.parseLong(socialId),
+                provider)) {
+            Member member = Member.builder()
+                    .socialId(Long.parseLong(socialId))
+                    .socialProvider(provider)
+                    .build();
 
-        return GetMemberLoginResponse.builder()
-                .memberNickname(member.getNickname())
-                .memberAccessToken(tokenResponse.getAccessToken())
-                .build();
+            memberRepository.save(member);
+            TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(),
+                    Long.parseLong(socialId), socialProvider);
+
+            return GetMemberLoginResponse.builder()
+                    .memberNickname(member.getNickname())
+                    .memberAccessToken(tokenResponse.getAccessToken())
+                    .firstLogin(true)
+                    .build();
+
+        } else {
+            Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId),
+                            provider)
+                    .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+
+            memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+            memberUtilService.validateMemberStatusReLogin(member.getStatus().getValue());
+
+            member.updateMemberStatus(MemberStatus.LOGIN);
+
+            TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(),
+                    Long.parseLong(socialId), socialProvider);
+
+            return GetMemberLoginResponse.builder()
+                    .memberNickname(member.getNickname())
+                    .memberAccessToken(tokenResponse.getAccessToken())
+                    .firstLogin(false)
+                    .build();
+        }
     }
 }

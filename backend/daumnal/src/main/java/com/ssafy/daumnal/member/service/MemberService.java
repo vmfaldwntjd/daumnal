@@ -12,5 +12,5 @@ public interface MemberService {
 
     GetMemberResponse getMemberBySocialIdAndSocialProvider(String socialId, String socialProvider);
 
-    GetMemberLoginResponse updateMemberStatusLogin(String socialId, String socialProvider);
+    GetMemberLoginResponse login(String socialId, String socialProvider);
 }
