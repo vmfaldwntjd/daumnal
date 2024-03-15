@@ -1,6 +1,7 @@
 package com.ssafy.daumnal.global.util;
 
 import com.ssafy.daumnal.global.dto.TokenMemberDTO;
+//import com.ssafy.daumnal.global.dto.TokenRegenerateResponse;
 import com.ssafy.daumnal.global.dto.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -71,6 +72,7 @@ public class JwtProvider {
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -94,4 +96,28 @@ public class JwtProvider {
     public String getAccessToken(Authentication authentication) {
         return authentication.getName();
     }
+
+//    // accessToken 재발급하기
+//    public TokenRegenerateResponse reGenerateAccessToken(Long memberId, Long socialId, String socialProvider) {
+//
+//        StringBuilder sb = new StringBuilder();
+//
+//        String accessToken = Jwts.builder()
+//                .issuer(ISSUER)
+//                .subject(String.valueOf(memberId))
+//                .issuedAt(new Date())
+//                .expiration(new Date(new Date().getTime() + accessExpiresIn))
+//                .claim(ID_CATEGORY, socialId)
+//                .claim(PROVIDER_CATEGORY, socialProvider)
+//                .signWith(key, SignatureAlgorithm.HS512)
+//                .compact();
+//
+//        String accessId = sb.append(memberId).append("_access").toString();
+//
+//        redisRepository.setValues(accessId, accessToken, Duration.ofMillis(accessExpiresIn));
+//
+//        return TokenRegenerateResponse.builder()
+//                .accessToken(accessToken)
+//                .build();
+//    }
 }

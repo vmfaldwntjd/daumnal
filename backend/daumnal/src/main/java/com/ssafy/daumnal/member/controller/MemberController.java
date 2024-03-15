@@ -19,6 +19,7 @@ public class MemberController {
 
     /**
      * 로그인 API
+     *
      * @param loginMemberRequest
      * @return
      */
@@ -33,14 +34,24 @@ public class MemberController {
     /**
      * 닉네임 입력 API
      * 첫 로그인 진행 후의 단계입니다.
+     *
      * @param nicknameRequest
      * @return
      */
     @PostMapping("/nickname")
     public ApiResponse<?> addMemberNickname(Authentication authentication,
-            @RequestBody AddMemberNicknameRequest nicknameRequest) {
+                                            @RequestBody AddMemberNicknameRequest nicknameRequest) {
         String memberId = jwtProvider.getAccessToken(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.addMemberNickname(memberId, nicknameRequest.getMemberNickname());
-        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME,memberNicknameResponse);
+        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
+
+//    @GetMapping("/reissue")
+//    public ApiResponse<?> getMemberAccessReIssueToken(Authentication authentication) {
+//        // memberId
+//        String memberId = jwtProvider.getAccessToken(authentication);
+//
+//        memberService.getMemberAccessReIssueToken(memberId);
+//        return null;
+//    }
 }
