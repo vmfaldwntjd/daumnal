@@ -23,6 +23,7 @@ public class MemberDTO {
     public static class GetMemberLoginResponse {
         private String memberId;
         private String memberAccessToken;
+        private String memberRefreshToken;
         private Boolean firstLogin;
     }
 
@@ -33,4 +34,11 @@ public class MemberDTO {
         private String memberId;
         private String memberNickname;
     }
+
+//    @Getter
+//    @AllArgsConstructor
+//    @Builder
+//    public static class GetMemberAccessToken {
+//        private String accessToken;
+//    }
 }
