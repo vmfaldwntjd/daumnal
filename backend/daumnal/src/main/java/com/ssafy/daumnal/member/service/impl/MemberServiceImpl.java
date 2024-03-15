@@ -87,6 +87,7 @@ public class MemberServiceImpl implements MemberService {
             return GetMemberLoginResponse.builder()
                     .memberId(String.valueOf(member.getId()))
                     .memberAccessToken(tokenResponse.getAccessToken())
+                    .memberRefreshToken(tokenResponse.getRefreshToken())
                     .firstLogin(true)
                     .build();
 
@@ -106,6 +107,7 @@ public class MemberServiceImpl implements MemberService {
             return GetMemberLoginResponse.builder()
                     .memberId(String.valueOf(member.getId()))
                     .memberAccessToken(tokenResponse.getAccessToken())
+                    .memberRefreshToken(tokenResponse.getRefreshToken())
                     .firstLogin(false)
                     .build();
         }
