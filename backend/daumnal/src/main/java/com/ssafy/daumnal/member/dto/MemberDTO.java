@@ -23,6 +23,7 @@ public class MemberDTO {
     public static class GetMemberLoginResponse {
         private String memberId;
         private String memberAccessToken;
+        private String memberRefreshToken;
         private Boolean firstLogin;
     }
 
