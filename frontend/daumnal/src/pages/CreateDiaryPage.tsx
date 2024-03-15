@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { faImage } from "@fortawesome/free-regular-svg-icons";
+import { faImage, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
 import QuillEditor from '../components/diary/createDiaryPage/QuillEditor';
 
@@ -77,25 +77,34 @@ const CreateDiary: React.FC = () => {
       fileInput.click();
     }
   };
+
+  const handleRemoveImage = () => {
+    setImage(null)
+    setImagePreview('')
+
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
   
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen py-16">
-      <div className='w-full'>
+      <div className='w-full flex items-center justify-between px-16'>
         {/* 오늘 날짜 */}
-          <label className="flex items-center gap-4 justify-center">
-            <p className="bg-bg_main text-3xl text-center">{date}</p>
-            <FontAwesomeIcon icon={faVolumeHigh} />
-            <button className="mt-10 border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>
-          </label>         
+        <div className='w-[85px]'></div>
+        <label className="flex items-center gap-4 justify-center">
+          <p className="bg-bg_main text-3xl text-center">{date}</p>
+          <FontAwesomeIcon icon={faVolumeHigh} />                   
+        </label>
+        <div>
+          <button className="border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>   
+        </div>
+                  
       </div>
       <div className="flex w-full h-full justify-between pt-16"> 
         <div className="w-1/2 flex flex-col items-center px-16"> {/* 왼쪽 구역 */}          
-          {/* 오늘의 일기 */}
-          {/* <div className="flex items-center gap-4 justify-center mt-6">
-            <p className='text-3xl'>오늘의 일기</p>
-            <FontAwesomeIcon icon={faVolumeHigh} />
-          </div> */}
           {/* 제목 입력 */}
           <div className="w-full flex items-center justify-center border-b-2 border-font_main">
             <FontAwesomeIcon icon={faPenToSquare} className='text-2xl' />
@@ -106,24 +115,38 @@ const CreateDiary: React.FC = () => {
             <InputHashTag onTagsChange={handleTagsChange}/>
           </div>
           {/* 이미지 첨부 */}
-          <div className="w-full h-full flex items-center justify-center mt-10 ">
+          <div className="w-full h-full max-h-[316px] flex items-center justify-center mt-10 ">
             <input type="file" onChange={handleImageChange} className="hidden" id="fileInput" />
-            <div className="relative w-full h-full ">
-              {imagePreview && <img src={imagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-full max-h-full" />}
+            <div className="relative w-full h-full">
+              {imagePreview && (
+                <>
+                  <img src={imagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-full max-h-full" />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage} // 이미지를 삭제하는 함수를 호출
+                    className="absolute right-0 top-0 transform -translate-y-1/2 translate-x-1/2 cursor-pointer"
+                    style={{ outline: 'none', background: 'transparent' }}
+                  >
+                  <img src="./image/image_delete.png" alt="" className='w-10'/>
+                  </button>
+                </>
+              )}
               <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0" style={{ pointerEvents: 'none' }}>
                 <rect x="1" y="1" width="98%" height="98%" rx="8" ry="8"
                   style={{ 
                     fill: "none", 
-                    stroke: imagePreview ? 'none' : 'rgba(156, 155, 150, 0.7)' , 
+                    stroke: imagePreview ? 'none' : 'rgba(156, 155, 150, 0.7)', 
                     strokeWidth: imagePreview ? 1 : 2, 
                     strokeDasharray: imagePreview ? "none" : "10, 5"
                   }} />
               </svg>
-              <button type='button' onClick={handleClick}
-                className="w-full h-full rounded-lg flex flex-col items-center justify-center bg-transparent focus:outline-none">
-                  <FontAwesomeIcon icon={faImage} style={{color: "rgba(105, 104, 100, 0.5)", fontSize: "60px"}} />
+              {!image && (
+                <button type='button' onClick={handleClick}
+                  className="w-full h-full rounded-lg flex flex-col items-center justify-center bg-transparent focus:outline-none">
+                  <FontAwesomeIcon icon={faImage} style={{ color: "rgba(105, 104, 100, 0.5)", fontSize: "60px" }} />
                   <p className='mt-8 px-2'>오늘의 일기를 대표할 이미지를 첨부해 보세요</p>            
-              </button>
+                </button>
+              )}
             </div>
           </div> 
         </div>
