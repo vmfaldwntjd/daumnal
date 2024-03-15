@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import CalendarPage from "./pages/CalendarPage"; 
 import CreateDiaryPage from "./pages/CreateDiaryPage";
+import MonthlyResultPage from "./pages/MonthlyResultPage"
 import SelectCharacterPage from "./pages/SelectCharacterPage";
 import LoadingPage from "./pages/LoadingPage";
 import MusicResultPage from "./pages/MusicResultPage";
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/oauth" element={<KakaoRedirectHandler />} />
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/calendarpage" element={<CalendarPage />} />
+        <Route path="/calendarpage" element={<MonthlyResultPage />} />
         <Route path="/creatediarypage" element={<CreateDiaryPage />} />
         <Route path="/selectcharacterpage" element={<SelectCharacterPage />} />
         <Route path="/loadingpage" element={<LoadingPage />} />

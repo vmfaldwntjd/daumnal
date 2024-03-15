@@ -1,9 +1,10 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { faImage, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
 import QuillEditor from '../components/diary/createDiaryPage/QuillEditor';
+import UploadImage from '../components/diary/createDiaryPage/UploadImage';
+import axios from 'axios';
 
 
 const CreateDiary: React.FC = () => {
@@ -19,8 +20,24 @@ const CreateDiary: React.FC = () => {
   const [title, setTitle] = useState<string>('')
   const [hashTag, setHashTag] = useState<string>('')
   const [content, setContent] = useState<string>('')
+  const [removeTagsContent, setRemoveTagsContent] = useState<string>('')
   const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('')
+
+  type EmotionState = {
+    fear: number,
+    surprise: number,
+    angry: number,
+    sadness: number,
+    neutral: number,
+    happiness: number,
+    disgust: number,
+  };
+
+  const [emotion, setEmotion] = useState<EmotionState | null>(null)
+
+  useEffect(() => {
+    // console.log('emotion', emotion); 
+  }, [emotion]);
 
 
   // 일기 제목 변경 이벤트 핸들러
@@ -36,62 +53,63 @@ const CreateDiary: React.FC = () => {
   // 해시태그 변경 이벤트 핸들러
   const handleTagsChange = (newTags: string[]) => {
     setHashTag(newTags.join(' '));
-    console.log('hashTag:', hashTag)
+    // console.log('hashTag:', hashTag)
   }
 
   // 일기 내용 변경 이벤트 핸들러
   const handleContentChange = (newContent: string) => {
     setContent(newContent);
-    // console.log('content:', content)
+    // console.log('content', content)
   };
+
 
   // 입력된 일기에서 태그 삭제 함수
   const removeHTMLTags = (str: string) => {
-    return str.replace(/<[^>]*>?/gm, '');
+    const newStr = str.replace(/<[^>]*>?/gm, '');
+    setRemoveTagsContent(newStr)
+    // console.log('removeTagsContent', removeTagsContent)
+    return 
   };
 
-  const removeTagsContent: string = removeHTMLTags(content);
+  // content 상태가 변경될 때마다 setRemoveTagsContent 업데이트
+  useEffect(() => {
+    removeHTMLTags(content);
+  }, [content]);
 
-  // 이미지 첨부 변경 이벤트 처리
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 
-    if (e.target.files && e.target.files.length > 0) {
-      const uploadFile:File = e.target.files[0]
-      setImage(uploadFile);      
-      console.log('uploadImage', e.target.files[0] )
-      const reader = new FileReader();
-      reader.readAsDataURL(uploadFile);
-      reader.onloadend = () => {
-        const dataUrl = reader.result as string;
-        setImagePreview(dataUrl);
-        
-      };
-      console.log('imageUrl', imagePreview )     
+  // 이미지 변경 이벤트 핸들러
+  const handleImageChange = (selectedImage: File | null) => {
+    setImage(selectedImage);
+ };
+
+ // 일기등록 버튼을 누르면 실행되는 함수
+ const createDiary = () => {
+  axios.post('http://j10a107.p.ssafy.io:8000/diaries', {
+    'diaryContent': removeTagsContent
+  })
+  .then(function (response) {
+    if (response.data.code == 200) {
+      console.log(1)
+      // console.log(response.data.data.diaryEmotion)
+      setEmotion(response.data.data.diaryEmotion)
+      // console.log('emotion', emotion)
+
     }
+    // 여기에 성공 시 수행할 작업을 추가할 수 있습니다. 예를 들어, 사용자에게 알림을 보내거나 화면을 갱신할 수 있습니다.
+  })
+  .catch(function (error) {
+    console.log(error);
+    // 여기에 실패 시 수행할 작업을 추가할 수 있습니다. 예를 들어, 오류 메시지를 사용자에게 보여주는 것입니다.
+  });
 
-  };
+ }
 
-  const handleClick = () => {
-    const fileInput = document.getElementById('fileInput');
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setImage(null)
-    setImagePreview('')
-
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = '';
-    }
-  }
+  
   
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen py-16">
-      <div className='w-full flex items-center justify-between px-16'>
+      <div className='w-full flex items-center justify-between px-16'> {/* 위쪽 구역 */}
         {/* 오늘 날짜 */}
         <div className='w-[85px]'></div>
         <label className="flex items-center gap-4 justify-center">
@@ -99,7 +117,7 @@ const CreateDiary: React.FC = () => {
           <FontAwesomeIcon icon={faVolumeHigh} />                   
         </label>
         <div>
-          <button className="border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>   
+          <button onClick={createDiary} className="border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>   
         </div>
                   
       </div>
@@ -116,42 +134,11 @@ const CreateDiary: React.FC = () => {
           </div>
           {/* 이미지 첨부 */}
           <div className="w-full h-full max-h-[316px] flex items-center justify-center mt-10 ">
-            <input type="file" onChange={handleImageChange} className="hidden" id="fileInput" />
-            <div className="relative w-full h-full">
-              {imagePreview && (
-                <>
-                  <img src={imagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-full max-h-full" />
-                  <button
-                    type="button"
-                    onClick={handleRemoveImage} // 이미지를 삭제하는 함수를 호출
-                    className="absolute right-0 top-0 transform -translate-y-1/2 translate-x-1/2 cursor-pointer"
-                    style={{ outline: 'none', background: 'transparent' }}
-                  >
-                  <img src="./image/image_delete.png" alt="" className='w-10'/>
-                  </button>
-                </>
-              )}
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0" style={{ pointerEvents: 'none' }}>
-                <rect x="1" y="1" width="98%" height="98%" rx="8" ry="8"
-                  style={{ 
-                    fill: "none", 
-                    stroke: imagePreview ? 'none' : 'rgba(156, 155, 150, 0.7)', 
-                    strokeWidth: imagePreview ? 1 : 2, 
-                    strokeDasharray: imagePreview ? "none" : "10, 5"
-                  }} />
-              </svg>
-              {!image && (
-                <button type='button' onClick={handleClick}
-                  className="w-full h-full rounded-lg flex flex-col items-center justify-center bg-transparent focus:outline-none">
-                  <FontAwesomeIcon icon={faImage} style={{ color: "rgba(105, 104, 100, 0.5)", fontSize: "60px" }} />
-                  <p className='mt-8 px-2'>오늘의 일기를 대표할 이미지를 첨부해 보세요</p>            
-                </button>
-              )}
-            </div>
+            <UploadImage onImageChange={handleImageChange}/>   
           </div> 
         </div>
 
-        <div className="w-px bg-gray-400 h-full pt-20 pb-10"></div> 
+        <div className="w-px bg-gray-400 h-full pt-20 pb-10"></div> {/* 구분 선 */}
 
         <div className="w-1/2 flex flex-col items-center px-16"> {/* 오른쪽 구역 */}
           {/* 일기 내용 작성 */}
