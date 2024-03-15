@@ -39,5 +39,6 @@ public class MemberDTO {
     public static class GetMemberLoginResponse {
         private String memberNickname;
         private String memberAccessToken;
+        private Boolean firstLogin;
     }
 }
