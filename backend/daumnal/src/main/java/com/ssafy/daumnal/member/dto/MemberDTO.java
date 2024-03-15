@@ -34,4 +34,11 @@ public class MemberDTO {
         private String memberId;
         private String memberNickname;
     }
+
+//    @Getter
+//    @AllArgsConstructor
+//    @Builder
+//    public static class GetMemberAccessToken {
+//        private String accessToken;
+//    }
 }
