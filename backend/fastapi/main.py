@@ -5,6 +5,8 @@ from pydantic import BaseModel
 
 import emotion_classifier
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 class Item(BaseModel):
     diaryContent: str
@@ -21,6 +23,16 @@ class Emotion(BaseModel):
 
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post("/diaries")
