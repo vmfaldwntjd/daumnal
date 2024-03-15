@@ -2,9 +2,11 @@ package com.ssafy.daumnal.member.controller;
 
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
+import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.member.dto.MemberDTO.*;
 import com.ssafy.daumnal.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final JwtProvider jwtProvider;
 
     /**
      * 로그인 API
@@ -34,8 +37,10 @@ public class MemberController {
      * @return
      */
     @PostMapping("/nickname")
-    public ApiResponse<?> addMemberNickname(@RequestBody AddMemberNicknameRequest nicknameRequest) {
-        GetMemberLoginResponse memberLoginResponse = memberService.addMemberNickname(nicknameRequest.getMemberNickname());
-        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME,memberLoginResponse);
+    public ApiResponse<?> addMemberNickname(Authentication authentication,
+            @RequestBody AddMemberNicknameRequest nicknameRequest) {
+        String memberId = jwtProvider.getAccessToken(authentication);
+        GetMemberNicknameResponse memberNicknameResponse = memberService.addMemberNickname(memberId, nicknameRequest.getMemberNickname());
+        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME,memberNicknameResponse);
     }
 }

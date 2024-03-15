@@ -1,9 +1,9 @@
 package com.ssafy.daumnal.member.service;
 
-import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
+import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberNicknameResponse;
 
 public interface MemberService {
-    GetMemberLoginResponse addMemberNickname(String memberId, AddMemberNicknameRequest nicknameRequest);
+    GetMemberNicknameResponse addMemberNickname(String memberId, String nickname);
     GetMemberLoginResponse login(String socialId, String socialProvider);
 }

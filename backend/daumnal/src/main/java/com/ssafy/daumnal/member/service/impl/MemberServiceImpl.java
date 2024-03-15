@@ -4,8 +4,8 @@ import com.ssafy.daumnal.global.dto.TokenResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.util.JwtProvider;
-import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
+import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberNicknameResponse;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.entity.MemberStatus;
 import com.ssafy.daumnal.member.entity.SocialProvider;
@@ -26,39 +26,6 @@ public class MemberServiceImpl implements MemberService {
     private final JwtProvider jwtProvider;
     private final MemberUtilService memberUtilService;
 
-    @Transactional
-    @Override
-    public GetMemberLoginResponse addMemberNickname(String memberId,
-                                                    AddMemberNicknameRequest nicknameRequest) {
-        memberUtilService.validateMemberIdNumber(memberId);
-
-        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
-        Member member = memberRepository.findById(Long.parseLong(memberId))
-                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
-
-        int memberStatus = member.getStatus().getValue();
-        memberUtilService.validateMemberStatusNotDelete(memberStatus);
-        memberUtilService.validateMemberStatusNotLogout(memberStatus);
-
-        String nickname = nicknameRequest.getMemberNickname();
-        memberUtilService.validateInputMemberNickname(nickname);
-
-        // 이미 존재한 닉네임을 입력하는 경우
-        if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
-            throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
-        }
-
-        member.updateNickname(nickname);
-
-        // access token 생성하기
-        TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(), member.getSocialId(),
-                member.getSocialProvider().getName());
-
-        return GetMemberLoginResponse.builder()
-                .memberNickname(nickname)
-                .memberAccessToken(tokenResponse.getAccessToken())
-                .build();
-    }
 
     @Transactional
     @Override
@@ -71,6 +38,34 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateSocialProvider(socialProvider);
 
         return getGetMemberLoginResponse(socialId, socialProvider);
+    }
+
+    @Transactional
+    @Override
+    public GetMemberNicknameResponse addMemberNickname(String memberId, String nickname) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int memberStatus = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(memberStatus);
+        memberUtilService.validateMemberStatusNotLogout(memberStatus);
+
+        memberUtilService.validateInputMemberNickname(nickname);
+
+        // 이미 존재한 닉네임을 입력하는 경우
+        if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
+            throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
+        }
+
+        member.updateNickname(nickname);
+
+        return GetMemberNicknameResponse.builder()
+                .memberId(memberId)
+                .memberNickname(nickname)
+                .build();
     }
 
     private GetMemberLoginResponse getGetMemberLoginResponse(String socialId, String socialProvider) {
@@ -90,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
                     Long.parseLong(socialId), socialProvider);
 
             return GetMemberLoginResponse.builder()
-                    .memberNickname(member.getNickname())
+                    .memberId(String.valueOf(member.getId()))
                     .memberAccessToken(tokenResponse.getAccessToken())
                     .firstLogin(true)
                     .build();
@@ -109,7 +104,7 @@ public class MemberServiceImpl implements MemberService {
                     Long.parseLong(socialId), socialProvider);
 
             return GetMemberLoginResponse.builder()
-                    .memberNickname(member.getNickname())
+                    .memberId(String.valueOf(member.getId()))
                     .memberAccessToken(tokenResponse.getAccessToken())
                     .firstLogin(false)
                     .build();
