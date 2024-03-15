@@ -29,7 +29,7 @@ public class MemberController {
 
     /**
      * 닉네임 입력 API
-     * 회원가입 진행 후의 단계입니다.
+     * 첫 로그인 진행 후의 단계입니다.
      * @param memberId
      * @param nicknameRequest
      * @return
