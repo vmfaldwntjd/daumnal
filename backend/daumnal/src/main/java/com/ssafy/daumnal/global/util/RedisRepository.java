@@ -15,7 +15,7 @@ public class RedisRepository {
 
     public void setValues(String key, String data, Duration duration) {
         ValueOperations<String, String> valueOpers = redisTemplate.opsForValue();
-        valueOpers.set(key, data);
+        valueOpers.set(key, data, duration);
     }
 
     public String getValues(String key) {
