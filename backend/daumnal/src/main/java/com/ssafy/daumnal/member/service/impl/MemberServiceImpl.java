@@ -5,9 +5,7 @@ import com.ssafy.daumnal.global.exception.ExistException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberNicknameRequest;
-import com.ssafy.daumnal.member.dto.MemberDTO.AddMemberRequest;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
-import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberResponse;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.entity.MemberStatus;
 import com.ssafy.daumnal.member.entity.SocialProvider;
@@ -27,34 +25,6 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
     private final MemberUtilService memberUtilService;
-
-    @Transactional
-    @Override
-    public void addMember(AddMemberRequest addMemberRequest) {
-
-        String socialId = addMemberRequest.getSocialId();
-        String socialProvider = addMemberRequest.getSocialProvider();
-
-        memberUtilService.validateExistsSocialId(socialId);
-        memberUtilService.validateSocialIdNumber(socialId);
-        memberUtilService.validateExistsSocialProvider(socialProvider);
-        memberUtilService.validateSocialProvider(socialProvider);
-
-        SocialProvider provider = memberUtilService.getProvider(socialProvider);
-
-        if (memberRepository.existsMemberBySocialIdAndSocialProvider(
-                Long.parseLong(socialId),
-                provider)) {
-            throw new ExistException(EXISTS_MEMBER);
-        }
-
-        Member member = Member.builder()
-                .socialId(Long.parseLong(socialId))
-                .socialProvider(provider)
-                .build();
-
-        memberRepository.save(member);
-    }
 
     @Transactional
     @Override
@@ -87,27 +57,6 @@ public class MemberServiceImpl implements MemberService {
         return GetMemberLoginResponse.builder()
                 .memberNickname(nickname)
                 .memberAccessToken(tokenResponse.getAccessToken())
-                .build();
-    }
-
-    @Override
-    public GetMemberResponse getMemberBySocialIdAndSocialProvider(String socialId,
-                                                                  String socialProvider) {
-
-        memberUtilService.validateExistsSocialId(socialId);
-        memberUtilService.validateExistsSocialProvider(socialProvider);
-        memberUtilService.validateSocialIdNumber(socialId);
-        memberUtilService.validateSocialProvider(socialProvider);
-
-        Member member = memberRepository.findMemberBySocialIdAndSocialProvider(Long.parseLong(socialId),
-                        memberUtilService.getProvider(socialProvider))
-                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
-
-        return GetMemberResponse.builder()
-                .memberId(member.getId())
-                .socialId(member.getSocialId())
-                .socialProvider(member.getSocialProvider().getName())
-                .memberNickname(member.getNickname())
                 .build();
     }
 
