@@ -7,12 +7,6 @@ import lombok.Getter;
 public class MemberDTO {
 
     @Getter
-    public static class AddMemberRequest {
-        private String socialId;
-        private String socialProvider;
-    }
-
-    @Getter
     public static class AddMemberNicknameRequest {
         private String memberNickname;
     }
@@ -26,18 +20,17 @@ public class MemberDTO {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class GetMemberResponse {
-        private Long memberId;
-        private Long socialId;
-        private String socialProvider;
-        private String memberNickname;
+    public static class GetMemberLoginResponse {
+        private String memberId;
+        private String memberAccessToken;
+        private Boolean firstLogin;
     }
 
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class GetMemberLoginResponse {
+    public static class GetMemberNicknameResponse {
+        private String memberId;
         private String memberNickname;
-        private String memberAccessToken;
     }
 }
