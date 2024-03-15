@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static com.ssafy.daumnal.global.constants.ErrorCode.NOT_EXISTS_MEMBER_NICKNAME_GET;
+import static com.ssafy.daumnal.global.constants.ErrorCode.NOT_EXISTS_ID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +18,10 @@ public class MemberDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String memberNickname)
+    public UserDetails loadUserByUsername(String memberId)
             throws UsernameNotFoundException {
-        Member member = memberRepository.findMemberByNickname(memberNickname)
-                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_NICKNAME_GET));
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_ID));
 
         return new MemberDetails(member);
     }
