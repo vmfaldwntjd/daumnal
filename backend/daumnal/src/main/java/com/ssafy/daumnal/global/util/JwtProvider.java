@@ -37,7 +37,7 @@ public class JwtProvider {
     }
 
     // 토큰 생성하기
-    public TokenResponse generateToken(Long memberId, Long socialId, String socialProvider, String memberNickname) {
+    public TokenResponse generateToken(Long memberId, Long socialId, String socialProvider) {
 
         String accessToken = Jwts.builder()
                 .issuer(ISSUER)
@@ -46,7 +46,6 @@ public class JwtProvider {
                 .expiration(new Date(new Date().getTime() + accessExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
-                .claim(MEMBER_NICK, memberNickname)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
@@ -57,11 +56,10 @@ public class JwtProvider {
                 .expiration(new Date(new Date().getTime() + refreshExpiresIn))
                 .claim(ID_CATEGORY, socialId)
                 .claim(PROVIDER_CATEGORY, socialProvider)
-                .claim(MEMBER_NICK, memberNickname)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        redisRepository.setValues(memberNickname, refreshToken, Duration.ofMillis(refreshExpiresIn));
+        redisRepository.setValues(String.valueOf(memberId), refreshToken, Duration.ofMillis(refreshExpiresIn));
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
