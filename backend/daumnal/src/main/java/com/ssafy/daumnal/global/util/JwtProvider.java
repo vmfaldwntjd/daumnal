@@ -9,6 +9,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -39,6 +40,8 @@ public class JwtProvider {
     // 토큰 생성하기
     public TokenResponse generateToken(Long memberId, Long socialId, String socialProvider) {
 
+        StringBuilder sb = new StringBuilder();
+
         String accessToken = Jwts.builder()
                 .issuer(ISSUER)
                 .subject(String.valueOf(memberId))
@@ -59,7 +62,12 @@ public class JwtProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        redisRepository.setValues(String.valueOf(memberId), refreshToken, Duration.ofMillis(refreshExpiresIn));
+        String refreshId = sb.append(memberId).append("_refresh").toString();
+        sb.setLength(0);
+        String accessId = sb.append(memberId).append("_access").toString();
+
+        redisRepository.setValues(accessId, accessToken, Duration.ofMillis(accessExpiresIn));
+        redisRepository.setValues(refreshId, refreshToken, Duration.ofMillis(refreshExpiresIn));
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
@@ -76,8 +84,7 @@ public class JwtProvider {
 
         TokenMemberDTO tokenMemberDTO = TokenMemberDTO.accessToken(Long.parseLong(claims.getSubject()),
                 Long.parseLong(String.valueOf(claims.get(ID_CATEGORY))),
-                String.valueOf(claims.get(PROVIDER_CATEGORY)),
-                String.valueOf(claims.get(MEMBER_NICK))
+                String.valueOf(claims.get(PROVIDER_CATEGORY))
                 );
 
         return tokenMemberDTO;
