@@ -45,16 +45,16 @@ const Button = styled.button`
   font-size: large;
 `;
 
-interface MusicResultPageProps {
-  selectedCharacter: string;
-}
+// interface MusicResultPageProps {
+//   selectedCharacter: string;
+// }
 
 const MusicResultPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   // 캐릭터 선택 페이지에서 선택된 캐릭터 정보 가져오기
-  const { selectedCharacter } = location.state as MusicResultPageProps;
+  const { selectedCharacter } = location.state;
 
   // 결과 확인 후 확인 버튼 클릭시 캘린더 페이지로 이동시키는 함수
   const handleResultClick = () => {
