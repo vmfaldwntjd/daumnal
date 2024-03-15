@@ -30,14 +30,12 @@ public class MemberController {
     /**
      * 닉네임 입력 API
      * 첫 로그인 진행 후의 단계입니다.
-     * @param memberId
      * @param nicknameRequest
      * @return
      */
-    @PostMapping("/{memberId}/nickname")
-    public ApiResponse<?> addMemberNickname(@PathVariable String memberId,
-                                            @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        GetMemberLoginResponse memberLoginResponse = memberService.addMemberNickname(memberId, nicknameRequest);
+    @PostMapping("/nickname")
+    public ApiResponse<?> addMemberNickname(@RequestBody AddMemberNicknameRequest nicknameRequest) {
+        GetMemberLoginResponse memberLoginResponse = memberService.addMemberNickname(nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME,memberLoginResponse);
     }
 }
