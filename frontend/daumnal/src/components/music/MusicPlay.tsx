@@ -133,21 +133,22 @@ interface BarProps {
 
 const Bar = styled.input<BarProps>`
   width: 100%;
-  height: 4px;
+  height: 5px;
   cursor: pointer;
   -webkit-appearance: none;
+  border-radius: 50px;
   background: 
     linear-gradient(
       to right,
       #776B5D ${(props) => props.progress * 100}%,
-      rgba(119, 107, 93, 0.2) ${(props) => props.progress * 70}%);
+      rgba(119, 107, 93, 0.3) ${(props) => props.progress * 70}%);
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: #776B5D;
-    width: 10px;
-    height: 10px;
-    border-radius: 6px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50px;
     cursor: pointer;
   };
 `;
