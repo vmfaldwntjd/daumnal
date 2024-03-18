@@ -36,7 +36,7 @@ public class SecurityConfig {
                     config.setAllowedHeaders(Collections.singletonList("*"));
                     config.setExposedHeaders(Arrays.asList("Authorization"));
                     config.setMaxAge(3600L);
-                    return null;
+                    return config;
                 }))
                 .httpBasic(HttpBasicConfigurer::disable)
                 .csrf(CsrfConfigurer::disable)
