@@ -65,6 +65,8 @@ const Playlists = styled.div`
   flex-wrap: wrap;
   gap: 50px;
   padding: 53px;
+  border-top-left-radius: 10px;
+  /* border-top-right-radius: 10px; */
 `;
 
 const Button = styled.button`
