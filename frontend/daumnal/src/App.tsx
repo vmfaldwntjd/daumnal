@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/oauth" element={<KakaoRedirectHandler />} />
         <Route path="/mainpage" element={<MainPage />} />
         <Route path="/calendarpage" element={<CalendarPage />} />
-        <Route path="/calendarpage" element={<MonthlyResultPage />} />
+        <Route path="/monthlyresultpage" element={<MonthlyResultPage />} />
         <Route path="/creatediarypage" element={<CreateDiaryPage />} />
         <Route path="/selectcharacterpage" element={<SelectCharacterPage />} />
         <Route path="/loadingpage" element={<LoadingPage />} />
