@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
@@ -8,6 +9,8 @@ import axios from 'axios';
 
 
 const CreateDiary: React.FC = () => {
+
+  const navigate = useNavigate()
 
   // 오늘의 날짜
   const today:Date = new Date();
@@ -22,22 +25,6 @@ const CreateDiary: React.FC = () => {
   const [content, setContent] = useState<string>('')
   const [removeTagsContent, setRemoveTagsContent] = useState<string>('')
   const [image, setImage] = useState<File | null>(null);
-
-  type EmotionState = {
-    fear: number,
-    surprise: number,
-    angry: number,
-    sadness: number,
-    neutral: number,
-    happiness: number,
-    disgust: number,
-  };
-
-  const [emotion, setEmotion] = useState<EmotionState | null>(null)
-
-  useEffect(() => {
-    // console.log('emotion', emotion); 
-  }, [emotion]);
 
 
   // 일기 제목 변경 이벤트 핸들러
@@ -83,29 +70,22 @@ const CreateDiary: React.FC = () => {
  };
 
  // 일기등록 버튼을 누르면 실행되는 함수
- const createDiary = () => {
-  axios.post(`${process.env.REACT_APP_FASTAPI_BASE_URL}/diaries`, {
-    'diaryContent': removeTagsContent
-  })
-  .then(function (response) {
-    if (response.data.code == 200) {
-      console.log(1)
-      // console.log(response.data.data.diaryEmotion)
-      setEmotion(response.data.data.diaryEmotion)
-      // console.log('emotion', emotion)
+ const goToLoadingPage = () => {
+  // removeTagsContent의 길이가 20자 이상인지 확인
+  if (title && removeTagsContent && removeTagsContent.length >= 20) {
+    // 조건에 맞으면 /loadingPage로 이동하고, state로 데이터 전달
+    navigate('/loadingPage', { state: { title, hashTag, content, removeTagsContent, image } });
+  }
 
-    }
-    // 여기에 성공 시 수행할 작업을 추가할 수 있습니다. 예를 들어, 사용자에게 알림을 보내거나 화면을 갱신할 수 있습니다.
-  })
-  .catch(function (error) {
-    console.log(error);
-    // 여기에 실패 시 수행할 작업을 추가할 수 있습니다. 예를 들어, 오류 메시지를 사용자에게 보여주는 것입니다.
-  });
+  else if (!title) {
+    alert('제목을 입력해주세요')
+  }
 
- }
+  else if (removeTagsContent.length < 20) {
+    alert('일기 내용을 20자 이상 입력해주세요')
+  }
+};
 
-  
-  
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen py-16">
@@ -117,7 +97,7 @@ const CreateDiary: React.FC = () => {
           <FontAwesomeIcon icon={faVolumeHigh} />                   
         </label>
         <div>
-          <button onClick={createDiary} className="border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>   
+          <button onClick={goToLoadingPage} className="border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>   
         </div>
                   
       </div>
@@ -153,4 +133,3 @@ const CreateDiary: React.FC = () => {
 };
 
 export default CreateDiary;
-

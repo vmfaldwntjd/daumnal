@@ -73,11 +73,10 @@ const CalendarComponent: React.FC = () => {
       return null; // 혹은 필요에 따라 다른 값을 반환할 수 있음
     }
 
-    console.log('day',day)
     const contentForDay = diaryList.find(diary => diary.diaryDay === day);
 
     if (contentForDay) {
-      console.log('cd', contentForDay)
+
       // diaryHashTag를 공백으로 분리하고, 각 단어 앞에 #을 붙여서 반환
       const hashtags = contentForDay.diaryHashTag.split(' ').map(tag => `# ${tag}`);
       const emotion = contentForDay.emotionFirst
@@ -96,7 +95,7 @@ const CalendarComponent: React.FC = () => {
       <div>
          <div className="date-display">{day}</div>
       </div>
-    ); // 일치하는 항목이 없으면 아무것도 표시하지 않음
+    ); 
   };
 
 
