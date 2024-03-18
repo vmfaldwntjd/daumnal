@@ -95,22 +95,22 @@ const MusicPlay: React.FC = () => {
         <div className='w-full flex mt-6 gap-12'>
           {/* 반복재생 */}
           {looping ? (
-            <button onClick={handleLoop}><FontAwesomeIcon className="text-3xl" icon={faRepeat} /></button>
+            <button onClick={handleLoop}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faRepeat} /></button>
           ) : (
             <button onClick={handleLoop}><FontAwesomeIcon className="text-3xl text-stone-400" icon={faRepeat} /></button>
           )}
           {/* 이전 곡 */}
-          <button onClick={handlePrevious}><FontAwesomeIcon className="text-3xl" icon={faBackward} /></button>
+          <button onClick={handlePrevious}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faBackward} /></button>
           {/* 정지/재생 */}
           {playing ? (
-            <button onClick={handlePlayPause}><FontAwesomeIcon className="text-3xl" icon={faPause} /></button>
+            <button onClick={handlePlayPause}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faPause} /></button>
           ) : (
-            <button onClick={handlePlayPause}><FontAwesomeIcon className="text-3xl" icon={faPlay} /></button>
+            <button onClick={handlePlayPause}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faPlay} /></button>
           )}
           {/* 다음 곡 */}
-          <button onClick={handleNext}><FontAwesomeIcon className="text-3xl" icon={faForward} /></button>
+          <button onClick={handleNext}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faForward} /></button>
           {/* 가사 모달 */}
-          <button><FontAwesomeIcon className="text-[26px]" icon={faFileLines} /></button>
+          <button><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
         </div>
       </div>
     </Container>
