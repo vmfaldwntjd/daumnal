@@ -26,25 +26,6 @@ services:
     networks:
       - daumnal-develop-network
     restart: always
-  nginx:
-    container_name: daumnal-develop-nginx
-    image: nginx-develop-image
-    build:
-      context: ../../Dockerfiles/nginx/develop
-      dockerfile: Dockerfile
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - nginx-develop-conf-volume:/etc/nginx/conf.d
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /var/www/certbot:/var/www/certbot
-    networks:
-      - daumnal-develop-network
-    restart: always
-volumes:
-  nginx-develop-conf-volume:
-    external: true
 networks:
   daumnal-develop-network:
     external: true
