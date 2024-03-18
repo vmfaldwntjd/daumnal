@@ -10,6 +10,7 @@ export const theme = {
       bg_button: '#FFF1DD',
       bg_nav: '#F3EEEA',
       bg_hashtag: 'rgba(116, 114, 100, 0.2)',
+      bg_line: 'rgba(105, 104, 100, 0.3)',
       font_main: '#696864',
       emo_happy: '#FEFFB6',
       emo_sad: '#72AFFF',
