@@ -1,9 +1,19 @@
-import React from 'react'
+import React from 'react';
+import { useLocation } from 'react-router';
 
 const MonthlyResultPage = () => {
+
+  const location = useLocation();
+  const { year, month } = location.state || {};
+
   return (
-    <div>MonthlyResultPage</div>
+    <div className='h-screen w-full p-12'>
+    <div className=' w-full h-full bg-white rounded-xl shadow-lg'>
+     <div>
+     </div>
+    </div>
+    </div>
   )
 }
 
-export default MonthlyResultPage
+export default MonthlyResultPage;
