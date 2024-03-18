@@ -6,8 +6,6 @@ services:
     build:
       context: ../../daumnal
       dockerfile: Dockerfile
-    depends_on:
-      - nginx
     environment:
       - TZ=Asia/Seoul
     networks:
@@ -19,8 +17,6 @@ services:
     build:
       context: ../../fastapi
       dockerfile: Dockerfile
-    depends_on:
-      - nginx
     environment:
       - TZ=Asia/Seoul
     networks:
