@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  spring:
+    container_name: daumnal-develop-spring
+    image: spring-develop-image
+    build:
+      context: ../../daumnal
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - daumnal-develop-network
+    restart: always
+  fastapi:
+    container_name: daumnal-develop-fastapi
+    image: fastapi-develop-image
+    build:
+      context: ../../fastapi
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - daumnal-develop-network
+    restart: always
+networks:
+  daumnal-develop-network:
+    external: true
