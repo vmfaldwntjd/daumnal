@@ -25,11 +25,11 @@ const Navigation: React.FC = () => {
     const activePath = navigationItems[index]?.path;
     const isPlaylistPage = location.pathname === '/playlistpage';
     const isActive = location.pathname === activePath;
-
+  
     if (isPlaylistPage) {
-      return isActive ? navigationItems[index]?.color : '#FFFCF7';
+      return isActive ? navigationItems[index]?.color : 'rgba(0,0,0,0)';
     } else {
-      return isActive ? navigationItems[index]?.color : '#EBE3D5';
+      return isActive ? navigationItems[index]?.color : 'rgba(0,0,0,0)';
     }
   };
 
