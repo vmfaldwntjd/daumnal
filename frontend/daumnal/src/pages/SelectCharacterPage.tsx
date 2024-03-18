@@ -3,11 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import CharacterCard from '../components/music/CharacterCard';
 
-const Characters = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
-
 const SelectCharacterPage: React.FC = () => {
   return (
     <div className="p-9">
@@ -22,5 +17,10 @@ const SelectCharacterPage: React.FC = () => {
     </div>
   );
 };
+
+const Characters = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
 
 export default SelectCharacterPage;

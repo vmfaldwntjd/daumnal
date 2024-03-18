@@ -6,45 +6,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
-
-const Result = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Text = styled.p`
-  width: 600px;
-  height: 360px;
-  border-radius: 100px;
-  background-color: #F5F5EB;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 60px;
-`;
-
-const Music = styled.p`
-  display: flex;
-`;
-
-const Button = styled.button`
-  width: 120px;
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid rgba(156, 155, 150, 0.5);
-  background-color: #FFF1DD;
-  font-size: large;
-`;
-
 // interface MusicResultPageProps {
 //   selectedCharacter: string;
 // }
@@ -108,5 +69,44 @@ const MusicResultPage: React.FC = () => {
     </div>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+`;
+
+const Result = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Text = styled.p`
+  width: 600px;
+  height: 360px;
+  border-radius: 100px;
+  background-color: #F5F5EB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 60px;
+`;
+
+const Music = styled.p`
+  display: flex;
+`;
+
+const Button = styled.button`
+  width: 120px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(156, 155, 150, 0.5);
+  background-color: #FFF1DD;
+  font-size: large;
+`;
 
 export default MusicResultPage;

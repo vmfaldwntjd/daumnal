@@ -3,35 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import PlaylistCard from './PlaylistCard';
 
-const Wrapper = styled.div`
-  width: 90%;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 35px;
-  margin-bottom: 22.5px;
-`;
-
-const Playlists = styled.div`
-  width: 90%;
-  height: 85vh;
-  overflow-y: auto; /* 세로 스크롤 추가 */
-  background-color: #F8F6EE;
-  font-family: 'NanumSquare';
-  display: flex;
-  flex-wrap: wrap;
-  gap: 50px;
-  padding: 53px;
-`;
-
-const Button = styled.button`
-  width: 120px;
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid rgba(156, 155, 150, 0.5);
-  background-color: #FFF1DD;
-  font-size: large;
-`;
-
 interface PlaylistListProps {
   onPlaylistSelect: (id: number) => void;
 }
@@ -75,5 +46,34 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
     </div>
   );
 };
+
+const Wrapper = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+  margin-bottom: 22.5px;
+`;
+
+const Playlists = styled.div`
+  width: 90%;
+  height: 85vh;
+  overflow-y: auto; /* 세로 스크롤 추가 */
+  background-color: #F8F6EE;
+  font-family: 'NanumSquare';
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  padding: 53px;
+`;
+
+const Button = styled.button`
+  width: 120px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(156, 155, 150, 0.5);
+  background-color: #FFF1DD;
+  font-size: large;
+`;
 
 export default PlaylistList;
