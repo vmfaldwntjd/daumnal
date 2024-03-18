@@ -84,7 +84,7 @@ const CreateDiary: React.FC = () => {
 
  // 일기등록 버튼을 누르면 실행되는 함수
  const createDiary = () => {
-  axios.post('http://j10a107.p.ssafy.io:8000/diaries', {
+  axios.post(`${process.env.REACT_APP_FASTAPI_BASE_URL}/diaries`, {
     'diaryContent': removeTagsContent
   })
   .then(function (response) {
@@ -138,7 +138,7 @@ const CreateDiary: React.FC = () => {
           </div> 
         </div>
 
-        <div className="w-px bg-gray-400 h-full pt-20 pb-10"></div> {/* 구분 선 */}
+        <div className="w-px bg-bg_line h-full pt-20 pb-10"></div> {/* 구분 선 */}
 
         <div className="w-1/2 flex flex-col items-center px-16"> {/* 오른쪽 구역 */}
           {/* 일기 내용 작성 */}
