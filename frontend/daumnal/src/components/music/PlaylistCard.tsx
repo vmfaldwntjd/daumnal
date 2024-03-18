@@ -4,22 +4,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
-const Container = styled.div`
-  width: 220px;
-  height: 280px;
-  background-color: #FDFBF8;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 10px;
-`;
-
 interface PlaylistCardProps {
   playlistId: number;
   playlistName: string;
@@ -59,5 +43,21 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
     </Container>
   );
 };
+
+const Container = styled.div`
+  width: 220px;
+  height: 280px;
+  background-color: #FDFBF8;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+`;
 
 export default PlaylistCard;
