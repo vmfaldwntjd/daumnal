@@ -4,31 +4,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faCompactDisc } from '@fortawesome/free-solid-svg-icons';
 
-const Container = styled.div`
-  display: flex;
-  padding: 10px;
-  margin: 10px 0px;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const MusicInfo = styled.div`
-  width: 450px;
-  display: flex;
-  flex-direction: column;
-  margin-left: 15px;
-  gap: 5px;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 35px;
-`;
-
 interface MusicCardProps {
   // playlistName: string;
   // playlistCoverUrl: string;
@@ -82,5 +57,30 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
     </div>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  padding: 10px;
+  margin: 10px 0px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MusicInfo = styled.div`
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  gap: 5px;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 35px;
+`;
 
 export default MusicCard;

@@ -12,6 +12,8 @@ import LoginPage from "./pages/LoginPage";
 import KakaoRedirectHandler from "./components/user/KakaoRedirectHandler";
 import MainPage from "./pages/MainPage";
 
+import PlayBar from "./components/music/PlayBar";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -29,6 +31,8 @@ export default function App() {
         <Route path="/musicresultpage" element={<MusicResultPage />} />
         <Route path="/playlistpage" element={<PlaylistPage />} />
         <Route path="/settingpage" element={<SettingPage />} />
+
+        <Route path="/playbar" element={<PlayBar />} />
       </Routes>
       </div>
 
