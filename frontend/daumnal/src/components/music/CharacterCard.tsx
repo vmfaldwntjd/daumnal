@@ -2,29 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Container = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-`;
-
-const Text = styled.p`
-  width: 260px;
-  height: 300px;
-  background-color: #F8F6EE;
-  border-radius: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Image = styled.img`
-  margin-top: -50%;
-  width: 300px;
-`;
-
 interface CharacterCardProps {
   imageUrl: string;
   name: string;
@@ -52,5 +29,28 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, context }
     </Container>
   );
 };
+
+const Container = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+`;
+
+const Text = styled.p`
+  width: 260px;
+  height: 300px;
+  background-color: #F8F6EE;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Image = styled.img`
+  margin-top: -50%;
+  width: 300px;
+`;
 
 export default CharacterCard;

@@ -5,17 +5,6 @@ import MusicPlay from '../components/music/MusicPlay';
 import PlaylistList from '../components/music/PlaylistList';
 import PlaylistDetail from '../components/music/PlaylistDetail';
 
-const LeftBox = styled.div`
-  width: calc(70%);
-  height: 100%;
-`;
-
-const RightBox = styled.div`
-  width: calc(30%);
-  height: 100%;
-  background-color: #FFFCF7;
-`;
-
 const PlaylistPage: React.FC = () => {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
   const [selectedMusicId, setSelectedMusicId] = useState<number | null>(null);
@@ -54,5 +43,16 @@ const PlaylistPage: React.FC = () => {
     </div>
   );
 };
+
+const LeftBox = styled.div`
+  width: calc(70%);
+  height: 100%;
+`;
+
+const RightBox = styled.div`
+  width: calc(30%);
+  height: 100%;
+  background-color: #FFFCF7;
+`;
 
 export default PlaylistPage;

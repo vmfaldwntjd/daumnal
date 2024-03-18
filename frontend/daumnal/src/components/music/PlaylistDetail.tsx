@@ -5,30 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import MusicCard from './MusicCard';
 
-const Wrapper = styled.div`
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Top = styled.div`
-  width: 77%;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-`;
-
-const Musics = styled.div`
-  width: 70%;
-  height: 61vh;
-  overflow-y: auto; /* 세로 스크롤 추가 */
-  background-color: #F8F6EE;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 10px 0px 10px;
-`;
-
 interface PlaylistDetailProps {
   selectedPlaylistId: number | null;
   setSelectedPlaylistId: (id: number | null) => void;
@@ -146,5 +122,29 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
     </div>
   );
 };
+
+const Wrapper = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Top = styled.div`
+  width: 77%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+`;
+
+const Musics = styled.div`
+  width: 70%;
+  height: 61vh;
+  overflow-y: auto; /* 세로 스크롤 추가 */
+  background-color: #F8F6EE;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 0px 10px;
+`;
 
 export default PlaylistDetail;
