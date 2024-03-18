@@ -83,6 +83,7 @@ const MusicPlay: React.FC = () => {
             max={0.999999}
             step="any"
             value={playedSeconds / duration || 0}
+            progress={playedSeconds / duration || 0} // progress prop 추가
             onChange={(e) => handleSeek(parseFloat(e.target.value))}
           />
           <p className="flex justify-between mt-1">
@@ -126,11 +127,29 @@ const Container = styled.div`
   font-family: 'NanumSquare';
 `;
 
-const Bar = styled.input`
+interface BarProps {
+  progress: number;
+}
+
+const Bar = styled.input<BarProps>`
   width: 100%;
-  height: 8px;
+  height: 4px;
   cursor: pointer;
-  background-color: #776B5D;
+  -webkit-appearance: none;
+  background: 
+    linear-gradient(
+      to right,
+      #776B5D ${(props) => props.progress * 100}%,
+      rgba(119, 107, 93, 0.2) ${(props) => props.progress * 70}%);
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #776B5D;
+    width: 10px;
+    height: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  };
 `;
 
 // 재생 시간 설정 함수
