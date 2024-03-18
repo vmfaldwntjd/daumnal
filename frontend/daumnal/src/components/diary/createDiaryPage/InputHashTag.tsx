@@ -58,8 +58,7 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
               event.preventDefault();
             }
           }} type="text" placeholder='해시태그를 입력해 주세요'/>
-        <button type="button" onClick={handleAddTag} className='px-1 border border-button_border bg-bg_button rounded-lg text-font_main'>추가</button>
-        
+        <button type="button" onClick={handleAddTag} className='px-1 border border-button_border bg-bg_button rounded-lg text-font_main'>추가</button>       
     </div>  
     <div>
       {isAlert && <div className='text-red-500 px-6'>해시태그는 최대 3개까지 입력 가능합니다.</div>}

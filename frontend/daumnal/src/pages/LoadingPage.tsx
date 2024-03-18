@@ -1,6 +1,8 @@
 // 로딩 페이지
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const Images = styled.div`
   width: 100%;
@@ -27,6 +29,47 @@ const Text = styled.p`
 `;
 
 const LoadingPage: React.FC = () => {
+
+  const location = useLocation();
+  const { title, hashTag, content, removeTagsContent, image } = location.state || {};
+
+  type EmotionState = {
+    fear: number,
+    surprise: number,
+    angry: number,
+    sadness: number,
+    neutral: number,
+    happiness: number,
+    disgust: number,
+  };
+
+  
+  const [emotion, setEmotion] = useState<EmotionState | null>(null)
+
+  useEffect(() => {
+    // console.log('emotion', emotion); 
+  }, [emotion]);
+
+
+  useEffect(() => {
+    console.log( title, hashTag, content, removeTagsContent, image )
+    axios.post(`${process.env.REACT_APP_FASTAPI_BASE_URL}/diaries`, {
+      'diaryContent': removeTagsContent
+    })
+    .then(function (response) {
+      if (response.data.code == 200) {
+        console.log(1)
+        // console.log(response.data.data.diaryEmotion)
+        setEmotion(response.data.data.diaryEmotion)
+        // console.log('emotion', emotion)
+      }
+    })
+    .catch(function (error:any) {
+      console.log('에러발생', error);
+    });
+  }, []);
+
+ 
   return (
     <div className="flex flex-col items-center p-10">
       <Images>
