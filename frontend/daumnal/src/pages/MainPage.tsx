@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from './api/axiosInstance';
 
 const MainPage: React.FC = () => {
+
+  // 닉네임 상태 관리
+  const [nickname, setNickname] = useState('');
+
+  useEffect(() => {
+    // 페이지 로드 시 닉네임 조회 요청
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/nickname`)
+      .then(response => {
+        // 요청 성공 시 닉네임 상태 업데이트
+        if (response.data.code === 200) {
+          setNickname(response.data.data.memberNickname);
+        }
+      })
+      .catch(error => console.error("닉네임 조회 중 오류가 발생했습니다.", error));
+  }, []);
+
   return (
     <div className='text-center mt-10' style={{ 
       display: 'flex', 
@@ -27,10 +44,10 @@ const MainPage: React.FC = () => {
         marginTop: '20px',
       }}/>
       <div style={{ 
-        fontSize: '35px', // 글자 크기를 50px로 설정
-        marginTop: '10px', // hr과 동일한 여백을 위해 추가
+        fontSize: '35px', 
+        marginTop: '10px',
       }}>
-        익명의 일기장
+        {nickname ? `${nickname}의 일기장` : `익명의 일기장`}
       </div>
       <hr style={{
         width: '500px',

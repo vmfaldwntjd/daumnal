@@ -15,7 +15,7 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose, onSubmit
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
       <div
         className="bg-bg_nav p-6 rounded-lg shadow-lg"
-        style={{ width: '700px', height: '700px', transform: 'translateX(-50px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        style={{ width: '700px', height: '600px', transform: 'translateX(-50px)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div className="flex justify-center">
           <img src="/image/login_logo.png" alt="로그인 로고" style={{width: '330px', height: '198px'}}/>
         </div>
