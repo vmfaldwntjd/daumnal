@@ -1,6 +1,7 @@
 // 플레이리스트 목록 컴포넌트
-import React from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import CreatePlaylistModal from '../modal/CreatePlaylistModal';
 import PlaylistCard from './PlaylistCard';
 
 interface PlaylistListProps {
@@ -8,6 +9,14 @@ interface PlaylistListProps {
 }
 
 const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
+  // 모달 상태 변수
+  const [isOpenModal, setOpenModal] = useState<boolean>(false);
+
+  // 플레이리스트 생성 모달 열고 닫는 함수
+  const handleCreatePlaylist = useCallback(() => {
+    setOpenModal(!isOpenModal); // setOpenModal 함수 호출하여 isOpenModal 상태 토글
+  }, [isOpenModal]); // 배열에 있는 값들이 변경될 때에만 새로운 함수 생성
+
   // 가상의 플레이리스트 데이터
   const playlists = [
     { playlistId: 1, playlistName: 'Playlist 1', playlistCoverUrl: null },
@@ -20,15 +29,14 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
     { playlistId: 8, playlistName: 'Playlist 8', playlistCoverUrl: null },
   ]
 
-  // 플레이리스트 생성 모달 띄우는 함수
-  const handleCreatePlaylist = () => {
-    alert("플레이리스트 생성 모달 띄우기!");
-  }
-
   return (
     <div className="flex flex-col items-center">
       <Wrapper>
         <p className="text-5xl">플레이리스트</p>
+        {/* 플레이리스트 생성 모달 */}
+        {isOpenModal && (
+          <CreatePlaylistModal onClickToggleModal={handleCreatePlaylist} />
+        )}
         <Button onClick={handleCreatePlaylist}>만들기</Button>
       </Wrapper>
       {/* 플레이리스트 목록 */}
