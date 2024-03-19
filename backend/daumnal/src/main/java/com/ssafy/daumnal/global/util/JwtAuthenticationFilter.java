@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Objects;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -25,14 +27,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
-
         if (!Objects.isNull(authorization)) {
-            String accessToken = authorization.substring(7);
-            TokenMemberDTO memberData = jwtProvider.getMemberData(accessToken);
+            String token = authorization.substring(7);
+            TokenMemberDTO memberData = jwtProvider.getMemberData(token);
+            String requestURI = request.getRequestURI();
+            if (memberData.getType().equals("refresh") && !requestURI.equals("/api/members/reissue")) {
+                throw new IOException("refresh 토큰 인증 오류");
+            }
             UserDetails memberDetails = memberDetailsService.loadUserByUsername(String.valueOf(memberData.getMemberId()));
-            Authentication token = new UsernamePasswordAuthenticationToken(memberDetails,
+            Authentication authToken = new UsernamePasswordAuthenticationToken(memberDetails,
                     "", memberDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 
         filterChain.doFilter(request, response);
