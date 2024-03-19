@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-//@Builder
-//@AllArgsConstructor
-//@Getter
-//public class TokenRegenerateResponse {
-//
-//    private String accessToken;
-//}
+@Builder
+@AllArgsConstructor
+@Getter
+public class TokenRegenerateResponse {
+
+    private String accessToken;
+}

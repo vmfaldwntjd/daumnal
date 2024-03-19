@@ -24,7 +24,7 @@ import static com.ssafy.daumnal.global.constants.JwtConstants.*;
 public class JwtProvider {
 
     private final SecretKey key;
-//    private final RedisRepository redisRepository;
+    private final RedisRepository redisRepository;
 
     @Value("${spring.jwt.live.access}")
     private Long accessExpiresIn;
@@ -32,10 +32,10 @@ public class JwtProvider {
     @Value("${spring.jwt.live.refresh}")
     private Long refreshExpiresIn;
 
-    public JwtProvider(@Value("${spring.jwt.secret}") String secret
-                       ) {
+    public JwtProvider(@Value("${spring.jwt.secret}") String secret,
+                       RedisRepository redisRepository) {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
-//        this.redisRepository = redisRepository;
+        this.redisRepository = redisRepository;
     }
 
     // 토큰 생성하기
@@ -67,8 +67,8 @@ public class JwtProvider {
         sb.setLength(0);
         String accessId = sb.append(memberId).append("_access").toString();
 
-//        redisRepository.setValues(accessId, accessToken, Duration.ofMillis(accessExpiresIn));
-//        redisRepository.setValues(refreshId, refreshToken, Duration.ofMillis(refreshExpiresIn));
+        redisRepository.setValues(accessId, accessToken, Duration.ofMillis(accessExpiresIn));
+        redisRepository.setValues(refreshId, refreshToken, Duration.ofMillis(refreshExpiresIn));
 
         return TokenResponse.builder()
                 .accessToken(accessToken)
