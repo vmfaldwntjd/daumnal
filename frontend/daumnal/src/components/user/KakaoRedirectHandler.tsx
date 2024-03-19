@@ -31,6 +31,8 @@ const KakaoRedirectHandler = () => {
         }
       );
 
+      console.log(response)
+
       window.Kakao.Auth.setAccessToken(response.data.access_token);
 
       const userInfoResponse = await window.Kakao.API.request({
