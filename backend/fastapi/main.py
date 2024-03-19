@@ -35,7 +35,7 @@ app.add_middleware(
 )
 
 
-@app.post("/diaries")
+@app.post("/api/diaries")
 async def analyze_diary(
         # authorization: str = Header(..., alias="Authorization"),
         item: Item
