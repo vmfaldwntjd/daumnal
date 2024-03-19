@@ -76,4 +76,16 @@ public class MemberController {
         GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
+
+    /**
+     * 닉네임 정보 조회 API
+     * @param authentication
+     * @return
+     */
+    @GetMapping("/nickname")
+    public ApiResponse<?> GetMemberNickname(Authentication authentication) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+        GetMemberNicknameResponse memberNicknameResponse = memberService.getMemberNickname(memberId);
+        return ApiResponse.success(SuccessCode.GET_MEMBER_NICKNAME, memberNicknameResponse);
+    }
 }

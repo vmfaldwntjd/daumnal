@@ -8,4 +8,6 @@ public interface MemberService {
     GetMemberLoginResponse login(String socialId, String socialProvider);
 
     GetMemberNicknameResponse modifyMemberNickname(String memberId, String memberNickname);
+
+    GetMemberNicknameResponse getMemberNickname(String memberId);
 }
