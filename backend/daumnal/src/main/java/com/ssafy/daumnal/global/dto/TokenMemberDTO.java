@@ -16,4 +16,9 @@ public class TokenMemberDTO {
                                              String memberSocialProvider) {
         return new TokenMemberDTO(memberId, memberSocialId, memberSocialProvider, "access");
     }
+
+    public static TokenMemberDTO refreshToken(Long memberId, Long memberSocialId,
+                                             String memberSocialProvider) {
+        return new TokenMemberDTO(memberId, memberSocialId, memberSocialProvider, "refresh");
+    }
 }
