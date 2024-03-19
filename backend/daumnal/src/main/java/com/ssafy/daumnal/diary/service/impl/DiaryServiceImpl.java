@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.diary.service.impl;
 
+import com.ssafy.daumnal.diary.dto.DiaryDTO.AddDiaryResponse;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.DiaryEmotion;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryWrittenTodayResponse;
 import com.ssafy.daumnal.diary.entity.Diary;
@@ -57,8 +58,8 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Transactional
     @Override
-    public void addDiary(String memberId, String diaryTitle, String diaryContent,
-                         String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
+    public AddDiaryResponse addDiary(String memberId, String diaryTitle, String diaryContent,
+                                              String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
@@ -101,5 +102,9 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
 
         diaryRepository.save(diary);
+
+        return AddDiaryResponse.builder()
+                .diaryId(String.valueOf(diary.getId()))
+                .build();
     }
 }

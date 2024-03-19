@@ -32,4 +32,11 @@ public class DiaryDTO {
     public static class GetDiaryWrittenTodayResponse {
         private boolean written;
     }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class AddDiaryResponse {
+        private String diaryId;
+    }
 }

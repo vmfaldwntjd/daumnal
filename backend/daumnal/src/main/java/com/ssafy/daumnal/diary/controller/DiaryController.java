@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.diary.controller;
 
+import com.ssafy.daumnal.diary.dto.DiaryDTO.AddDiaryResponse;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.DiaryRequest;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryWrittenTodayResponse;
 import com.ssafy.daumnal.diary.service.DiaryService;
@@ -39,8 +40,9 @@ public class DiaryController {
     public ApiResponse<?> addDiary(Authentication authentication,
                                    @RequestBody DiaryRequest diaryRequest) {
         String memberId = jwtProvider.getMemberInfo(authentication);
-        diaryService.addDiary(memberId, diaryRequest.getDiaryTitle(), diaryRequest.getDiaryContent(),
+
+        AddDiaryResponse response = diaryService.addDiary(memberId, diaryRequest.getDiaryTitle(), diaryRequest.getDiaryContent(),
                 diaryRequest.getDiaryHashTag(), diaryRequest.getDiaryPhoto(), diaryRequest.getDiaryEmotion());
-        return ApiResponse.success(SuccessCode.GET_DIARY);
+        return ApiResponse.success(SuccessCode.CREATE_DIARY, response);
     }
 }
