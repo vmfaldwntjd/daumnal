@@ -1,8 +1,9 @@
 // 플레이리스트 목록 내부 단일 플레이리스트 컴포넌트
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import PlaylistControlModal from '../modal/PlaylistControlModal';
 
 interface PlaylistCardProps {
   playlistId: number;
@@ -15,10 +16,17 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
 
+  // 수정/삭제 모달 상태 변수
+  const [isOpenInfoModal, setOpenInfoModal] = useState<boolean>(false);
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
+  const [buttonPosition, setButtonPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+
   // 해당 플레이리스트 수정/삭제 모달 띄우는 함수
-  const handleEditClick = (playlistId: number) => () => {
-    alert(`${playlistId}번 플레이리스트 수정/삭제 모달 띄우기!`);  // 콜백 함수 호출
-  }
+  const handleInfoPlaylist = useCallback((playlistId: number) => {
+    setSelectedPlaylistId(playlistId);
+    setOpenInfoModal(!isOpenInfoModal);
+  }, [isOpenInfoModal]); // 배열에 있는 값들이 변경될 때에만 새로운 함수 생성
 
   // 클릭한 플레이리스트 상세 컴포넌트로 교체하는 함수
   const handleMovePlaylist = (playlistId: number) => () => {
@@ -37,8 +45,11 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
       <Wrapper>
         {/* 플레이리스트 이름 */}
         <button className="self-start" onClick={handleMovePlaylist(playlistId)}>{playlistName}</button>
-        {/* 플레이리스트 수정/삭제 버튼 */}
-        <button className="self-end text-xl -mb-3" onClick={handleEditClick(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+        {/* 플레이리스트 수정/삭제 모달 */}
+        {isOpenInfoModal && (
+          <PlaylistControlModal onClickToggleModal={handleInfoPlaylist} selectedPlaylistId={selectedPlaylistId} />
+        )}
+        <button className="self-end text-xl -mb-3" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
       </Wrapper>
     </Container>
   );
