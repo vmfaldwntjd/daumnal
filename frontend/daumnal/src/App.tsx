@@ -4,7 +4,6 @@ import CalendarPage from "./pages/CalendarPage";
 import CreateDiaryPage from "./pages/CreateDiaryPage";
 import MonthlyResultPage from "./pages/MonthlyResultPage"
 import SelectCharacterPage from "./pages/SelectCharacterPage";
-import LoadingPage from "./pages/LoadingPage";
 import MusicResultPage from "./pages/MusicResultPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import SettingPage from "./pages/SettingPage";
@@ -25,7 +24,6 @@ export default function App() {
           <Route path="/monthly-result" element={<MonthlyResultPage />} />
           <Route path="/create-diary" element={<CreateDiaryPage />} />
           <Route path="/select-character" element={<SelectCharacterPage />} />
-          <Route path="/loading" element={<LoadingPage />} />
           <Route path="/music-result" element={<MusicResultPage />} />
           <Route path="/playlist" element={<PlaylistPage />} />
           <Route path="/setting" element={<SettingPage />} />

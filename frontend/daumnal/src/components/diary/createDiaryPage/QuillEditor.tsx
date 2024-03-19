@@ -3,13 +3,14 @@ import ReactQuill from 'react-quill';
 import './QuillEditor.css'
 
 interface QuillEditorProps {
-  onChange: (content: string) => void; // 입력 내용 변경 시 호출될 함수
-  placeholder: string
+  setContent: (content: string) => void; // 입력 내용 변경 시 호출될 함수
+  placeholder: string;
+  initialContent: string;
 }
 
-const QuillEditor: React.FC<QuillEditorProps> = ({ onChange, placeholder }) => {
+const QuillEditor: React.FC<QuillEditorProps> = ({ setContent, placeholder, initialContent }) => {
 
-  const [inputContent, setInputContent] = useState<string>('');
+  const [inputContent, setInputContent] = useState<string>(initialContent);
 
   const modules = useMemo(() => {
     return {
@@ -31,7 +32,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ onChange, placeholder }) => {
 
   const handleContentChange = (content: string) => {
     setInputContent(content);
-    onChange(content); // 부모 컴포넌트로 변경된 내용 전달
+    setContent(content); // 부모 컴포넌트로 변경된 내용 전달
   };
 
   return <ReactQuill theme="snow" modules={modules}
