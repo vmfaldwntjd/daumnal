@@ -2,6 +2,7 @@ package com.ssafy.daumnal.member.service.impl;
 
 import com.ssafy.daumnal.global.dto.TokenResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
+import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
@@ -15,6 +16,7 @@ import com.ssafy.daumnal.member.util.MemberUtilService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 
@@ -65,6 +67,44 @@ public class MemberServiceImpl implements MemberService {
         return GetMemberNicknameResponse.builder()
                 .memberId(memberId)
                 .memberNickname(nickname)
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public GetMemberNicknameResponse modifyMemberNickname(String memberId, String nickname) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int memberStatus = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(memberStatus);
+        memberUtilService.validateMemberStatusNotLogout(memberStatus);
+
+        memberUtilService.validateInputMemberNickname(nickname);
+
+        member.updateNickname(nickname);
+
+        return GetMemberNicknameResponse.builder()
+                .memberId(memberId)
+                .memberNickname(nickname)
+                .build();
+    }
+
+    @Override
+    public GetMemberNicknameResponse getMemberNickname(String memberId) {
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateNicknameEmpty(member.getNickname());
+
+        return GetMemberNicknameResponse.builder()
+                .memberId(memberId)
+                .memberNickname(member.getNickname())
                 .build();
     }
 

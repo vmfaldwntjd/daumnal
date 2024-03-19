@@ -6,7 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface S3Service {
 
-    String uploadDiaryPhoto(MultipartFile diaryPhotoFile, Diary diary);
+    void delete(String url);
+    String uploadDiaryPhoto(MultipartFile diaryPhotoFile);
 
     String uploadPlaylistCover(MultipartFile playlistCoverFile, Playlist playlist);
 }

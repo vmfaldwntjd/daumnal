@@ -57,6 +57,7 @@ public class S3ServiceImpl implements S3Service {
      *
      * @param url s3에 업로드된 파일 url
      */
+    @Override
     public void delete(String url) {
         String fileName = url.split("https://" + bucket + ".s3." + region + ".amazonaws.com/")[1];
         if (amazonS3Client.doesObjectExist(bucket, fileName)) {
@@ -68,16 +69,11 @@ public class S3ServiceImpl implements S3Service {
      * s3에 일기 내용 중 사진 업로드
      *
      * @param diaryPhotoFile 업로드할 일기 사진 파일
-     * @param diary 사진을 저장할 일기 인스턴스
      * @return
      */
     @Override
-    public String uploadDiaryPhoto(MultipartFile diaryPhotoFile, Diary diary) {
+    public String uploadDiaryPhoto(MultipartFile diaryPhotoFile) {
         try {
-            if (diary.getPhotoUrl() != null && diary.getPhotoUrl().contains(String.format("https://%s.s3.%s.amazonaws.com/", bucket, region))) {
-                delete(diary.getPhotoUrl());
-            }
-
             return upload(diaryPhotoFile, "diaryPhoto");
         } catch (IOException e) {
             throw new RuntimeException(e);

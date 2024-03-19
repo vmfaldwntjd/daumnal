@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/musics")
+@RequestMapping("/api/musics")
 public class MusicController {
 
     private final MusicService musicService;

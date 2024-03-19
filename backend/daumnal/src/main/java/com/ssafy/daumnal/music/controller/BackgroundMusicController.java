@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/background-musics")
+@RequestMapping("/api/background-musics")
 public class BackgroundMusicController {
 
     private final BackgroundMusicService backgroundMusicService;
