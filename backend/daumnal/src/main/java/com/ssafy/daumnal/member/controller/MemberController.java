@@ -50,6 +50,11 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 
+    /**
+     * jwt 재발급 API
+     * @param memberDetails
+     * @return
+     */
     @GetMapping("/reissue")
     public ApiResponse<?> getMemberAccessReIssueToken(@AuthenticationPrincipal MemberDetails memberDetails) {
         Member member = memberDetails.getMember();
