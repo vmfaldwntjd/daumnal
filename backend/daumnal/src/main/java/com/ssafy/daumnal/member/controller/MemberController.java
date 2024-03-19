@@ -45,7 +45,7 @@ public class MemberController {
     @PostMapping("/nickname")
     public ApiResponse<?> addMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        String memberId = jwtProvider.getAccessToken(authentication);
+        String memberId = jwtProvider.getMemberInfo(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.addMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
@@ -63,11 +63,29 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN, tokenRegenerateResponse);
     }
 
+    /**
+     * 닉네임 정보 변경 API
+     * @param authentication
+     * @param nicknameRequest
+     * @return
+     */
     @PatchMapping("/nickname")
     public ApiResponse<?> updateMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        String memberId = jwtProvider.getAccessToken(authentication);
+        String memberId = jwtProvider.getMemberInfo(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
+    }
+
+    /**
+     * 닉네임 정보 조회 API
+     * @param authentication
+     * @return
+     */
+    @GetMapping("/nickname")
+    public ApiResponse<?> GetMemberNickname(Authentication authentication) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+        GetMemberNicknameResponse memberNicknameResponse = memberService.getMemberNickname(memberId);
+        return ApiResponse.success(SuccessCode.GET_MEMBER_NICKNAME, memberNicknameResponse);
     }
 }
