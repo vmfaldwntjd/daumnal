@@ -33,7 +33,7 @@ const Navigation: React.FC = () => {
     }
   };
 
-  const isClickable = !(location.pathname.includes('/') || location.pathname.includes('/oauth'));
+  const isClickable = !(location.pathname === '/' || location.pathname.startsWith('/oauth'));
 
   return (
     <nav className="h-screen flex justify-center items-center">
