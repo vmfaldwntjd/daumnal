@@ -17,19 +17,19 @@ export default function App() {
     <BrowserRouter>
     <div className="flex justify-between" >
       <div className="flex-grow mr-[134px]">
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/oauth" element={<KakaoRedirectHandler />} />
-        <Route path="/mainpage" element={<MainPage />} />
-        <Route path="/calendarpage" element={<CalendarPage />} />
-        <Route path="/monthlyresultpage" element={<MonthlyResultPage />} />
-        <Route path="/creatediarypage" element={<CreateDiaryPage />} />
-        <Route path="/selectcharacterpage" element={<SelectCharacterPage />} />
-        <Route path="/loadingpage" element={<LoadingPage />} />
-        <Route path="/musicresultpage" element={<MusicResultPage />} />
-        <Route path="/playlistpage" element={<PlaylistPage />} />
-        <Route path="/settingpage" element={<SettingPage />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/oauth" element={<KakaoRedirectHandler />} />
+          <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/calendarpage" element={<CalendarPage />} />
+          <Route path="/monthlyresultpage" element={<MonthlyResultPage />} />
+          <Route path="/creatediarypage" element={<CreateDiaryPage />} />
+          <Route path="/selectcharacterpage" element={<SelectCharacterPage />} />
+          <Route path="/loadingpage" element={<LoadingPage />} />
+          <Route path="/musicresultpage" element={<MusicResultPage />} />
+          <Route path="/playlistpage" element={<PlaylistPage />} />
+          <Route path="/settingpage" element={<SettingPage />} />
+        </Routes>
       </div>
 
       <div>
