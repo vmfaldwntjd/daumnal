@@ -50,11 +50,24 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 
+    /**
+     * jwt 재발급 API
+     * @param memberDetails
+     * @return
+     */
     @GetMapping("/reissue")
     public ApiResponse<?> getMemberAccessReIssueToken(@AuthenticationPrincipal MemberDetails memberDetails) {
         Member member = memberDetails.getMember();
         TokenRegenerateResponse tokenRegenerateResponse = jwtProvider.reGenerateAccessToken(member.getId(), member.getSocialId(),
                 member.getSocialProvider().getName());
         return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN, tokenRegenerateResponse);
+    }
+
+    @PatchMapping("/nickname")
+    public ApiResponse<?> updateMemberNickname(Authentication authentication,
+                                            @RequestBody AddMemberNicknameRequest nicknameRequest) {
+        String memberId = jwtProvider.getAccessToken(authentication);
+        GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 }
