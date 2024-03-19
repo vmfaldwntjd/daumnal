@@ -4,6 +4,7 @@ import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.member.entity.SocialProvider;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 import static com.ssafy.daumnal.member.constants.MemberConstants.*;
@@ -127,5 +128,11 @@ public class MemberUtilService {
         }
 
         return providerResult;
+    }
+
+    public void validateNicknameEmpty(String nickname) {
+        if (!StringUtils.hasText(nickname)) {
+            throw new InvalidException(NOT_EXISTS_MEMBER_NICKNAME_GET);
+        }
     }
 }

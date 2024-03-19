@@ -16,6 +16,7 @@ public enum SuccessCode {
 
     //회원
     CREATE_MEMBER(CREATED, "회원 정보 등록에 성공하였습니다!"),
+    CREATE_REGENERATE_ACCESS_TOKEN(CREATED, "access token 재발급에 성공하였습니다"),
     CREATE_MEMBER_NICKNAME(CREATED, "닉네임 정보 입력에 성공하였습니다!"),
     GET_MEMBER(OK, "회원 정보 조회에 성공하였습니다!"),
     GET_MEMBER_NICKNAME(OK, "닉네임 조회에 성공하였습니다!"),

@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import emotion_classifier
 
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 
 class Item(BaseModel):
@@ -35,20 +36,35 @@ app.add_middleware(
 )
 
 
-@app.post("/diaries")
+@app.on_event("startup")
+async def startup_event():
+    emotion_classifier.init()
+
+
+class UnicornException(Exception):
+    def __init__(self, status: str):
+        self.status = status
+
+
+@app.exception_handler(UnicornException)
+async def unicorn_exception_handler(exc: UnicornException):
+    return JSONResponse(
+        status_code=400,
+        content={"status": exc.status}
+    )
+
+
+@app.post("/api/diaries")
 async def analyze_diary(
         # authorization: str = Header(..., alias="Authorization"),
         item: Item
 ):
     try:
-        if len(item.diaryContent) > 3000:
-            raise HTTPException(status_code=400, detail="너무 길어요.")
-
         diary_emotion = emotion_classifier.analyze_init(item.diaryContent)
         if diary_emotion is None:
-            raise HTTPException(status_code=400, detail="감정 분석을 위해 일기를 충분히 써 주세요.")
-        elif diary_emotion.neutral > 3500:
-            raise HTTPException(status_code=400, detail="감정을 조금 더 담아서 일기를 써 주세요.")
+            raise UnicornException(status="sentenceLack")
+        elif diary_emotion.neutral > 5000:
+            raise UnicornException(status="emotionLack")
 
         # 성공 시 입력된 데이터를 반환
         return {
@@ -61,4 +77,4 @@ async def analyze_diary(
         }
     except Exception as e:
         # 에러 발생 시 적절한 에러 메시지와 에러 코드 반환
-        return {str(e)}
+        return e
