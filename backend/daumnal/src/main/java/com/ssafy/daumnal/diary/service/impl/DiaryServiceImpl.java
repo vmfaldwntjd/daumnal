@@ -8,7 +8,6 @@ import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
-import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
@@ -17,7 +16,6 @@ import com.ssafy.daumnal.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
@@ -71,7 +69,7 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateExistsDiaryContent(diaryContent);
         diaryUtilService.validateExistAllEmotions(diaryEmotion);
         diaryUtilService.validateDiaryContentLength(diaryContent);
-        
+
         String[] tags = diaryHashTag.split(SPLIT_REGEX);
         diaryUtilService.validateHashTagCount(tags);
         diaryUtilService.validateHashTagInput(tags);
