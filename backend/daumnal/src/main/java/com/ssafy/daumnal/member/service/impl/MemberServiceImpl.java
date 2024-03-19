@@ -42,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
-    public GetMemberNicknameResponse modifyMemberNickname(String memberId, String nickname) {
+    public GetMemberNicknameResponse addMemberNickname(String memberId, String nickname) {
         memberUtilService.validateMemberIdNumber(memberId);
 
         // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
