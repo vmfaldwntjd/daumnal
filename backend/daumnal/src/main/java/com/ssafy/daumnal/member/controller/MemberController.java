@@ -2,11 +2,15 @@ package com.ssafy.daumnal.member.controller;
 
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
+import com.ssafy.daumnal.global.dto.TokenRegenerateResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
+import com.ssafy.daumnal.global.util.MemberDetails;
 import com.ssafy.daumnal.member.dto.MemberDTO.*;
+import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,12 +50,11 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 
-//    @GetMapping("/reissue")
-//    public ApiResponse<?> getMemberAccessReIssueToken(Authentication authentication) {
-//        // memberId
-//        String memberId = jwtProvider.getAccessToken(authentication);
-//
-//        memberService.getMemberAccessReIssueToken(memberId);
-//        return null;
-//    }
+    @GetMapping("/reissue")
+    public ApiResponse<?> getMemberAccessReIssueToken(@AuthenticationPrincipal MemberDetails memberDetails) {
+        Member member = memberDetails.getMember();
+        TokenRegenerateResponse tokenRegenerateResponse = jwtProvider.reGenerateAccessToken(member.getId(), member.getSocialId(),
+                member.getSocialProvider().getName());
+        return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN, tokenRegenerateResponse);
+    }
 }
