@@ -12,10 +12,10 @@ interface NavItem {
 }
 
 const navigationItems: NavItem[] = [
-  { name: '일기 보기', path: '/calendarpage', color: '#B5C0D0', image: '/image/navbar_calendar.png', width: '26px', height: '29px'},
-  { name: '일기 쓰기', path: '/creatediarypage', color: '#CCD3CA', image: '/image/navbar_creatediary.png', width: '26px', height: '30px' },
-  { name: '노래 듣기', path: '/playlistpage', color: '#F8D2B2', image: '/image/navber_playlistlist.png', width: '21px', height: '27px' },
-  { name: '설정', path: '/settingpage', color: '#EED3D9', image: '/image/navbar_setting.png', width: '26px', height: '26px' },
+  { name: '일기 보기', path: '/calendar', color: '#B5C0D0', image: '/image/navbar_calendar.png', width: '26px', height: '29px'},
+  { name: '일기 쓰기', path: '/create-diary', color: '#CCD3CA', image: '/image/navbar_creatediary.png', width: '26px', height: '30px' },
+  { name: '노래 듣기', path: '/playlist', color: '#F8D2B2', image: '/image/navber_playlistlist.png', width: '21px', height: '27px' },
+  { name: '설정', path: '/setting', color: '#EED3D9', image: '/image/navbar_setting.png', width: '26px', height: '26px' },
 ];
 
 const Navigation: React.FC = () => {

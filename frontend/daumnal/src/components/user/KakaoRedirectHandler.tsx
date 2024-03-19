@@ -56,7 +56,7 @@ const KakaoRedirectHandler = () => {
         if (isFirstLoginResponse) {
           // 첫 로그인이면 모달이 올바르게 열릴 것입니다.
         } else {
-          navigate('/mainpage'); // 첫 로그인이 아니면 바로 메인 페이지로 이동
+          navigate('/main'); // 첫 로그인이 아니면 바로 메인 페이지로 이동
         }
       }
     } catch (error) {
@@ -72,7 +72,7 @@ const KakaoRedirectHandler = () => {
  const handleNicknameSubmit = async (nickname: string) => {
   // 여기서 닉네임을 서버에 저장하는 API 호출 로직 추가
   console.log(nickname); // 예시로 콘솔에 출력
-  navigate('/mainpage'); // 닉네임 저장 후 메인 페이지로 이동
+  navigate('/main'); // 닉네임 저장 후 메인 페이지로 이동
 };
 
 return (
