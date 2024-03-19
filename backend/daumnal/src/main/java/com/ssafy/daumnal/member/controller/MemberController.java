@@ -45,7 +45,7 @@ public class MemberController {
     @PostMapping("/nickname")
     public ApiResponse<?> addMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        String memberId = jwtProvider.getAccessToken(authentication);
+        String memberId = jwtProvider.getMemberInfo(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.addMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
@@ -72,7 +72,7 @@ public class MemberController {
     @PatchMapping("/nickname")
     public ApiResponse<?> updateMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        String memberId = jwtProvider.getAccessToken(authentication);
+        String memberId = jwtProvider.getMemberInfo(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
