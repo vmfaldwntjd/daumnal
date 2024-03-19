@@ -41,7 +41,7 @@
   justify-content: center; /* 수평 가운데 정렬 */
   align-items: center; /* 수직 가운데 정렬 */} /* 연한 회색 */
 
-.happiness { background-color: #FDFFAE; 
+.happiness { background-color: #F6F193; 
   width: 22px;
   height: 22px;
   border-radius: 50%; /* 원 모양으로 만들기 */
