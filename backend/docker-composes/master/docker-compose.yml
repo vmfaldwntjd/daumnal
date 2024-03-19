@@ -7,7 +7,7 @@ services:
       context: ../../Dockerfiles/mysql
       dockerfile: Dockerfile
     ports:
-      - 300:3306
+      - 3300:3306
     environment:
       - TZ=Asia/Seoul
     volumes:
@@ -68,7 +68,7 @@ services:
     environment:
       - TZ=Asia/Seoul
     ports:
-      - 8888:80
+      - 80:80
       - 443:443
     depends_on:
       - spring
