@@ -68,6 +68,6 @@ public class MemberController {
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
         String memberId = jwtProvider.getAccessToken(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
-        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 }

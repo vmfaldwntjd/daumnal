@@ -68,6 +68,29 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
+    @Transactional
+    @Override
+    public GetMemberNicknameResponse modifyMemberNickname(String memberId, String nickname) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int memberStatus = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(memberStatus);
+        memberUtilService.validateMemberStatusNotLogout(memberStatus);
+
+        memberUtilService.validateInputMemberNickname(nickname);
+
+        member.updateNickname(nickname);
+
+        return GetMemberNicknameResponse.builder()
+                .memberId(memberId)
+                .memberNickname(nickname)
+                .build();
+    }
+
     private GetMemberLoginResponse getGetMemberLoginResponse(String socialId, String socialProvider) {
 
         SocialProvider provider = memberUtilService.getProvider(socialProvider);
