@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j10a107.p.ssafy.io:3306/daumnal?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useLegacyDatetimeCode=false
+    url: jdbc:mysql://${EC2_ACCESS_IP}:3306/daumnal?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useLegacyDatetimeCode=false
     username: root
     password: ${MYSQL_PW}
   jpa:
@@ -19,13 +19,13 @@ spring:
   jwt:
     secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUasjioejalksdjfaoigjioejfakls123diojseoifjdklfjwogjdfkjgoszzdjfeiofjoidjf4'
     live:
-      access: 300000
-      refresh: 300000000
+      access: 3600000 # access token 기한 1시간
+      refresh: 604800000 # refresh token 기한 일주일
 
   cache:
     type: redis
     
   data:
     redis:
-      host: localhost
+      host: ${EC2_ACCESS_IP}
       port: 6379
