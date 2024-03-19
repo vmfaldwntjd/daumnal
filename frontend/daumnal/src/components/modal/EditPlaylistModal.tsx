@@ -1,14 +1,14 @@
-// 플레이리스트 생성 모달
+// 플레이리스트 수정 모달
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faImage } from "@fortawesome/free-solid-svg-icons";
 
-interface CreatePlaylistModalProps {
+interface EditPlaylistModalProps {
   onClickToggleModal: () => void; // 모달 토글 함수
 }
 
-const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggleModal }) => {
+const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal }) => {
   const [playlistTitle, setPlaylistTitle] = useState(''); // 플레이리스트 제목 상태
   const [playlistCover, setPlaylistCover] = useState<File | null>(null); // 플레이리스트 커버 이미지 상태
   const [previewImage, setPreviewImage] = useState<string | null>(null); // 이미지 미리보기 상태
@@ -140,4 +140,4 @@ const PreviewImage = styled.img`
   max-height: 100%;
 `;
 
-export default CreatePlaylistModal;
+export default EditPlaylistModal;
