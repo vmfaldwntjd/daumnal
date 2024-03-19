@@ -110,7 +110,7 @@ public class JwtProvider {
     }
 
     // accessToken 가져오기
-    public String getAccessToken(Authentication authentication) {
+    public String getMemberInfo(Authentication authentication) {
         return authentication.getName();
     }
 
