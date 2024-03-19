@@ -46,7 +46,7 @@ public class MemberController {
     public ApiResponse<?> addMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
         String memberId = jwtProvider.getAccessToken(authentication);
-        GetMemberNicknameResponse memberNicknameResponse = memberService.addMemberNickname(memberId, nicknameRequest.getMemberNickname());
+        GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 
@@ -61,5 +61,13 @@ public class MemberController {
         TokenRegenerateResponse tokenRegenerateResponse = jwtProvider.reGenerateAccessToken(member.getId(), member.getSocialId(),
                 member.getSocialProvider().getName());
         return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN, tokenRegenerateResponse);
+    }
+
+    @PatchMapping("/nickname")
+    public ApiResponse<?> updateMemberNickname(Authentication authentication,
+                                            @RequestBody AddMemberNicknameRequest nicknameRequest) {
+        String memberId = jwtProvider.getAccessToken(authentication);
+        GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
+        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 }
