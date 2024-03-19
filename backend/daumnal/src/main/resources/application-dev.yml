@@ -27,5 +27,5 @@ spring:
     
   data:
     redis:
-      host: localhost
+      host: ${EC2_ACCESS_IP}
       port: 6379
