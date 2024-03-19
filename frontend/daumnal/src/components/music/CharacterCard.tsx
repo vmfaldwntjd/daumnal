@@ -13,7 +13,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, context }
 
   // 선택된 캐릭터 이름 가지고 결과 페이지로 이동하는 함수
   const handleCharacterClick = (name: string) => () => {
-    navigate("/musicresultpage", { state: { selectedCharacter: name } });
+    navigate("/music-result", { state: { selectedCharacter: name } });
   }
 
   return (

@@ -74,7 +74,7 @@ const CreateDiary: React.FC = () => {
   // removeTagsContent의 길이가 20자 이상인지 확인
   if (title && removeTagsContent && removeTagsContent.length >= 20) {
     // 조건에 맞으면 /loadingPage로 이동하고, state로 데이터 전달
-    navigate('/loadingPage', { state: { title, hashTag, content, removeTagsContent, image } });
+    navigate('/loading', { state: { title, hashTag, content, removeTagsContent, image } });
   }
 
   else if (!title) {

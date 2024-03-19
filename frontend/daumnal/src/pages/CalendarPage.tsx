@@ -12,7 +12,7 @@ const CalendarPage: React.FC = () => {
   const [day, setDay] = useState<number>(today.getDate())
 
   const handleButtonClick = () => {
-    navigate('/monthlyresultpage', { state: { year, month } });
+    navigate('/monthly-result', { state: { year, month } });
   };
 
   return (

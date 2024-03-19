@@ -19,7 +19,7 @@ const MusicResultPage: React.FC = () => {
 
   // 결과 확인 후 확인 버튼 클릭시 캘린더 페이지로 이동시키는 함수
   const handleResultClick = () => {
-    navigate("/calendarpage");
+    navigate("/calendar");
   }
 
   // 캐릭터 이름에 따라서 이미지 경로 설정하는 함수
