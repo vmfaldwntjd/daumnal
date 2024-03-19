@@ -23,7 +23,7 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose, onSubmit
           <img src="/image/dabom.png" alt="다봄이" style={{width: '165px',height: '207px',margin: 'auto'}}/>
           <img src="/image/dareum.png" alt="다름이" style={{width: '165px',height: '207px',margin: 'auto'}}/> 
           <img src="/image/daeul.png" alt="다을이" style={{width: '165px',height: '207px',margin: 'auto'}}/> 
-          <img src="/image/dagyeol.png" alt="다결이" style={{width: '165px',height: '207px',margin: 'auto'}}/>   
+          <img src="/image/daseol.png" alt="다설이" style={{width: '165px',height: '207px',margin: 'auto'}}/>   
         </div>
         <div>
           <input

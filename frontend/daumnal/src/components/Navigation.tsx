@@ -33,6 +33,8 @@ const Navigation: React.FC = () => {
     }
   };
 
+  const isClickable = !(location.pathname === '/' || location.pathname.startsWith('/oauth'));
+
   return (
     <nav className="h-screen flex justify-center items-center">
         <div className="flex w-[150px] h-screen fixed top-0 right-0">
@@ -47,6 +49,7 @@ const Navigation: React.FC = () => {
                     <NavItem
                         data={{ name: item.name, address: item.path, color: item.color, image: item.image, width: item.width, height : item.height }}
                         key={item.path}
+                        clickable={isClickable}
                     />
                 ))}
               </div>

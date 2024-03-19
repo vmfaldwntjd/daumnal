@@ -1,4 +1,4 @@
-// KakaoRedirectHandler.tsx
+// KakaoRedirectHandler.tsx 수정된 부분
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import NicknameModal from '../modal/NicknameModal';
 
 const KakaoRedirectHandler = () => {
   const navigate = useNavigate();
-  const [isFirstLogin, setIsFirstLogin] = useState<boolean | null>(null); // 첫 로그인 여부를 상태로 관리합니다.
+  const [isFirstLogin, setIsFirstLogin] = useState<boolean | null>(null);
 
   const handleKakaoLogin = async () => {
     try {
@@ -36,33 +36,33 @@ const KakaoRedirectHandler = () => {
         url: '/v2/user/me',
       });
 
-      console.log('사용자 정보:', userInfoResponse);
-
-      // 사용자 정보를 바탕으로 서버에 로그인 요청을 보냅니다.
-      const loginResponse = await axios.post(`${process.env.REACT_APP_MOCK_SERVER}/members/login`, {
+      const loginResponse = await axios.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/login`, {
         socialId: userInfoResponse.id.toString(),
         socialProvider: 'kakao',
       });
 
       const responseData = loginResponse.data;
-      console.log(responseData)
-      console.log(responseData.data)
-      // 변수 이름 변경 및 올바른 경로로 접근
-      const isFirstLoginResponse = responseData.data.firstLogin;// 응답 데이터가 정의되어 있는지 확인하고 올바른 경로로 접근
-      console.log(isFirstLoginResponse); // 수정된 변수 이름으로 변경
+      if (responseData && responseData.code === 200) {
+        // 여기서 로컬 스토리지에 저장하는 로직을 추가합니다.
+        localStorage.setItem('memberId', responseData.data.memberId);
+        localStorage.setItem('memberAccessToken', responseData.data.memberAccessToken);
+        localStorage.setItem('memberRefreshToken', responseData.data.memberRefreshToken);
 
-      if (responseData && responseData.code === 200 && responseData.status === "OK") {
-        setIsFirstLogin(isFirstLoginResponse); // 첫 로그인 여부에 따라 상태 업데이트
-        if (isFirstLoginResponse) {
-          // 첫 로그인이면 모달이 올바르게 열릴 것입니다.
+        setIsFirstLogin(responseData.data.firstLogin);
+        if (responseData.data.firstLogin) {
+          // 첫 로그인이면 닉네임 모달을 띄웁니다.
         } else {
-          navigate('/main'); // 첫 로그인이 아니면 바로 메인 페이지로 이동
+          // 첫 로그인이 아니라면 바로 메인 페이지로 이동합니다.
+          navigate('/main');
         }
+      } else if (responseData.code === 403) {
+        // 이미 로그인 한 상태라면 메인 페이지로 이동합니다.
+        navigate('/main');
       }
     } catch (error) {
       console.error('로그인 과정에서 오류가 발생했습니다:', error);
-  }
-};
+    }
+  };
 
   useEffect(() => {
     handleKakaoLogin();
@@ -75,15 +75,15 @@ const KakaoRedirectHandler = () => {
   navigate('/main'); // 닉네임 저장 후 메인 페이지로 이동
 };
 
-return (
-  <>
-    <NicknameModal
-      isOpen={isFirstLogin === true}
-      onClose={() => setIsFirstLogin(false)}
-      onSubmit={handleNicknameSubmit}
-    />
-  </>
-);
+  return (
+    <>
+      <NicknameModal
+        isOpen={isFirstLogin === true}
+        onClose={() => setIsFirstLogin(false)}
+        onSubmit={handleNicknameSubmit}
+      />
+    </>
+  );
 };
 
 export default KakaoRedirectHandler;
