@@ -63,6 +63,12 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN, tokenRegenerateResponse);
     }
 
+    /**
+     * 닉네임 정보 변경 API
+     * @param authentication
+     * @param nicknameRequest
+     * @return
+     */
     @PatchMapping("/nickname")
     public ApiResponse<?> updateMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
