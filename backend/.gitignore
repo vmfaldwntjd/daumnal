@@ -1,5 +1,5 @@
 ### Dockerfile ###
-#Dockerfiles/mysql/
-#Dockerfiles/nginx/develop/
-#Dockerfiles/jenkins/
-#Dockerfiles/redis/
+Dockerfiles/mysql/
+Dockerfiles/nginx/develop/
+Dockerfiles/jenkins/
+Dockerfiles/redis/
