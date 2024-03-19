@@ -2,11 +2,15 @@ package com.ssafy.daumnal.member.controller;
 
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
+import com.ssafy.daumnal.global.dto.TokenRegenerateResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
+import com.ssafy.daumnal.global.util.MemberDetails;
 import com.ssafy.daumnal.member.dto.MemberDTO.*;
+import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,17 +45,47 @@ public class MemberController {
     @PostMapping("/nickname")
     public ApiResponse<?> addMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        String memberId = jwtProvider.getAccessToken(authentication);
+        String memberId = jwtProvider.getMemberInfo(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.addMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
     }
 
-//    @GetMapping("/reissue")
-//    public ApiResponse<?> getMemberAccessReIssueToken(Authentication authentication) {
-//        // memberId
-//        String memberId = jwtProvider.getAccessToken(authentication);
-//
-//        memberService.getMemberAccessReIssueToken(memberId);
-//        return null;
-//    }
+    /**
+     * jwt 재발급 API
+     * @param memberDetails
+     * @return
+     */
+    @GetMapping("/reissue")
+    public ApiResponse<?> getMemberAccessReIssueToken(@AuthenticationPrincipal MemberDetails memberDetails) {
+        Member member = memberDetails.getMember();
+        TokenRegenerateResponse tokenRegenerateResponse = jwtProvider.reGenerateAccessToken(member.getId(), member.getSocialId(),
+                member.getSocialProvider().getName());
+        return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN, tokenRegenerateResponse);
+    }
+
+    /**
+     * 닉네임 정보 변경 API
+     * @param authentication
+     * @param nicknameRequest
+     * @return
+     */
+    @PatchMapping("/nickname")
+    public ApiResponse<?> updateMemberNickname(Authentication authentication,
+                                            @RequestBody AddMemberNicknameRequest nicknameRequest) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+        GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
+    }
+
+    /**
+     * 닉네임 정보 조회 API
+     * @param authentication
+     * @return
+     */
+    @GetMapping("/nickname")
+    public ApiResponse<?> GetMemberNickname(Authentication authentication) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+        GetMemberNicknameResponse memberNicknameResponse = memberService.getMemberNickname(memberId);
+        return ApiResponse.success(SuccessCode.GET_MEMBER_NICKNAME, memberNicknameResponse);
+    }
 }

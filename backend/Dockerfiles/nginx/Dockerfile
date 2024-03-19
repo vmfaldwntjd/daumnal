@@ -1,4 +1,4 @@
 FROM nginx
 COPY /conf/default.conf /etc/nginx/conf.d/default.conf
-EXPOSE 8888
-EXPOSE 4000
+EXPOSE 80
+EXPOSE 443
