@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${EC2_ACCESS_IP}:3306/daumnal?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useLegacyDatetimeCode=false
+    url: jdbc:mysql://j10a107.p.ssafy.io:3300/daumnal?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useLegacyDatetimeCode=false
     username: root
     password: ${MYSQL_PW}
   jpa:
