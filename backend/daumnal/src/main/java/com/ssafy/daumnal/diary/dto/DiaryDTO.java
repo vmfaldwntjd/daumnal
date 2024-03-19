@@ -14,8 +14,8 @@ public class DiaryDTO {
         private DiaryEmotion diaryEmotion;
     }
 
-    @AllArgsConstructor
-    private static class DiaryEmotion {
+    @Getter
+    public static class DiaryEmotion {
         private Integer fear;
         private Integer surprise;
         private Integer angry;
