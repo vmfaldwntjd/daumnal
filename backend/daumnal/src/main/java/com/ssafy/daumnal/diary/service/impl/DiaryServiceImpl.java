@@ -67,54 +67,21 @@ public class DiaryServiceImpl implements DiaryService {
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
 
-        // 일기 제목 입력 안했을 시
-        if (!StringUtils.hasText(diaryTitle)) {
-            throw new NoExistException(NOT_EXISTS_DIARY_TITLE_INPUT);
-        }
-
-        // 일기 내용 입력하지 않았을 경우
-        if (!StringUtils.hasText(diaryTitle)) {
-            throw new NoExistException(NOT_EXISTS_DIARY_CONTENT_INPUT);
-        }
-
-        // 감정 정보가 누락된 게 있는지 확인하기
-        if (!diaryUtilService.allEmotionsExist(diaryEmotion)) {
-            throw new NoExistException(NOT_EXISTS_DIARY_EMOTION_INPUT);
-        }
-
-        // 일기 내용 글자 수가 3000자가 넘어간 경우
-        if (diaryContent.length() > CONTENT_MAX_LENGTH) {
-            throw new InvalidException(INVALID_DIARY_CONTENT_LENGTH);
-        }
-
-        // 해시태그 나누기 (공백 기준)
+        diaryUtilService.validateExistsDiaryTitle(diaryTitle);
+        diaryUtilService.validateExistsDiaryContent(diaryContent);
+        diaryUtilService.validateExistAllEmotions(diaryEmotion);
+        diaryUtilService.validateDiaryContentLength(diaryContent);
+        
         String[] tags = diaryHashTag.split(SPLIT_REGEX);
+        diaryUtilService.validateHashTagCount(tags);
+        diaryUtilService.validateHashTagInput(tags);
 
-        // 개수 3개 넘어가는지 확인
-        if (tags.length > HASH_TAG_MAX_COUNT) {
-            throw new InvalidException(INVALID_DIARY_HASHTAG_COUNT);
-        }
-
-        // 각 해시태그마다 유효성 검사
-        for (String tag : tags) {
-            // 올바른 입력인지 확인
-            if (!tag.matches(HASH_TAG_REGEX)) {
-                throw new InvalidException(INVALID_DIARY_HASHTAG_WORDS);
-            }
-
-            if (tag.length() > HASH_TAG_MAX_LENGTH) {
-                throw new InvalidException(INVALID_DIARY_HASHTAG_LENGTH);
-            }
-        }
-
-        // 이미지가 존재한다면 이미지 url 추출
         String photoUrl = null;
 
         if (Objects.nonNull(diaryPhoto)) {
             photoUrl = s3Service.uploadDiaryPhoto(diaryPhoto);
         }
 
-        // 감정 정보 입력하기
         Emotion emotion = Emotion.builder()
                 .fear(diaryEmotion.getFear())
                 .surprise(diaryEmotion.getSurprise())
@@ -126,7 +93,6 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
         emotionRepository.save(emotion);
 
-        //일기 엔티티 생성
         Diary diary = Diary.builder()
                 .title(diaryTitle)
                 .content(diaryContent)
