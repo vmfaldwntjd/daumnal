@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface DiaryService {
     DiaryDTO.GetDiaryWrittenTodayResponse getDiaryWritten(String memberId);
 
-    void addDiary(String memberId, String diaryTitle, String diaryContent, String diaryHashTag,
-                  MultipartFile diaryPhoto, DiaryEmotion diaryEmotion);
+    DiaryDTO.AddDiaryResponse addDiary(String memberId, String diaryTitle, String diaryContent, String diaryHashTag,
+                                       MultipartFile diaryPhoto, DiaryEmotion diaryEmotion);
 }
