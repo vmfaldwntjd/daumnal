@@ -52,6 +52,7 @@ public class MemberController {
 
     /**
      * jwt 재발급 API
+     *
      * @param memberDetails
      * @return
      */
@@ -65,13 +66,14 @@ public class MemberController {
 
     /**
      * 닉네임 정보 변경 API
+     *
      * @param authentication
      * @param nicknameRequest
      * @return
      */
     @PatchMapping("/nickname")
     public ApiResponse<?> updateMemberNickname(Authentication authentication,
-                                            @RequestBody AddMemberNicknameRequest nicknameRequest) {
+                                               @RequestBody AddMemberNicknameRequest nicknameRequest) {
         String memberId = jwtProvider.getMemberInfo(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
         return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
@@ -79,11 +81,12 @@ public class MemberController {
 
     /**
      * 닉네임 정보 조회 API
+     *
      * @param authentication
      * @return
      */
     @GetMapping("/nickname")
-    public ApiResponse<?> GetMemberNickname(Authentication authentication) {
+    public ApiResponse<?> getMemberNickname(Authentication authentication) {
         String memberId = jwtProvider.getMemberInfo(authentication);
         GetMemberNicknameResponse memberNicknameResponse = memberService.getMemberNickname(memberId);
         return ApiResponse.success(SuccessCode.GET_MEMBER_NICKNAME, memberNicknameResponse);
