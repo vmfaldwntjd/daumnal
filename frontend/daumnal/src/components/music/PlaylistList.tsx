@@ -5,7 +5,7 @@ import CreatePlaylistModal from '../modal/CreatePlaylistModal';
 import PlaylistCard from './PlaylistCard';
 
 interface PlaylistListProps {
-  onPlaylistSelect: (id: number) => void;
+  onPlaylistSelect: (playlistId: number) => void;
 }
 
 const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
@@ -34,9 +34,11 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
       <Wrapper>
         <p className="text-5xl">플레이리스트</p>
         {/* 플레이리스트 생성 모달 */}
-        {isOpenCreateModal && (
-          <CreatePlaylistModal onClickToggleModal={handleCreatePlaylist} />
-        )}
+        <Modal>
+          {isOpenCreateModal && (
+            <CreatePlaylistModal onClickToggleModal={handleCreatePlaylist} />
+          )}
+        </Modal>
         <Button onClick={handleCreatePlaylist}>만들기</Button>
       </Wrapper>
       {/* 플레이리스트 목록 */}
@@ -63,22 +65,25 @@ const Wrapper = styled.div`
   margin-bottom: 22.5px;
 `;
 
+const Modal = styled.div`
+  z-index: 2;
+`;
+
 const Playlists = styled.div`
   width: 90%;
   height: 85vh;
   overflow-y: auto; /* 세로 스크롤 추가 */
   background-color: #F8F6EE;
-  font-family: 'NanumSquare';
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
   padding: 53px;
   border-top-left-radius: 10px;
-  /* border-top-right-radius: 10px; */
+  z-index: 1;
 `;
 
 const Button = styled.button`
-  width: 120px;
+  width: 90px;
   height: 40px;
   border-radius: 10px;
   border: 1px solid rgba(156, 155, 150, 0.5);
