@@ -38,7 +38,7 @@ public class DiaryController {
      */
     @PostMapping
     public ApiResponse<?> addDiary(Authentication authentication,
-                                   @RequestBody DiaryRequest diaryRequest) {
+                                   @ModelAttribute DiaryRequest diaryRequest) {
         String memberId = jwtProvider.getMemberInfo(authentication);
 
         AddDiaryResponse response = diaryService.addDiary(memberId, diaryRequest.getDiaryTitle(), diaryRequest.getDiaryContent(),
