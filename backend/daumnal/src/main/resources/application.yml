@@ -2,5 +2,4 @@ spring:
   config:
     import:
       - classpath:/application-dev.yml
-      - classpath:/application-oauth.yml
       - classpath:/application-s3.yml
