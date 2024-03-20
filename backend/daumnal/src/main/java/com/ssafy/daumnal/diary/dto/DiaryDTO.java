@@ -3,6 +3,8 @@ package com.ssafy.daumnal.diary.dto;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public class DiaryDTO {
 
     @Getter
@@ -38,5 +40,20 @@ public class DiaryDTO {
     @Builder
     public static class AddDiaryResponse {
         private String diaryId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class GetCalendarResponse {
+        List<CalendarContent> calendarContents;
+    }
+
+    public static class CalendarContent {
+        private String emotionFirst;
+        private String diaryHashTag;
+        private String diaryId;
+        private String musicId;
+        private Integer diaryDay;
     }
 }

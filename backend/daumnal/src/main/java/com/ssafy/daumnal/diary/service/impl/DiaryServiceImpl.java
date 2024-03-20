@@ -1,8 +1,6 @@
 package com.ssafy.daumnal.diary.service.impl;
 
-import com.ssafy.daumnal.diary.dto.DiaryDTO.AddDiaryResponse;
-import com.ssafy.daumnal.diary.dto.DiaryDTO.DiaryEmotion;
-import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryWrittenTodayResponse;
+import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
 import com.ssafy.daumnal.diary.service.DiaryService;
@@ -19,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.ssafy.daumnal.diary.constants.DiaryConstants.*;
@@ -105,6 +105,30 @@ public class DiaryServiceImpl implements DiaryService {
 
         return AddDiaryResponse.builder()
                 .diaryId(String.valueOf(diary.getId()))
+                .build();
+    }
+
+    @Override
+    public GetCalendarResponse getCalendar(String memberId, String year, String month) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        diaryUtilService.validateExistsDiaryYearInput(year);
+        diaryUtilService.validateExistsDiaryMonthInput(month);
+        diaryUtilService.validateDiaryYearInput(year);
+        diaryUtilService.validateDiaryMonthInput(month);
+
+
+        List<CalendarContent> calendarContents = new ArrayList<>();
+
+        //Todo: 비즈니스 로직 구현
+
+
+        return GetCalendarResponse.builder()
+                .calendarContents(calendarContents)
                 .build();
     }
 }
