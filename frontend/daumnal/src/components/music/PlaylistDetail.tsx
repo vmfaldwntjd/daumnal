@@ -1,9 +1,10 @@
 // 플레이리스트 상세 컴포넌트
-import React from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import MusicCard from './MusicCard';
+import PlaylistControlModal from '../modal/PlaylistControlModal';
 
 interface PlaylistDetailProps {
   selectedPlaylistId: number | null;
@@ -15,6 +16,10 @@ interface PlaylistDetailProps {
 const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPlaylistId, setSelectedPlaylistId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
+  // 모달 열려 있는지 확인
+  const [isOpenInfoModal, setOpenInfoModal] = useState<boolean>(false);
+  // 모달 참조를 위한 useRef
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // 가상의 playlistId 플레이리스트 데이터
   const playlist = {
@@ -80,10 +85,32 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
     setSelectedPlaylistId(null);
   };
 
-  // 해당 플레이리스트 수정/삭제 모달 띄우는 함수
-  const handleEditClick = (playlistId: number) => () => {
-    alert(`${playlistId}번 플레이리스트 수정/삭제 모달 띄우기!`);
-  };
+  // 모달 열기/닫기 토글
+  const handleInfoPlaylist = useCallback((playlistId: number) => {
+    setSelectedPlaylistId(playlistId);
+    setOpenInfoModal(!isOpenInfoModal);
+  }, [isOpenInfoModal]);
+
+  // 모달 닫기
+  const handleClosePlaylistModal = useCallback(() => {
+    setOpenInfoModal(false);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // 모달 외부를 클릭했을 때 모달 닫기
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleClosePlaylistModal();
+      }
+    }
+
+    // 모달 외부를 클릭한 이벤트 핸들러 등록
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // 컴포넌트 언마운트 시 이벤트 핸들러 제거
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClosePlaylistModal]);
 
   return (
     <div className="flex flex-col items-center font-NanumSquare">
@@ -91,14 +118,19 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
       <Wrapper>
         <Top>
           {/* 플레이리스트 목록 이동 버튼 */}
-          <button className="self-end text-4xl pb-[150px]" onClick={handleModifySelectedPlaylistId}><FontAwesomeIcon icon={faAngleLeft} /></button>
+          <button className="self-end text-4xl mb-[150px]" onClick={handleModifySelectedPlaylistId}><FontAwesomeIcon icon={faAngleLeft} /></button>
           {/* 플레이리스트 이미지 */}
           <img className="w-48"
             src={playlist.playlistCoverUrl || defaultImageUrl}
             alt="플레이리스트 커버 이미지"
           />
           {/* 플레이리스트 수정/삭제 버튼 */}
-          <button className="self-end text-3xl pb-[155px] pl-[15px]" onClick={handleEditClick(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+          {isOpenInfoModal && (
+            <PlaylistModalContainer>
+              <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} /> {/* PlaylistControlModal */}
+            </PlaylistModalContainer>
+          )}
+          <button className="relative z-1 self-end text-3xl mb-[155px] ml-[15px]" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
         </Top>
         <p className="text-2xl mt-2 mb-3">{playlist.playlistName}</p>
       </Wrapper>
@@ -128,6 +160,12 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const PlaylistModalContainer = styled.div`
+  position: absolute;
+  z-index: 2;
+  right: 47%;
 `;
 
 const Top = styled.div`
