@@ -33,7 +33,7 @@ public class SecurityConfig {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of("https://daumnal-d.n-e.kr:4000", "http://localhost:3000"));
                     config.setAllowedMethods(Collections.singletonList("*"));
-                    config.setAllowCredentials(false);
+                    config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
                     config.setExposedHeaders(Arrays.asList("Authorization"));
                     config.setMaxAge(3600L);
