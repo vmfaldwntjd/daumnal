@@ -1,44 +1,3 @@
-// import React, {useEffect, useState} from 'react';
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from "chart.js";
-// import { Line } from "react-chartjs-2";
-// import { useLocation } from 'react-router';
-
-// ChartJS.register(
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend
-// );
-
-// const MonthlyResultPage = () => {
-
-//   const location = useLocation();
-//   const { year, month } = location.state || {};
-
-//   return (
-//     <div className='h-screen w-full p-12'>
-//     <div className=' w-full h-full bg-white rounded-xl shadow-lg'>
-//      <div>
-//      </div>
-//     </div>
-//     </div>
-//   )
-// }
-
-// export default MonthlyResultPage;
-
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useLocation } from 'react-router-dom';
@@ -121,15 +80,17 @@ const EmotionGraph = () => {
   };
 
   return (
-    <div>
-      <div>
-        {emotions.map((emotion) => (
-          <button key={emotion} onClick={() => toggleEmotion(emotion)} style={{margin: "5px"}}>
-            {emotion}
-          </button>
-        ))}
+    <div className='h-screen w-full p-12'>
+      <div className='w-full h-full bg-white rounded-xl shadow-lg p-5'>
+        <div>
+          {emotions.map((emotion) => (
+            <button key={emotion} onClick={() => toggleEmotion(emotion)} style={{margin: "5px"}}>
+              {emotion}
+            </button>
+          ))}
+        </div>
+        <Line options={options} data={data} />
       </div>
-      <Line options={options} data={data} />
     </div>
   );
 };
