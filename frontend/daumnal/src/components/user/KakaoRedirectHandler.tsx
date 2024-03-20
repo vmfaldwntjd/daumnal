@@ -19,7 +19,7 @@ const KakaoRedirectHandler = () => {
       }
 
       const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
+      const redirect_uri = `${process.env.RREACT_APP_SERVER_BASE_URL}/oauth`;
 
       const response = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
@@ -39,7 +39,7 @@ const KakaoRedirectHandler = () => {
         url: '/v2/user/me',
       });
 
-      const loginResponse = await axiosInstance.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/login`, {
+      const loginResponse = await axiosInstance.post(`http://j10a107.p.ssafy.io:8080/members/login`, {
         socialId: userInfoResponse.id.toString(),
         socialProvider: 'kakao',
       });
