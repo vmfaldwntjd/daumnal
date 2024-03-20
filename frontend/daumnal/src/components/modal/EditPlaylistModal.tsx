@@ -114,6 +114,8 @@ const ModalContent = styled.div`
   padding: 40px;
   border-radius: 10px;
   color: #776B5D;
+  position: absolute;
+  z-index: 2;
 `;
 
 const TitleInput = styled.input`
