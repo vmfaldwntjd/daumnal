@@ -10,10 +10,10 @@ const MusicPlay: React.FC = () => {
   const [playing, setPlaying] = useState<boolean>(false); // 현재 재생 상태를 저장하는 상태 변수(기본값 false)
   const [looping, setLooping] = useState<boolean>(false); // 루프 상태를 저장하는 상태 변수(기본값 false)
   const [playlist, setPlaylist] = useState<string[]>([ // 재생할 음악의 URL을 저장하는 상태 변수
-    'https://youtu.be/x_9850WmI0o?si=4iudShcvAWm5Ucis',
-    'https://youtu.be/e48ycyNnts8?si=NCE0UcTmB606PUIs',
-    'https://youtu.be/Q-BycrqDhPU?si=OMMyYoZrZ_fATV0h',
-    'https://youtu.be/AIEakY2cRvs?si=5rFr0LZ9H3zWkxlp'
+    'https://www.youtube.com/watch?v=x_9850WmI0o',
+    'https://www.youtube.com/watch?v=e48ycyNnts8',
+    'https://www.youtube.com/watch?v=Q-BycrqDhPU',
+    'https://www.youtube.com/watch?v=AIEakY2cRvs'
   ]);
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0); // 현재 재생 중인 음악의 인덱스를 저장하는 상태 변수(기본값 0)
   const [playedSeconds, setPlayedSeconds] = useState<number>(0); // 현재 재생 중인 노래의 재생 시간을 저장하는 상태 변수

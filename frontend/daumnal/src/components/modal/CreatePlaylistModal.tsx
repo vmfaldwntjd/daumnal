@@ -57,12 +57,12 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
           {/* 점선 */}
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0" style={{ pointerEvents: 'none' }}>
             <rect x="1" y="1" width="99%" height="99%" rx="8" ry="8"
-                style={{ 
-                fill: "none", 
-                stroke: previewImage ? 'none' : '#9c9388', 
-                strokeWidth: previewImage ? 1 : 2, 
-                strokeDasharray: previewImage ? "none" : "10, 5"
-                }} />
+              style={{ 
+              fill: "none", 
+              stroke: previewImage ? 'none' : '#9c9388', 
+              strokeWidth: previewImage ? 1 : 2, 
+              strokeDasharray: previewImage ? "none" : "10, 5"
+              }} />
           </svg>
           {/* 파일 입력(input[type="file"]) */}
           <input type="file" accept="image/*" onChange={handleCoverChange} ref={fileInputRef} style={{ display: 'none' }} />

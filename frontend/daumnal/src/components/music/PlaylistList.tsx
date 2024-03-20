@@ -68,17 +68,15 @@ const Playlists = styled.div`
   height: 85vh;
   overflow-y: auto; /* 세로 스크롤 추가 */
   background-color: #F8F6EE;
-  font-family: 'NanumSquare';
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
   padding: 53px;
   border-top-left-radius: 10px;
-  /* border-top-right-radius: 10px; */
 `;
 
 const Button = styled.button`
-  width: 120px;
+  width: 90px;
   height: 40px;
   border-radius: 10px;
   border: 1px solid rgba(156, 155, 150, 0.5);
