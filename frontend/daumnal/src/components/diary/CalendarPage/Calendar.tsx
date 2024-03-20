@@ -16,16 +16,21 @@ interface DiaryEntry {
   diaryDay: number;
 }
 
-const CalendarComponent: React.FC = () => {
+interface CalendarProps {
+  setSelectedMonth: (month: number) => void;
+  setSelectedYear: (year: number) => void;
+  setSelectedDiary: (diaryId: number) => void;
+}
+
+const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelectedYear, setSelectedDiary} ) => {
   const [selectedDate, setSelectedDate] = useState<Value | null>(new Date());
   const [selectedDay, setSelectedDay] = useState<Number>(new Date().getDate())
-  const [selectedMonth, setSelectedMonth] = useState<Number>(new Date().getMonth() + 1)
-  const [selectedYear, setSelectedYear] = useState<Number>(new Date().getFullYear())
 
   const monthOfActiveDate = moment(isDate(selectedDate) ? selectedDate : new Date()).format('YYYY-MM');
   const [activeMonth, setActiveMonth] = useState(monthOfActiveDate);
 
   const [diaryList, setDiaryList] = useState<DiaryEntry[]>([]);
+
 
   const getActiveMonth = (activeStartDate: moment.MomentInput) => {
     const newActiveMonth = moment(activeStartDate).format('YYYY-MM');
@@ -37,12 +42,14 @@ const CalendarComponent: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log(activeMonth);
+    // console.log(activeMonth);
 
     const parts = activeMonth.split('-');
     const year = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10);
 
+    // setSelectedYear(year);
+    // setSelectedMonth(month);
     setSelectedYear(year);
     setSelectedMonth(month);
 
@@ -60,7 +67,29 @@ const CalendarComponent: React.FC = () => {
           console.error('캘린더 정보 호출 중 오류 발생:', error);
         });
 
-  }, [activeMonth])
+  }, [activeMonth, setSelectedYear, setSelectedMonth])
+
+  useEffect(() => {
+
+    if (isDate(selectedDate)) { // selectedDate가 Date 객체인지 확인
+
+      const newSelectedDay: number = selectedDate.getDate();
+      setSelectedDay(newSelectedDay); // Date 객체에서 일(day) 부분만 추출하여 저장
+
+      // diaryList에서 selectedDay와 일치하는 일기 찾기
+      const foundDiary = diaryList.find(diary => diary.diaryDay === newSelectedDay);
+  
+      // 일치하는 일기가 있다면 해당 일기의 diaryId를 diaryId 상태에 할당
+      if (foundDiary) {
+        setSelectedDiary(foundDiary.diaryId);
+        // console.log(diaryId)
+      } else {
+        setSelectedDiary(0);
+        // console.log(diaryId)
+      }
+    }
+  }, [selectedDate, diaryList]); // 의존성 배열에 diaryList 추가
+  
 
 
   const addContent = ({date}: any) => {
