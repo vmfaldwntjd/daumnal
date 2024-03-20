@@ -91,4 +91,17 @@ public class MemberController {
         GetMemberNicknameResponse memberNicknameResponse = memberService.getMemberNickname(memberId);
         return ApiResponse.success(SuccessCode.GET_MEMBER_NICKNAME, memberNicknameResponse);
     }
+
+    /**
+     * 로그아웃 API
+     *
+     * @param authentication
+     * @return
+     */
+    @PostMapping("/logout")
+    public ApiResponse<?> logout(Authentication authentication) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+        memberService.modifyMemberStatusLogout(memberId);
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_LOGOUT);
+    }
 }

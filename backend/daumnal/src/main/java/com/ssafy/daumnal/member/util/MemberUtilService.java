@@ -130,6 +130,10 @@ public class MemberUtilService {
         return providerResult;
     }
 
+    /**
+     * 닉네임 입력했는지 확인하기
+     * @param nickname
+     */
     public void validateNicknameEmpty(String nickname) {
         if (!StringUtils.hasText(nickname)) {
             throw new InvalidException(NOT_EXISTS_MEMBER_NICKNAME_GET);
