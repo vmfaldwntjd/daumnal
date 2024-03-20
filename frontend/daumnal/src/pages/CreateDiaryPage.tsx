@@ -43,8 +43,8 @@ const CreateDiary: React.FC = () => {
   // 해시태그 변경 이벤트 핸들러
   const handleTagsChange = (newTags: string[]) => {
     setHashTags(newTags);
-    // setHashTag(newTags.join(' '));
-    // console.log('hashTag:', hashTag)
+    setHashTag(newTags.join(' '));
+    console.log('hashTag:', hashTag)
   }
 
   // 일기 내용 변경 이벤트 핸들러
