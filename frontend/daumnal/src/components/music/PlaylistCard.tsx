@@ -1,5 +1,4 @@
-// 플레이리스트 목록 내부 단일 플레이리스트 컴포넌트
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
@@ -9,33 +8,54 @@ interface PlaylistCardProps {
   playlistId: number;
   playlistName: string;
   playlistCoverUrl: string | null;
-  onPlaylistClick: (id: number) => void; // 콜백 함수의 유형 정의
+  onPlaylistClick: (playlistId: number) => void;
 }
 
 const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, playlistCoverUrl, onPlaylistClick }) => {
-  // 기본 이미지 지정
+  // 기본 이미지
   const defaultImageUrl = '/image/playlist_default.png';
-
-  // 수정/삭제 모달 상태 변수
+  // 모달 열려 있는지 확인
   const [isOpenInfoModal, setOpenInfoModal] = useState<boolean>(false);
+  // 모달 참조를 위한 useRef
+  const modalRef = useRef<HTMLDivElement>(null);
+  // 선택한 플레이리스트 id
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
-  const [buttonPosition, setButtonPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
+  // 플레이리스트 클릭 시 해당 ID로 이동
+  const handleMovePlaylist = (playlistId: number) => () => {
+    onPlaylistClick(playlistId);
+  }
 
-  // 해당 플레이리스트 수정/삭제 모달 띄우는 함수
+  // 수정/삭제 모달 열고 닫는 토글
   const handleInfoPlaylist = useCallback((playlistId: number) => {
     setSelectedPlaylistId(playlistId);
     setOpenInfoModal(!isOpenInfoModal);
-  }, [isOpenInfoModal]); // 배열에 있는 값들이 변경될 때에만 새로운 함수 생성
+  }, [isOpenInfoModal]);
 
-  // 클릭한 플레이리스트 상세 컴포넌트로 교체하는 함수
-  const handleMovePlaylist = (playlistId: number) => () => {
-    onPlaylistClick(playlistId);  // 콜백 함수 호출
-  }
+  // 모달 닫기
+  const handleClosePlaylistModal = useCallback(() => {
+    setOpenInfoModal(false);
+  }, []);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // 모달 외부를 클릭했을 때 모달 닫기
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleClosePlaylistModal();
+      }
+    }
+
+    // 모달 외부를 클릭한 이벤트 핸들러 등록
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // 컴포넌트 언마운트 시 이벤트 핸들러 제거
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClosePlaylistModal]);
+  
   return (
-    <Container>
-      {/* 커버 이미지 */}
+    <Container ref={modalRef}> {/* 모달을 위한 ref 추가 */}
+      {/* 플레이리스트 상세 컴포넌트 전환을 위한 클릭 이벤트 핸들러 */}
       <button onClick={handleMovePlaylist(playlistId)}>
         <img
           src={playlistCoverUrl || defaultImageUrl}
@@ -44,31 +64,39 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
       </button>
       <Wrapper>
         {/* 플레이리스트 이름 */}
-        <button className="self-start" onClick={handleMovePlaylist(playlistId)}>{playlistName}</button>
+        <button className="self-start font-NanumSquare" onClick={handleMovePlaylist(playlistId)}>{playlistName}</button>
         {/* 플레이리스트 수정/삭제 모달 */}
         {isOpenInfoModal && (
-          <PlaylistControlModal onClickToggleModal={handleInfoPlaylist} selectedPlaylistId={selectedPlaylistId} />
+          <PlaylistModalContainer>
+            <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} />
+          </PlaylistModalContainer>
         )}
-        <button className="self-end text-xl -mb-3" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+        <button className="self-end text-2xl" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
       </Wrapper>
     </Container>
   );
 };
 
 const Container = styled.div`
+  position: relative;
   width: 220px;
   height: 280px;
   background-color: #FDFBF8;
   border-radius: 10px;
   padding: 10px;
   box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 10px;
+  padding-top: 5px;
+`;
+
+const PlaylistModalContainer = styled.div`
+  position: absolute;
+  bottom: -30px;
+  right: 23px;
 `;
 
 export default PlaylistCard;

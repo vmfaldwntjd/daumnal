@@ -29,7 +29,7 @@ const PlaylistPage: React.FC = () => {
             selectedPlaylistId={selectedPlaylistId} 
             setSelectedPlaylistId={setSelectedPlaylistId} 
             onMusicSelect={handleMusicSelect} 
-            playlistId={selectedPlaylistId} 
+            playlistId={selectedPlaylistId}
           />
         ) : (
           // 플레이리스트 목록 컴포넌트 렌더링
