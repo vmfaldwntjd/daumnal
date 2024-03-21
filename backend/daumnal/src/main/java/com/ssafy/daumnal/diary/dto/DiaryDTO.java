@@ -8,6 +8,7 @@ import java.util.List;
 public class DiaryDTO {
 
     @Getter
+    @Setter
     public static class DiaryRequest {
         private String diaryTitle;
         private String diaryContent;
@@ -17,6 +18,7 @@ public class DiaryDTO {
     }
 
     @Getter
+    @Setter
     public static class DiaryEmotion {
         private Integer fear;
         private Integer surprise;
