@@ -99,7 +99,7 @@ const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 64%;
+  width: 63.9%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
@@ -116,6 +116,7 @@ const ModalContent = styled.div`
   background-color: white;
   padding: 40px;
   border-radius: 10px;
+  box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
   color: #776B5D;
 `;
 
