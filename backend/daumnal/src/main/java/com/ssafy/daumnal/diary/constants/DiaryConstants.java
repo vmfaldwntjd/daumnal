@@ -6,4 +6,5 @@ public interface DiaryConstants {
     int HASH_TAG_MAX_COUNT = 3;
     String SPLIT_REGEX = " ";
     String HASH_TAG_REGEX = "^[가-힣A-Za-z0-9_]+$";
+    String NUMBER_REGEX = "^[1-9]\\d*$";
 }
