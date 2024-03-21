@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import EmotionButton from '../components/EmotionButton';
 import {
   Chart as ChartJS,
@@ -30,6 +30,7 @@ interface DiaryData {
 
 const EmotionGraph = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { selectedYear, selectedMonth } = location.state || {};
   const [diaryData, setDiaryData] = useState<DiaryData[]>([]);
   const [selectedEmotions, setSelectedEmotions] = useState<string[]>([]);
@@ -65,6 +66,10 @@ const EmotionGraph = () => {
     updateSize(); // 초기 사이즈 측정
     return () => window.removeEventListener('resize', updateSize);
   }, []);
+
+  useEffect(() => {
+    console.log(`선택된 년도: ${selectedYear}, 선택된 월: ${selectedMonth}`);
+  }, [selectedYear, selectedMonth]);
 
   const toggleEmotion = (emotion: string) => {
     setSelectedEmotions((prev) =>
@@ -118,6 +123,13 @@ const EmotionGraph = () => {
   return (
     <div className='h-screen w-full p-12'>
       <div className='relative w-full pt-1 pb-1 px-6 bg-white rounded-xl shadow-lg flex flex-col justify-center m-auto'>
+        {/* 뒤로 가기 버튼 추가 */}
+        <button
+          onClick={() => navigate('/calendar', { state: { selectedYear, selectedMonth } })} // navigate 함수를 사용하여 이전 페이지로 이동
+          className="absolute top-5 left-5 bg-gray-200 p-2 rounded-full"
+        >
+          뒤로 가기
+        </button>
       <h2 className="text-center mb-6 text-base pt-2 px-4 lg:text-xl">
         {`${selectedYear || '년도'}년 ${selectedMonth || '월'}월`}
       </h2>

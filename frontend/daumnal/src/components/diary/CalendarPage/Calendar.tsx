@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Calendar from 'react-calendar';
 import './Calendar.css';
+import DiaryDetailModal from '../../modal/DiaryDetailModal';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -19,17 +20,20 @@ interface DiaryEntry {
 interface CalendarProps {
   setSelectedMonth: (month: number) => void;
   setSelectedYear: (year: number) => void;
-  setSelectedDiary: (diaryId: number) => void;
 }
 
-const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelectedYear, setSelectedDiary} ) => {
+const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelectedYear} ) => {
+
   const [selectedDate, setSelectedDate] = useState<Value | null>(new Date());
-  const [selectedDay, setSelectedDay] = useState<Number>(new Date().getDate())
+  const [selectedDay, setSelectedDay] = useState<number>(new Date().getDate())
 
   const monthOfActiveDate = moment(isDate(selectedDate) ? selectedDate : new Date()).format('YYYY-MM');
   const [activeMonth, setActiveMonth] = useState(monthOfActiveDate);
 
   const [diaryList, setDiaryList] = useState<DiaryEntry[]>([]);
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDayClick, setIsDayClick] = useState<boolean>(false)
 
 
   const getActiveMonth = (activeStartDate: moment.MomentInput) => {
@@ -41,15 +45,31 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
     return date instanceof Date;
   }
 
+
+  const handleDayClick = (date: Date) => {
+
+    setSelectedDate(date); // 선택된 날짜를 상태에 설정합니다.
+  
+    const newSelectedDay: number = date.getDate();
+    setSelectedDay(newSelectedDay);
+  
+    // diaryList에서 selectedDay와 일치하는 일기 찾기
+    const foundDiary = diaryList.find(diary => diary.diaryDay === newSelectedDay);
+  
+
+    if (foundDiary) {
+      setIsDayClick(true)
+    } 
+
+  };
+
+  
   useEffect(() => {
-    // console.log(activeMonth);
 
     const parts = activeMonth.split('-');
     const year = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10);
 
-    // setSelectedYear(year);
-    // setSelectedMonth(month);
     setSelectedYear(year);
     setSelectedMonth(month);
 
@@ -69,26 +89,20 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
 
   }, [activeMonth, setSelectedYear, setSelectedMonth])
 
+  
   useEffect(() => {
 
-    if (isDate(selectedDate)) { // selectedDate가 Date 객체인지 확인
-
-      const newSelectedDay: number = selectedDate.getDate();
-      setSelectedDay(newSelectedDay); // Date 객체에서 일(day) 부분만 추출하여 저장
-
-      // diaryList에서 selectedDay와 일치하는 일기 찾기
-      const foundDiary = diaryList.find(diary => diary.diaryDay === newSelectedDay);
-  
-      // 일치하는 일기가 있다면 해당 일기의 diaryId를 diaryId 상태에 할당
-      if (foundDiary) {
-        setSelectedDiary(foundDiary.diaryId);
-        // console.log(diaryId)
-      } else {
-        setSelectedDiary(0);
-        // console.log(diaryId)
-      }
+    if (isDayClick) {
+      setIsModalOpen(true)
     }
-  }, [selectedDate, diaryList]); // 의존성 배열에 diaryList 추가
+
+  }, [isDayClick])
+
+  useEffect(() => {
+
+    
+
+  }, [diaryList])
   
 
 
@@ -129,15 +143,23 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
 
 
   return (
+    <div>
     <div className='w-full h-full'>
         <Calendar 
         onChange={setSelectedDate} 
         value={selectedDate}
         tileContent={addContent}
-        onActiveStartDateChange={({activeStartDate}) =>
-      getActiveMonth(activeStartDate)}
-        formatDay={(locale, date) => moment(date).format("D")} />
+        onActiveStartDateChange={({activeStartDate}) => getActiveMonth(activeStartDate)}
+        formatDay={(locale, date) => moment(date).format("D")} 
+        onClickDay={(value, event) => handleDayClick(value)}/>
+    </div> 
+    {isModalOpen && <DiaryDetailModal 
+    onClose={() => { setIsModalOpen(false); setIsDayClick(false); }} 
+    // diaryList={diaryList}
+    // setSelectedDay={setSelectedDay}
+    />}     
     </div>
+
   );
 }
 
