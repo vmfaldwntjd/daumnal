@@ -8,11 +8,10 @@ import java.util.List;
 public class DiaryDTO {
 
     @Getter
-    public static class DiaryRequest {
+    public static class DiaryContentRequest {
         private String diaryTitle;
         private String diaryContent;
         private String diaryHashTag;
-        private MultipartFile diaryPhoto;
         private DiaryEmotion diaryEmotion;
     }
 
