@@ -8,8 +8,18 @@ const CalendarPage: React.FC = () => {
   const location = useLocation();
   const state = location.state;
 
-  const [selectedMonth, setSelectedMonth] = useState<number>(state?.selectedMonth || new Date().getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState<number>(state?.selectedYear || new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+
+  // useEffect(() => {
+  //   if (state?.selectedMonth && state?.selectedYear) {
+  //     setSelectedMonth(state.selectedMonth);
+  //     setSelectedYear(state.selectedYear);
+  //   }
+  // }, [state]);
+
+  console.log("selectedMonth:", selectedMonth);
+  console.log("selectedYear:", selectedYear);
 
   const handleButtonClick = () => {
     navigate('/monthly-result', { state: { selectedYear, selectedMonth } });
