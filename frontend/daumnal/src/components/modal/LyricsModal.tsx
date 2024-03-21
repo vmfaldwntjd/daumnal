@@ -35,7 +35,7 @@ const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 64%;
+  width: 63.9%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;

@@ -161,6 +161,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 7px;
 `;
 
 const PlaylistModalContainer = styled.div`
@@ -178,12 +179,13 @@ const Top = styled.div`
 
 const Musics = styled.div`
   width: 70%;
-  height: 61vh;
+  height: 60vh;
   overflow-y: auto; /* 세로 스크롤 추가 */
   background-color: #F8F6EE;
   display: flex;
   flex-direction: column;
-  padding: 10px 10px 0px 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 export default PlaylistDetail;
