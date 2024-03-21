@@ -50,4 +50,8 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "emotion_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Emotion emotion;
+
+    public void updateMusicId(Long musicId) {
+        this.musicId = musicId;
+    }
 }
