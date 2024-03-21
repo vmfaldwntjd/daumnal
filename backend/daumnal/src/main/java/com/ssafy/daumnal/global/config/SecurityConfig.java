@@ -27,15 +27,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println("1");
         http
                 .cors(corsConfigurer -> corsConfigurer.configurationSource(request -> {
+                    System.out.println("2");
                     CorsConfiguration config = new CorsConfiguration();
+                    System.out.println("3");
                     config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                    System.out.println("4");
                     config.setAllowedMethods(Collections.singletonList("*"));
+                    System.out.println("5");
                     config.setAllowCredentials(true);
+                    System.out.println("6");
                     config.setAllowedHeaders(Collections.singletonList("*"));
+                    System.out.println("7");
                     config.setExposedHeaders(Arrays.asList("Authorization"));
+                    System.out.println("8");
                     config.setMaxAge(3600L);
+                    System.out.println("8");
                     return config;
                 }))
                 .httpBasic(HttpBasicConfigurer::disable)
@@ -50,6 +59,7 @@ public class SecurityConfig {
                                 .authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, memberDetailsService),
                         UsernamePasswordAuthenticationFilter.class);
+        System.out.println("9");
 
         return http.build();
     }
