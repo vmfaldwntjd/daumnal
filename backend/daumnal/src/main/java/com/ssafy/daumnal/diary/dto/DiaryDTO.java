@@ -8,14 +8,17 @@ import java.util.List;
 public class DiaryDTO {
 
     @Getter
-    public static class DiaryContentRequest {
+    @Setter
+    public static class DiaryRequest {
         private String diaryTitle;
         private String diaryContent;
         private String diaryHashTag;
+        private MultipartFile diaryPhoto;
         private DiaryEmotion diaryEmotion;
     }
 
     @Getter
+    @Setter
     public static class DiaryEmotion {
         private Integer fear;
         private Integer surprise;
