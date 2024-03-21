@@ -30,7 +30,7 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
   }
 
   return (
-    <div>
+    <div className="font-NanumSquare">
       <Container>
         {/* 앨범 이미지 */}
         <img className="w-16 ml-2"

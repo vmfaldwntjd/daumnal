@@ -113,26 +113,27 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
   }, [handleClosePlaylistModal]);
 
   return (
-    <div className="flex flex-col items-center font-NanumSquare">
+    <div className="flex flex-col items-center">
       {/* 플레이리스트 정보 */}
       <Wrapper>
         <Top>
-          {/* 플레이리스트 목록 이동 버튼 */}
+          {/* 플레이리스트 목록 컴포넌트 전환을 위한 클릭 이벤트 핸들러 */}
           <button className="self-end text-4xl mb-[150px]" onClick={handleModifySelectedPlaylistId}><FontAwesomeIcon icon={faAngleLeft} /></button>
           {/* 플레이리스트 이미지 */}
           <img className="w-48"
             src={playlist.playlistCoverUrl || defaultImageUrl}
             alt="플레이리스트 커버 이미지"
           />
-          {/* 플레이리스트 수정/삭제 버튼 */}
+          {/* 플레이리스트 수정/삭제 모달 */}
           {isOpenInfoModal && (
-            <PlaylistModalContainer>
-              <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} /> {/* PlaylistControlModal */}
+            <PlaylistModalContainer ref={modalRef}> {/* 모달을 위한 ref 추가 */}
+              <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} />
             </PlaylistModalContainer>
           )}
           <button className="relative z-1 self-end text-3xl mb-[155px] ml-[15px]" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
         </Top>
-        <p className="text-2xl mt-2 mb-3">{playlist.playlistName}</p>
+        {/* 플레이리스트 이름 */}
+        <p className="font-NanumSquare text-2xl mt-2 mb-3">{playlist.playlistName}</p>
       </Wrapper>
       {/* 노래 목록 */}
       <Musics>
