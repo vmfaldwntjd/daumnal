@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/upload")
+@CrossOrigin("*")
 public class S3Controller {
 
     private final S3Service s3Service;
