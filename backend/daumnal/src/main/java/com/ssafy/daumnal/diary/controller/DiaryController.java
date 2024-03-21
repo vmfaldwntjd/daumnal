@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/diaries")
-@CrossOrigin("*")
 public class DiaryController {
 
     private final DiaryService diaryService;
