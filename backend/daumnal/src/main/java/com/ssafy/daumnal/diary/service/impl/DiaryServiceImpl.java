@@ -131,4 +131,9 @@ public class DiaryServiceImpl implements DiaryService {
                 .calendarContents(calendarContents)
                 .build();
     }
+
+    @Override
+    public void addTodayRecommendedMusic(String memberId, Long diaryId, Long musicId) {
+
+    }
 }
