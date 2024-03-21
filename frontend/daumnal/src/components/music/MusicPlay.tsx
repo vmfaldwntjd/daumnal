@@ -1,7 +1,8 @@
 // 플레이리스트 페이지 우측 노래 재생
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
+import LyricsModal from '../modal/LyricsModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRepeat, faBackward, faPlay, faPause, faForward, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,6 +19,14 @@ const MusicPlay: React.FC = () => {
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0); // 현재 재생 중인 음악의 인덱스를 저장하는 상태 변수(기본값 0)
   const [playedSeconds, setPlayedSeconds] = useState<number>(0); // 현재 재생 중인 노래의 재생 시간을 저장하는 상태 변수
   const [duration, setDuration] = useState<number>(0); // 현재 재생 중인 노래의 총 재생 시간을 저장하는 상태 변수
+  
+  // 가사 모달 상태 변수
+  const [isOpenLyricsModal, setOpenLyricsModal] = useState<boolean>(false);
+
+  // 해당 노래 가사 모달 열고 닫는 함수
+  const handleLyrics = useCallback(() => {
+    setOpenLyricsModal(!isOpenLyricsModal); // setOpenLyricsModal 함수 호출하여 isOpenLyricsModal 상태 토글
+  }, [isOpenLyricsModal]); // 배열에 있는 값들이 변경될 때에만 새로운 함수 생성
 
   // 재생/정지 버튼 함수
   const handlePlayPause = () => { 
@@ -76,7 +85,7 @@ const MusicPlay: React.FC = () => {
           onDuration={(duration) => setDuration(duration)} // 노래의 총 재생 시간 설정
         />
         {/* 커스텀 컨트롤바 */}
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-[320px] mt-3">
           <Bar
             type="range"
             min={0}
@@ -92,7 +101,7 @@ const MusicPlay: React.FC = () => {
           </p>
         </div>
         {/* 컨트롤 버튼 */}
-        <div className='w-full flex mt-6 gap-12'>
+        <div className='flex justify-between mt-7'>
           {/* 반복재생 */}
           {looping ? (
             <button onClick={handleLoop}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faRepeat} /></button>
@@ -110,7 +119,10 @@ const MusicPlay: React.FC = () => {
           {/* 다음 곡 */}
           <button onClick={handleNext}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faForward} /></button>
           {/* 가사 모달 */}
-          <button><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
+          {isOpenLyricsModal && (
+            <LyricsModal onClickToggleModal={handleLyrics} />
+          )}
+          <button onClick={handleLyrics}><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
         </div>
       </div>
     </Container>

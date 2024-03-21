@@ -30,13 +30,14 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
   }
 
   return (
-    <div>
+    <div className="font-NanumSquare">
       <Container>
         {/* 앨범 이미지 */}
         <img className="w-16 ml-2"
           src={musicCoverUrl || defaultImageUrl}
           alt="앨범 커버 이미지"
         />
+        {/* 노래 정보 */}
         <Wrapper>
           <MusicInfo>
             {/* 노래 제목 */}
@@ -44,6 +45,7 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
             {/* 아티스트 이름 */}
             <p className="text-base">{musicSingerName}</p>
           </MusicInfo>
+          {/* 컨트롤 버튼 */}
           <Buttons>
             {/* 노래 재생 버튼 */}
             <button className="text-2xl" onClick={handlePlayMusic(musicId)}><FontAwesomeIcon icon={faPlay} /></button>

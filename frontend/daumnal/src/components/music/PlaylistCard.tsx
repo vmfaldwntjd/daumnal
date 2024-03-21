@@ -54,7 +54,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
   }, [handleClosePlaylistModal]);
   
   return (
-    <Container ref={modalRef}> {/* 모달을 위한 ref 추가 */}
+    <Container>
       {/* 플레이리스트 상세 컴포넌트 전환을 위한 클릭 이벤트 핸들러 */}
       <button onClick={handleMovePlaylist(playlistId)}>
         <img
@@ -67,7 +67,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
         <button className="self-start font-NanumSquare" onClick={handleMovePlaylist(playlistId)}>{playlistName}</button>
         {/* 플레이리스트 수정/삭제 모달 */}
         {isOpenInfoModal && (
-          <PlaylistModalContainer>
+          <PlaylistModalContainer ref={modalRef}> {/* 모달을 위한 ref 추가 */}
             <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} />
           </PlaylistModalContainer>
         )}
