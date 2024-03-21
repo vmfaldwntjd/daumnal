@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class SecurityConfig {
                     System.out.println("2");
                     CorsConfiguration config = new CorsConfiguration();
                     System.out.println("3");
-                    config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                    config.setAllowedOrigins(List.of("https://daumnal-d.n-e.kr:4000", "http://localhost:3000"));
                     System.out.println("4");
                     config.setAllowedMethods(Collections.singletonList("*"));
                     System.out.println("5");

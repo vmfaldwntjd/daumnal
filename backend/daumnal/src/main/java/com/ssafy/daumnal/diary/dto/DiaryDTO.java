@@ -3,9 +3,12 @@ package com.ssafy.daumnal.diary.dto;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public class DiaryDTO {
 
     @Getter
+    @Setter
     public static class DiaryRequest {
         private String diaryTitle;
         private String diaryContent;
@@ -15,14 +18,15 @@ public class DiaryDTO {
     }
 
     @Getter
+    @Setter
     public static class DiaryEmotion {
-        private Integer fear;
-        private Integer surprise;
-        private Integer angry;
-        private Integer sadness;
-        private Integer neutral;
-        private Integer happiness;
-        private Integer disgust;
+        private String fear;
+        private String surprise;
+        private String angry;
+        private String sadness;
+        private String neutral;
+        private String happiness;
+        private String disgust;
     }
 
     @Getter
@@ -38,5 +42,20 @@ public class DiaryDTO {
     @Builder
     public static class AddDiaryResponse {
         private String diaryId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class GetCalendarResponse {
+        List<CalendarContent> calendarContents;
+    }
+
+    public static class CalendarContent {
+        private String emotionFirst;
+        private String diaryHashTag;
+        private String diaryId;
+        private String musicId;
+        private Integer diaryDay;
     }
 }

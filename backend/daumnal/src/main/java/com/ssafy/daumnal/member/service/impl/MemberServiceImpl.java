@@ -16,9 +16,10 @@ import com.ssafy.daumnal.member.util.MemberUtilService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
+import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_DELETE;
+import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_LOGOUT;
 
 @Service
 @RequiredArgsConstructor
@@ -106,6 +107,20 @@ public class MemberServiceImpl implements MemberService {
                 .memberId(memberId)
                 .memberNickname(member.getNickname())
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public void modifyMemberStatusLogout(String memberId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        member.updateMemberStatus(MemberStatus.LOGOUT);
     }
 
     private GetMemberLoginResponse getGetMemberLoginResponse(String socialId, String socialProvider) {

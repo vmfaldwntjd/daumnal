@@ -2,6 +2,7 @@ package com.ssafy.daumnal.diary.controller;
 
 import com.ssafy.daumnal.diary.dto.DiaryDTO.AddDiaryResponse;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.DiaryRequest;
+import com.ssafy.daumnal.diary.dto.DiaryDTO.GetCalendarResponse;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryWrittenTodayResponse;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.global.constants.SuccessCode;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/diaries")
+@CrossOrigin("*")
 public class DiaryController {
 
     private final DiaryService diaryService;
@@ -38,11 +40,27 @@ public class DiaryController {
      */
     @PostMapping
     public ApiResponse<?> addDiary(Authentication authentication,
-                                   @RequestBody DiaryRequest diaryRequest) {
+                                   @ModelAttribute DiaryRequest diaryRequest) {
         String memberId = jwtProvider.getMemberInfo(authentication);
 
         AddDiaryResponse response = diaryService.addDiary(memberId, diaryRequest.getDiaryTitle(), diaryRequest.getDiaryContent(),
                 diaryRequest.getDiaryHashTag(), diaryRequest.getDiaryPhoto(), diaryRequest.getDiaryEmotion());
         return ApiResponse.success(SuccessCode.CREATE_DIARY, response);
+    }
+
+    /**
+     * 캘린더 조회 API
+     * @param authentication
+     * @param year
+     * @param month
+     * @return
+     */
+    @GetMapping("/calendar")
+    public ApiResponse<?> getCalendar(Authentication authentication,
+                                   @RequestParam(required = false) String year,
+                                   @RequestParam(required = false) String month) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+        GetCalendarResponse response = diaryService.getCalendar(memberId, year, month);
+        return ApiResponse.success(SuccessCode.GET_DIARY_CALENDAR,response);
     }
 }
