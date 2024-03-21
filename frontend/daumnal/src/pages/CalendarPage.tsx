@@ -1,30 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import CalendarComponent from '../components/diary/CalendarPage/Calendar';
-import DiaryDetailModal from '../components/modal/DiaryDetailModal';
 
 const CalendarPage: React.FC = () => {
   
   const navigate = useNavigate(); 
+  const location = useLocation();
+  const state = location.state;
 
-  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-
-  const [selectedDiary, setSelectedDiary] = useState<Number>(0)
-
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedMonth, setSelectedMonth] = useState<number>(state?.selectedMonth || new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState<number>(state?.selectedYear || new Date().getFullYear());
 
   const handleButtonClick = () => {
     navigate('/monthly-result', { state: { selectedYear, selectedMonth } });
   };
 
-  useEffect(() => {
-    if (selectedDiary != 0) {
-      setIsModalOpen(true)
-    }
-
-  }, [selectedDiary])
-  
 
   return (
     <div className='h-full w-full p-12 '>
@@ -33,12 +23,9 @@ const CalendarPage: React.FC = () => {
      <div className='w-full h-full'>
       <CalendarComponent 
         setSelectedMonth={setSelectedMonth}
-        setSelectedYear={setSelectedYear}
-        setSelectedDiary={setSelectedDiary}/>
-      {/* <button onClick={() => setIsModalOpen(true)}>일기 상세 보기</button> */}
+        setSelectedYear={setSelectedYear}/>
      </div>
     </div>
-    {isModalOpen && <DiaryDetailModal onClose={() => setIsModalOpen(false)} />}
     </div>
   )
 };

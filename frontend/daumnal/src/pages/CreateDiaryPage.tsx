@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
@@ -9,8 +8,6 @@ import Loading from '../components/diary/createDiaryPage/Loading';
 
 
 const CreateDiary: React.FC = () => {
-
-  const navigate = useNavigate()
 
   // 오늘의 날짜
   const today:Date = new Date();
@@ -44,7 +41,7 @@ const CreateDiary: React.FC = () => {
   const handleTagsChange = (newTags: string[]) => {
     setHashTags(newTags);
     setHashTag(newTags.join(' '));
-    console.log('hashTag:', hashTag)
+    // console.log('hashTag:', hashTag)
   }
 
   // 일기 내용 변경 이벤트 핸들러

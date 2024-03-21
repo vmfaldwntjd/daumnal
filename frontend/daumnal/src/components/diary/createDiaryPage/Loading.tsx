@@ -48,14 +48,6 @@ type DiaryEmotion = {
   disgust: number,
 };
 
-interface FormDataStructure {
-  diaryTitle: string;
-  diaryContent: string;
-  diaryHashTag: string;
-  diaryPhoto: File | null;
-  diaryEmotion: DiaryEmotion; // 여기서 EmotionState는 위에서 정의한 타입을 사용
-}
-
 const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, title, hashTag, content, image }) => {
 
 
@@ -83,18 +75,34 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
 
         const emotion: DiaryEmotion = response.data.data.diaryEmotion
 
-        console.log('hashTag', hashTag)
-        console.log('image', image)
+        const fear = emotion.fear.toString()
+        const surprise = emotion.surprise.toString()
+        const angry = emotion.angry.toString()
+        const sadness = emotion.sadness.toString()
+        const neutral = emotion.neutral.toString()
+        const happiness = emotion.happiness.toString()
+        const disgust = emotion.disgust.toString()
+
         console.log('emotion', emotion)
+        console.log('fear', fear)
 
         const formData = new FormData();
 
         formData.append('diaryTitle', title);
         formData.append('diaryContent', content);
         formData.append('diaryHashTag', hashTag);
-        // 이미지 파일 추가 ('diaryPhoto' 필드명과 함께)
-        if (image != null) formData.append('diaryPhoto', image); // image는 File 객체
-        formData.append('diaryEmotion', JSON.stringify(emotion));
+        formData.append('diaryEmotion.fear', fear)
+        formData.append('diaryEmotion.surprise', surprise)
+        formData.append('diaryEmotion.angry', angry)
+        formData.append('diaryEmotion.sadness', sadness)
+        formData.append('diaryEmotion.neutral', neutral)
+        formData.append('diaryEmotion.happiness', happiness)
+        formData.append('diaryEmotion.disgust', disgust)
+        if (image != null) formData.append('diaryPhoto', image);
+
+        formData.forEach((value, key) => {
+          console.log(key, value, typeof(value));
+        });
 
         //일기 등록하는 axios 로직 구현
         axiosImage.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries`, formData)
@@ -105,7 +113,7 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
 
         })
         .catch(function (error:any) {
-          console.log('일기 등록 에러발생', error.data);
+          console.log('일기 등록 에러발생', error.response);
         });
         
       }
