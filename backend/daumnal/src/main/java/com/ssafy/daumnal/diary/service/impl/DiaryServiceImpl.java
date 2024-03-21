@@ -136,10 +136,10 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     /**
-     * 오늘 작성한 일기에서 추천된 노래 추가
-     * @param memberId
-     * @param diaryId
-     * @param musicId
+     * 오늘 작성한 일기에서 추천된 노래 저장
+     * @param memberId 로그인 상태인 회원
+     * @param diaryId 오늘 작성한 일기 id
+     * @param musicId 추천된 노래 id
      */
     @Override
     @Transactional
