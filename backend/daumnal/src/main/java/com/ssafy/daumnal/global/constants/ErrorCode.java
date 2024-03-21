@@ -37,6 +37,7 @@ public enum ErrorCode {
     INVALID_MEMBER_STATUS_ON_LOGIN(FORBIDDEN, "해당 회원은 이미 로그인 한 상태입니다!"),
 
     // 일기
+    NOT_EXISTS_DIARY_ID(BAD_REQUEST, "존재하지 않는 일기 id 입니다!"),
     NOT_EXISTS_DIARY(NOT_FOUND, "선택한 일기는 존재하지 않습니다!"),
     NOT_EXISTS_DIARY_EMOTION_ID(NOT_FOUND, "해당 감정에 대한 정보가 존재하지 않습니다!"),
     NOT_EXISTS_DIARY_TITLE_INPUT(BAD_REQUEST, "일기 제목을 입력해주세요!"),
@@ -54,7 +55,10 @@ public enum ErrorCode {
     INVALID_DIARY_YEAR_INPUT(BAD_REQUEST, "year 정보의 입력 형식이 올바르지 않습니다!"),
     INVALID_DIARY_MONTH_INPUT(BAD_REQUEST, "month 정보의 입력 형식이 올바르지 않습니다!"),
 
+    NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER(BAD_REQUEST, "로그인 상태인 회원과 일기 작성자가 다릅니다!"),
+
     //음악
+    NOT_EXISTS_MUSIC_ID(BAD_REQUEST, "존재하지 않는 노래 id 입니다!"),
     NOT_EXISTS_BACKGROUND_MUSIC(NOT_FOUND, "존재하지 않는 배경음악입니다!"),
 
     INVALID_BACKGROUND_MUSIC_ID(BAD_REQUEST, "배경음악 id 입력 형식이 올바르지 않습니다!"),

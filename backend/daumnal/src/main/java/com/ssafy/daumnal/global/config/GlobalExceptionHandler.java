@@ -4,6 +4,8 @@ import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
 import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.global.exception.NotSameException;
+
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -24,6 +26,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ApiResponse<?> handleInvalidException(InvalidException e) {
+
+        return ApiResponse.error(e.getCode());
+    }
+
+    @ExceptionHandler
+    public ApiResponse<?> handleNotSameException(NotSameException e) {
 
         return ApiResponse.error(e.getCode());
     }

@@ -71,7 +71,8 @@ public class DiaryController {
      * @return
      */
     @PatchMapping("/{diaryId}/musics/{musicId}")
-    public ApiResponse<?> addTodayRecommendedMusic(Authentication authentication, @PathVariable Long diaryId, @PathVariable Long musicId) {
+    public ApiResponse<?> addTodayRecommendedMusic(Authentication authentication,
+                                            @PathVariable Long diaryId, @PathVariable Long musicId) {
         diaryService.addTodayRecommendedMusic(jwtProvider.getMemberInfo(authentication), diaryId, musicId);
 
         return ApiResponse.success(SuccessCode.UPDATE_TODAY_RECOMMENDED_MUSIC);
