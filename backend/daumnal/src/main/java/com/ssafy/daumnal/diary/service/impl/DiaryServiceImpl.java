@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +36,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final S3Service s3Service;
     private final EmotionRepository emotionRepository;
 
+    @Transactional
     @Override
     public GetDiaryWrittenTodayResponse getDiaryWritten(String memberId) {
 
@@ -49,8 +51,22 @@ public class DiaryServiceImpl implements DiaryService {
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
 
+        LocalDate now = LocalDate.now();
+        int nowYear = now.getYear();
+        int nowMonth = now.getMonthValue();
+        int nowDay = now.getDayOfMonth();
+
         if (diaryRepository.existsByMember(member)) {
-            writtenResponse.setWritten(true);
+            List<Diary> diaries = diaryRepository.findDiariesByMemberOrderByCreatedAtDesc(member);
+
+            String[] diaryRecent = diaries.get(0).getCreatedAt().split(" ")[0].split("-");
+            int diaryRecentYear = Integer.parseInt(diaryRecent[0]);
+            int diaryRecentMonth = Integer.parseInt(diaryRecent[1]);
+            int diaryRecentDay = Integer.parseInt(diaryRecent[2]);
+
+            if (diaryRecentYear == nowYear && diaryRecentMonth == nowMonth && diaryRecentDay == nowDay) {
+                writtenResponse.setWritten(true);
+            }
         }
 
         return writtenResponse;
