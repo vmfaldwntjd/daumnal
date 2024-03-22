@@ -63,7 +63,7 @@ class DiaryServiceImplTest {
         assertThat(diaryRepository.existsById(1L)).isTrue();
     }
 
-    @DisplayName("특정 회원이 쓴 일기 목록 가져오기 테스트")
+    @DisplayName("특정 회원이 쓴 일기 목록 최신순 정렬 확인")
     @Transactional
     @Test
     void getDiariesByMemberTest() {
