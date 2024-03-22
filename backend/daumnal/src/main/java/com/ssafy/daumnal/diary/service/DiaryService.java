@@ -1,8 +1,8 @@
 package com.ssafy.daumnal.diary.service;
 
 import com.ssafy.daumnal.diary.dto.DiaryDTO;
-import com.ssafy.daumnal.diary.dto.DiaryDTO.DiaryEmotion;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetCalendarResponse;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DiaryService {
@@ -12,4 +12,6 @@ public interface DiaryService {
                                        MultipartFile diaryPhoto, DiaryEmotion diaryEmotion);
 
     GetCalendarResponse getCalendar(String memberId, String year, String month);
+
+    void addTodayRecommendedMusic(String memberId, Long diaryId, Long musicId);
 }

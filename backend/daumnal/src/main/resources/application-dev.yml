@@ -17,7 +17,7 @@ spring:
         format_sql: true
         show_sql: true
   jwt:
-    secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUasjioejalksdjfaoigjioejfakls123diojseoifjdklfjwogjdfkjgoszzdjfeiofjoidjf4'
+    secret: ${JWT_SECRET}
     live:
       access: 3600000 # access token 기한 1시간
       refresh: 604800000 # refresh token 기한 일주일
