@@ -8,9 +8,11 @@ import com.ssafy.daumnal.diary.util.DiaryUtilService;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
+import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final DiaryUtilService diaryUtilService;
     private final S3Service s3Service;
     private final EmotionRepository emotionRepository;
+    private final MusicRepository musicRepository;
 
     @Override
     public GetDiaryWrittenTodayResponse getDiaryWritten(String memberId) {
@@ -130,5 +133,31 @@ public class DiaryServiceImpl implements DiaryService {
         return GetCalendarResponse.builder()
                 .calendarContents(calendarContents)
                 .build();
+    }
+
+    /**
+     * 오늘 작성한 일기에서 추천된 노래 저장
+     * @param memberId 로그인 상태인 회원
+     * @param diaryId 오늘 작성한 일기 id
+     * @param musicId 추천된 노래 id
+     */
+    @Override
+    @Transactional
+    public void addTodayRecommendedMusic(String memberId, Long diaryId, Long musicId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Diary diary = diaryRepository.findById(diaryId)
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+        if (!diary.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER);
+        }
+        if(!musicRepository.existsById(musicId)) {
+            throw new NoExistException(NOT_EXISTS_MUSIC_ID);
+        }
+        diary.updateMusicId(musicId);
     }
 }
