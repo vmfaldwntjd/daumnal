@@ -158,7 +158,7 @@ public class MemberUtilService {
      * @param originNickname
      */
     public void validateNicknameEqualInit(String nickname, String originNickname) {
-        if (Objects.nonNull(nickname) || Objects.nonNull(originNickname)) {
+        if (Objects.isNull(nickname) || Objects.isNull(originNickname)) {
             throw new InvalidException(SERVER_ERROR);
         }
 
