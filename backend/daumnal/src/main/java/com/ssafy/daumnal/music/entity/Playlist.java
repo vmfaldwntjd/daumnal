@@ -2,6 +2,7 @@ package com.ssafy.daumnal.music.entity;
 
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import com.ssafy.daumnal.member.entity.Member;
+import com.ssafy.daumnal.music.dto.PlaylistDTO.GetPlaylistResponse;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -46,5 +47,21 @@ public class Playlist extends BaseEntity {
     public Playlist(String name, Member member) {
         this.name = name;
         this.member = member;
+    }
+
+    @Builder
+    public Playlist(Long id, String name, String coverUrl) {
+        this.id = id;
+        this.name = name;
+        this.coverUrl = coverUrl;
+    }
+
+    public GetPlaylistResponse toGetPlaylistResponse() {
+
+        return GetPlaylistResponse.builder()
+                .playlistId(id)
+                .playlistName(name)
+                .playlistCoverUrl(coverUrl)
+                .build();
     }
 }
