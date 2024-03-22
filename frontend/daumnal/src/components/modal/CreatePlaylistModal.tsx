@@ -51,7 +51,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
   return (
     <ModalBackdrop onClick={onClickToggleModal}> {/* 배경 클릭 시 모달 닫기 */}
       <ModalContent onClick={(e) => e.stopPropagation()}> {/* 모달 컨텐츠 클릭 시 버블링 방지 */}
-        {/* 플레이리스트 제목 */}
+        {/* 플레이리스트 제목 (1글자 이상 20글자 이하, 필수값) */}
         <div className="flex items-center justify-center w-full border-b-2 border-[#9c9388] mb-8">
           <FontAwesomeIcon icon={faPenToSquare} className='text-3xl text-[#9c9388]' />
           <TitleInput type="text" value={playlistTitle} placeholder='플레이리스트 이름을 입력해 주세요' onChange={handleTitleChange} />
