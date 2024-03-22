@@ -6,6 +6,8 @@ import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.exception.NotSameException;
 
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -21,6 +23,13 @@ public class GlobalExceptionHandler {
 
         return ApiResponse.error(BAD_REQUEST, type.substring(type.lastIndexOf('.') + 1) +
                 " 타입 " + e.getName() + " 입력 형식이 올바르지 않습니다! (입력값 : " + e.getValue() + ")");
+    }
+
+    @ExceptionHandler
+    public ApiResponse<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        FieldError fieldError = e.getBindingResult().getFieldError();
+
+        return ApiResponse.error(BAD_REQUEST, fieldError.getDefaultMessage() + " (입력값: " + fieldError.getRejectedValue() + ")");
     }
 
     @ExceptionHandler
