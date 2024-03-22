@@ -50,7 +50,10 @@ public class DiaryUtilService {
      * @param diaryContent
      */
     public void validateDiaryContentLength(String diaryContent) {
-        if (diaryContent.length() > CONTENT_MAX_LENGTH) {
+        int diaryContentLength = diaryContent.length();
+
+        if (diaryContentLength > CONTENT_MAX_LENGTH ||
+                diaryContentLength < CONTENT_MIN_LENGTH) {
             throw new InvalidException(INVALID_DIARY_CONTENT_LENGTH);
         }
     }
