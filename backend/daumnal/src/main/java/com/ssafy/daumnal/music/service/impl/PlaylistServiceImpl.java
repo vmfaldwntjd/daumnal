@@ -1,13 +1,46 @@
 package com.ssafy.daumnal.music.service.impl;
 
+import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.member.entity.Member;
+import com.ssafy.daumnal.member.repository.MemberRepository;
+import com.ssafy.daumnal.member.util.MemberUtilService;
+import com.ssafy.daumnal.music.dto.PlaylistDTO.AddPlaylistRequest;
 import com.ssafy.daumnal.music.repository.PlaylistRepository;
 import com.ssafy.daumnal.music.service.PlaylistService;
+import com.ssafy.daumnal.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static com.ssafy.daumnal.global.constants.ErrorCode.NOT_EXISTS_MEMBER_ID;
 
 @Service
 @RequiredArgsConstructor
 public class PlaylistServiceImpl implements PlaylistService {
 
     private final PlaylistRepository playlistRepository;
+    private final MemberRepository memberRepository;
+    private final MemberUtilService memberUtilService;
+    private final S3Service s3Service;
+
+    /**
+     * 플레이리스트 생성
+     * @param memberId 로그인 상태인 회원 id
+     * @param addPlaylistRequest 새로 생성할 플레이리스트 정보 (이름, 커버)
+     */
+    @Override
+    public void addPlaylist(String memberId, AddPlaylistRequest addPlaylistRequest) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        if (addPlaylistRequest.getPlaylistCover() != null) {
+            String coverUrl = s3Service.uploadPlaylistCover(addPlaylistRequest.getPlaylistCover(), null);
+            playlistRepository.save(addPlaylistRequest.toEntityWithCoverUrl(coverUrl, member));
+        }
+        if (addPlaylistRequest.getPlaylistCover() == null) {
+            playlistRepository.save(addPlaylistRequest.toEntityWithoutCoverUrl(member));
+        }
+    }
 }

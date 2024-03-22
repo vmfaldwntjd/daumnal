@@ -5,18 +5,22 @@ import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.global.exception.NoExistException;
+import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
+import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +38,9 @@ public class DiaryServiceImpl implements DiaryService {
     private final DiaryUtilService diaryUtilService;
     private final S3Service s3Service;
     private final EmotionRepository emotionRepository;
+    private final MusicRepository musicRepository;
 
+    @Transactional
     @Override
     public GetDiaryWrittenTodayResponse getDiaryWritten(String memberId) {
 
@@ -49,8 +55,22 @@ public class DiaryServiceImpl implements DiaryService {
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
 
+        LocalDate now = LocalDate.now();
+        int nowYear = now.getYear();
+        int nowMonth = now.getMonthValue();
+        int nowDay = now.getDayOfMonth();
+
         if (diaryRepository.existsByMember(member)) {
-            writtenResponse.setWritten(true);
+            List<Diary> diaries = diaryRepository.findDiariesByMemberOrderByCreatedAtDesc(member);
+
+            String[] diaryRecent = diaries.get(0).getCreatedAt().split(" ")[0].split("-");
+            int diaryRecentYear = Integer.parseInt(diaryRecent[0]);
+            int diaryRecentMonth = Integer.parseInt(diaryRecent[1]);
+            int diaryRecentDay = Integer.parseInt(diaryRecent[2]);
+
+            if (diaryRecentYear == nowYear && diaryRecentMonth == nowMonth && diaryRecentDay == nowDay) {
+                writtenResponse.setWritten(true);
+            }
         }
 
         return writtenResponse;
@@ -59,7 +79,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Transactional
     @Override
     public AddDiaryResponse addDiary(String memberId, String diaryTitle, String diaryContent,
-                                              String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
+                                     String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
@@ -69,7 +89,6 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateExistsDiaryTitle(diaryTitle);
         diaryUtilService.validateExistsDiaryContent(diaryContent);
         diaryUtilService.validateExistAllEmotions(diaryEmotion);
-        diaryUtilService.validateDiaryContentLength(diaryContent);
 
         String[] tags = diaryHashTag.split(SPLIT_REGEX);
         diaryUtilService.validateHashTagCount(tags);
@@ -82,13 +101,13 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         Emotion emotion = Emotion.builder()
-                .fear(Integer.parseInt(diaryEmotion.getFear()))
-                .surprise(Integer.parseInt(diaryEmotion.getSurprise()))
-                .angry(Integer.parseInt(diaryEmotion.getAngry()))
-                .sadness(Integer.parseInt(diaryEmotion.getSadness()))
-                .neutral(Integer.parseInt(diaryEmotion.getNeutral()))
-                .happiness(Integer.parseInt(diaryEmotion.getHappiness()))
-                .disgust(Integer.parseInt(diaryEmotion.getDisgust()))
+                .fear(diaryEmotion.getFear())
+                .surprise(diaryEmotion.getSurprise())
+                .angry(diaryEmotion.getAngry())
+                .sadness(diaryEmotion.getSadness())
+                .neutral(diaryEmotion.getNeutral())
+                .happiness(diaryEmotion.getHappiness())
+                .disgust(diaryEmotion.getDisgust())
                 .build();
         emotionRepository.save(emotion);
 
@@ -130,5 +149,31 @@ public class DiaryServiceImpl implements DiaryService {
         return GetCalendarResponse.builder()
                 .calendarContents(calendarContents)
                 .build();
+    }
+
+    /**
+     * 오늘 작성한 일기에서 추천된 노래 저장
+     * @param memberId 로그인 상태인 회원 id
+     * @param diaryId 오늘 작성한 일기 id
+     * @param musicId 추천된 노래 id
+     */
+    @Override
+    @Transactional
+    public void addTodayRecommendedMusic(String memberId, Long diaryId, Long musicId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Diary diary = diaryRepository.findById(diaryId)
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+        if (!diary.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER);
+        }
+        if(!musicRepository.existsById(musicId)) {
+            throw new NoExistException(NOT_EXISTS_MUSIC_ID);
+        }
+        diary.updateMusicId(musicId);
     }
 }
