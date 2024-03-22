@@ -54,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
 
         memberUtilService.validateInputMemberNickname(nickname);
 
-        if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
+        if (member.getNickname() != null || memberRepository.existsMemberByNickname(nickname)) {
             throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
         }
 
