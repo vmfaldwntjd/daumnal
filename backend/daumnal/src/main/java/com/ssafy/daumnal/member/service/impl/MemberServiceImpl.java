@@ -87,8 +87,9 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateInputMemberNickname(nickname);
         memberUtilService.validateNicknameEqualInit(nickname, originNickname);
 
-        // 이미 존재한 닉네임을 입력한 경우
-
+        if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
+            throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
+        }
 
         member.updateNickname(nickname);
 
