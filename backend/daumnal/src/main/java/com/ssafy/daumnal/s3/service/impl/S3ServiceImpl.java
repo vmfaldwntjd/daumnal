@@ -90,7 +90,8 @@ public class S3ServiceImpl implements S3Service {
     @Override
     public String uploadPlaylistCover(MultipartFile playlistCoverFile, Playlist playlist) {
         try {
-            if (playlist.getCoverUrl() != null && playlist.getCoverUrl().contains(String.format("https://%s.s3.%s.amazonaws.com/", bucket, region))) {
+            if (playlist != null && playlist.getCoverUrl() != null &&
+                    playlist.getCoverUrl().contains(String.format("https://%s.s3.%s.amazonaws.com/", bucket, region))) {
                 delete(playlist.getCoverUrl());
             }
 
