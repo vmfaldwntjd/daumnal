@@ -13,6 +13,8 @@ public enum ErrorCode {
     //일반
     NOT_EXISTS_ID(BAD_REQUEST, "존재하지 않는 id 입니다."),
 
+    INVALID_INPUT_DATA(BAD_REQUEST, "데이터 입력 형식이 올바르지 않습니다!"),
+
     //회원
     EXISTS_MEMBER(BAD_REQUEST, "존재한 회원입니다!"),
     EXISTS_MEMBER_NICKNAME_STATUS(BAD_REQUEST, "이미 닉네임이 등록된 회원입니다!"),
@@ -46,7 +48,6 @@ public enum ErrorCode {
     NOT_EXISTS_DIARY_YEAR_INPUT(BAD_REQUEST, "year 정보를 요청받지 못하였습니다!"),
     NOT_EXISTS_DIARY_MONTH_INPUT(BAD_REQUEST, "month 정보를 요청받지 못하였습니다!"),
 
-    INVALID_DIARY_ID(BAD_REQUEST, "일기 id 입력 형식이 올바르지 않습니다!"),
     INVALID_DIARY_EMOTION_ID(BAD_REQUEST, "감정 id 입력 형식이 올바르지 않습니다!"),
     INVALID_DIARY_CONTENT_LENGTH(BAD_REQUEST, "일기 내용은 3000자 이하로 작성해주세요!"),
     INVALID_DIARY_HASHTAG_LENGTH(BAD_REQUEST, "해시태그의 글자수는 10자 이하여야 합니다!"),
