@@ -152,6 +152,11 @@ public class MemberUtilService {
         }
     }
 
+    /**
+     * 회원이 사용 중인 닉네임을 입력하고 있는 경우 확인하기
+     * @param nickname
+     * @param originNickname
+     */
     public void validateNicknameEqualInit(String nickname, String originNickname) {
         if (Objects.nonNull(nickname) || Objects.nonNull(originNickname)) {
             throw new InvalidException(SERVER_ERROR);
