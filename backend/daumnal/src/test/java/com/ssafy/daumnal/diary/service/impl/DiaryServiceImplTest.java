@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -59,5 +61,58 @@ class DiaryServiceImplTest {
 
         //then
         assertThat(diaryRepository.existsById(1L)).isTrue();
+    }
+
+    @DisplayName("특정 회원이 쓴 일기 목록 가져오기 테스트")
+    @Transactional
+    @Test
+    void getDiariesByMemberTest() {
+        //given
+        Long memberId = 16L;
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow();
+
+        //when
+        List<Diary> diariesByMember = diaryRepository
+                .findDiariesByMemberOrderByCreatedAtDesc(member);
+
+        //then
+        assertThat(isSortedByCreatedAtDesc(diariesByMember)).isTrue();
+    }
+
+    private boolean isSortedByCreatedAtDesc(List<Diary> diaries) {
+        for (int i = 0; i < diaries.size() - 1; ++i) {
+            String currentDiary = diaries.get(i).getCreatedAt().split(" ")[0];
+            String preDiary = diaries.get(i + 1).getCreatedAt().split(" ")[0];
+
+            if (!validateDiaryOrder(currentDiary, preDiary)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateDiaryOrder(String currentDiary, String preDiary) {
+        boolean flag = true;
+
+        String[] curDiary = currentDiary.split("-");
+        String[] pDiary = preDiary.split("-");
+
+        int curYear = Integer.parseInt(curDiary[0]);
+        int pYear = Integer.parseInt(pDiary[0]);
+        int curMonth = Integer.parseInt(curDiary[1]);
+        int pMonth = Integer.parseInt(pDiary[1]);
+        int curDay = Integer.parseInt(curDiary[2]);
+        int pDay = Integer.parseInt(pDiary[2]);
+
+        if (curYear < pYear) {
+            flag = false;
+        } else if (curYear == pYear && curMonth < pMonth){
+            flag = false;
+        } else if (curYear == pYear && curMonth == pMonth && curDay < pDay) {
+            flag = false;
+        }
+
+        return flag;
     }
 }
