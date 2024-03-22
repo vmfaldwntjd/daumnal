@@ -5,6 +5,7 @@ import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.global.exception.NoExistException;
@@ -78,7 +79,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Transactional
     @Override
     public AddDiaryResponse addDiary(String memberId, String diaryTitle, String diaryContent,
-                                              String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
+                                     String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
