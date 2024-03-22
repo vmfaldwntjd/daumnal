@@ -39,6 +39,7 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
             <CreatePlaylistModal onClickToggleModal={handleCreatePlaylist} />
           )}
         </Modal>
+        {/* 플레이리스트 생성 모달 버튼 */}
         <Button onClick={handleCreatePlaylist}>만들기</Button>
       </Wrapper>
       {/* 플레이리스트 목록 */}

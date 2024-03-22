@@ -32,7 +32,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
     setOpenInfoModal(!isOpenInfoModal);
   }, [isOpenInfoModal]);
 
-  // 모달 닫기
+  // 수정/삭제 모달 닫기
   const handleClosePlaylistModal = useCallback(() => {
     setOpenInfoModal(false);
   }, []);
@@ -71,6 +71,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
             <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} />
           </PlaylistModalContainer>
         )}
+        {/* 플레이리스트 수정/삭제 모달 버튼 */}
         <button className="self-end text-2xl" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
       </Wrapper>
     </Container>
