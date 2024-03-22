@@ -166,4 +166,14 @@ public class MemberUtilService {
             throw new InvalidException(INVALID_MEMBER_NICKNAME_SAME_WITH_INIT);
         }
     }
+
+    /**
+     * 닉네임 등록 후 다시 재등록 하는 상황인 경우
+     * @param nickname
+     */
+    public void validateMemberNicknameNull(String nickname) {
+        if (Objects.nonNull(nickname)) {
+            throw new InvalidException(INVALID_MEMBER_NICKNAME_NOT_NULL);
+        }
+    }
 }
