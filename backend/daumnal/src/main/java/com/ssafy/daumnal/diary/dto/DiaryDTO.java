@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.diary.dto;
 
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,18 +16,6 @@ public class DiaryDTO {
         private String diaryHashTag;
         private MultipartFile diaryPhoto;
         private DiaryEmotion diaryEmotion;
-    }
-
-    @Getter
-    @Setter
-    public static class DiaryEmotion {
-        private String fear;
-        private String surprise;
-        private String angry;
-        private String sadness;
-        private String neutral;
-        private String happiness;
-        private String disgust;
     }
 
     @Getter

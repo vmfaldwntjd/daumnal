@@ -1,6 +1,6 @@
 package com.ssafy.daumnal.diary.util;
 
-import com.ssafy.daumnal.diary.dto.DiaryDTO.DiaryEmotion;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import org.springframework.stereotype.Component;
