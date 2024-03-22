@@ -12,4 +12,6 @@ public interface DiaryService {
                                        MultipartFile diaryPhoto, DiaryEmotion diaryEmotion);
 
     GetCalendarResponse getCalendar(String memberId, String year, String month);
+
+    void addTodayRecommendedMusic(String memberId, Long diaryId, Long musicId);
 }
