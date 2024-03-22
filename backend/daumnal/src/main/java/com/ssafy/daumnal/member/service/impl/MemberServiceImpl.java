@@ -45,7 +45,6 @@ public class MemberServiceImpl implements MemberService {
     public GetMemberNicknameResponse addMemberNickname(String memberId, String nickname) {
         memberUtilService.validateMemberIdNumber(memberId);
 
-        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
@@ -55,7 +54,6 @@ public class MemberServiceImpl implements MemberService {
 
         memberUtilService.validateInputMemberNickname(nickname);
 
-        // 이미 존재한 닉네임을 입력하는 경우
         if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
             throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
         }
@@ -73,7 +71,6 @@ public class MemberServiceImpl implements MemberService {
     public GetMemberNicknameResponse modifyMemberNickname(String memberId, String nickname) {
         memberUtilService.validateMemberIdNumber(memberId);
 
-        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
