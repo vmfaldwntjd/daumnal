@@ -99,7 +99,7 @@ public class MemberUtilService {
      * @param nickname
      */
     public void validateInputMemberNickname(String nickname) {
-        if (nickname == null) {
+        if (!StringUtils.hasText(nickname)) {
             throw new NoExistException(NOT_EXISTS_MEMBER_NICKNAME_INPUT);
         }
 
