@@ -5,6 +5,7 @@ import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.global.exception.NoExistException;
@@ -78,7 +79,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Transactional
     @Override
     public AddDiaryResponse addDiary(String memberId, String diaryTitle, String diaryContent,
-                                              String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
+                                     String diaryHashTag, MultipartFile diaryPhoto, DiaryEmotion diaryEmotion) {
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
@@ -101,13 +102,13 @@ public class DiaryServiceImpl implements DiaryService {
         }
 
         Emotion emotion = Emotion.builder()
-                .fear(Integer.parseInt(diaryEmotion.getFear()))
-                .surprise(Integer.parseInt(diaryEmotion.getSurprise()))
-                .angry(Integer.parseInt(diaryEmotion.getAngry()))
-                .sadness(Integer.parseInt(diaryEmotion.getSadness()))
-                .neutral(Integer.parseInt(diaryEmotion.getNeutral()))
-                .happiness(Integer.parseInt(diaryEmotion.getHappiness()))
-                .disgust(Integer.parseInt(diaryEmotion.getDisgust()))
+                .fear(diaryEmotion.getFear())
+                .surprise(diaryEmotion.getSurprise())
+                .angry(diaryEmotion.getAngry())
+                .sadness(diaryEmotion.getSadness())
+                .neutral(diaryEmotion.getNeutral())
+                .happiness(diaryEmotion.getHappiness())
+                .disgust(diaryEmotion.getDisgust())
                 .build();
         emotionRepository.save(emotion);
 
