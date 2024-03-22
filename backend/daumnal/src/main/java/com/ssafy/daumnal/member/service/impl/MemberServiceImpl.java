@@ -2,7 +2,6 @@ package com.ssafy.daumnal.member.service.impl;
 
 import com.ssafy.daumnal.global.dto.TokenResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
-import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
@@ -16,13 +15,8 @@ import com.ssafy.daumnal.member.util.MemberUtilService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.util.Objects;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
-import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_DELETE;
-import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_LOGOUT;
 
 @Service
 @RequiredArgsConstructor
@@ -94,6 +88,8 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateNicknameEqualInit(nickname, originNickname);
 
         // 이미 존재한 닉네임을 입력한 경우
+
+
         member.updateNickname(nickname);
 
         return GetMemberNicknameResponse.builder()
