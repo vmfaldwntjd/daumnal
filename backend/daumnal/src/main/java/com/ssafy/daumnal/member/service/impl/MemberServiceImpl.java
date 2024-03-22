@@ -2,7 +2,6 @@ package com.ssafy.daumnal.member.service.impl;
 
 import com.ssafy.daumnal.global.dto.TokenResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
-import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
@@ -18,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
-import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_DELETE;
-import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_LOGOUT;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +45,6 @@ public class MemberServiceImpl implements MemberService {
     public GetMemberNicknameResponse addMemberNickname(String memberId, String nickname) {
         memberUtilService.validateMemberIdNumber(memberId);
 
-        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
@@ -58,7 +54,6 @@ public class MemberServiceImpl implements MemberService {
 
         memberUtilService.validateInputMemberNickname(nickname);
 
-        // 이미 존재한 닉네임을 입력하는 경우
         if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
             throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
         }
@@ -76,7 +71,6 @@ public class MemberServiceImpl implements MemberService {
     public GetMemberNicknameResponse modifyMemberNickname(String memberId, String nickname) {
         memberUtilService.validateMemberIdNumber(memberId);
 
-        // 회원 pk 찾아오기 -> 존재하지 않으면 예외처리
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
 
@@ -84,7 +78,15 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateMemberStatusNotDelete(memberStatus);
         memberUtilService.validateMemberStatusNotLogout(memberStatus);
 
+        String originNickname = member.getNickname();
+        memberUtilService.validateExistsInitialNickname(originNickname);
+
         memberUtilService.validateInputMemberNickname(nickname);
+        memberUtilService.validateNicknameEqualInit(nickname, originNickname);
+
+        if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
+            throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
+        }
 
         member.updateNickname(nickname);
 
