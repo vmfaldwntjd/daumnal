@@ -12,5 +12,5 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     boolean existsByMember(Member member);
 
-    List<Diary> findDiariesByMemberOrderByCreatedAt(Member member);
+    List<Diary> findDiariesByMemberOrderByCreatedAtDesc(Member member);
 }
