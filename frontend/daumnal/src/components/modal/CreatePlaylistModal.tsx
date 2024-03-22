@@ -1,11 +1,20 @@
 // 플레이리스트 생성 모달
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import axiosImage from '../../pages/api/axiosImage';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faImage } from "@fortawesome/free-solid-svg-icons";
 
 interface CreatePlaylistModalProps {
   onClickToggleModal: () => void; // 모달 토글 함수
+}
+
+// 응답 객체의 타입 정의
+interface ApiResponse {
+  data: any;
+  code: number;
+  status: string;
+  message: string;
 }
 
 const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggleModal }) => {
@@ -47,6 +56,34 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
       fileInputRef.current.value = '';
     }
   };
+
+  useEffect(() => {
+    // FormData 객체 생성
+    const formData = new FormData();
+
+    // playlistTitle 추가
+    formData.append('playlistTitle', playlistTitle);
+    // playlistCover 추가
+    if (playlistCover) {
+      formData.append('playlistCover', playlistCover);
+    }
+  
+    // POST 요청 보내기
+    axiosImage.post<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/api/playlists`, formData)
+      .then(response => {
+        console.log('플레이리스트 생성 요청 성공!', response.data);
+        if (response.data.code === 201) {
+          console.log(`${response.data.status}: ${response.data.message}`);
+        } else if (response.data.code === 400) {
+          console.log(`${response.data.status}: ${response.data.message}`);
+        } else if (response.data.code === 403) {
+          console.log(`${response.data.status}: ${response.data.message}`);
+        }
+      })
+      .catch(error => {
+        console.error('플레이리스트 생성 요청 오류 발생!', error);
+      });
+  }, [playlistTitle, playlistCover]);
 
   return (
     <ModalBackdrop onClick={onClickToggleModal}> {/* 배경 클릭 시 모달 닫기 */}
