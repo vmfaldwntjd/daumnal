@@ -52,7 +52,7 @@ public enum ErrorCode {
     NOT_EXISTS_DIARY_MONTH_INPUT(BAD_REQUEST, "month 정보를 요청받지 못하였습니다!"),
 
     INVALID_DIARY_EMOTION_ID(BAD_REQUEST, "감정 id 입력 형식이 올바르지 않습니다!"),
-    INVALID_DIARY_CONTENT_LENGTH(BAD_REQUEST, "일기 내용은 3000자 이하로 작성해주세요!"),
+    INVALID_DIARY_CONTENT_LENGTH(BAD_REQUEST, "일기 내용은 20자 이상 3000자 이하로 작성해주세요!"),
     INVALID_DIARY_HASHTAG_LENGTH(BAD_REQUEST, "해시태그의 글자수는 10자 이하여야 합니다!"),
     INVALID_DIARY_HASHTAG_WORDS(BAD_REQUEST, "해시태그의 입력 방법이 올바르지 않습니다!"),
     INVALID_DIARY_HASHTAG_COUNT(BAD_REQUEST, "해시태그의 개수는 3개 이하여야 합니다!"),
