@@ -10,12 +10,15 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 public enum ErrorCode {
 
+    // 서버
+    SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버 오류입니다!"),
+
     //일반
     NOT_EXISTS_ID(BAD_REQUEST, "존재하지 않는 id 입니다."),
 
     //회원
     EXISTS_MEMBER(BAD_REQUEST, "존재한 회원입니다!"),
-    EXISTS_MEMBER_NICKNAME_STATUS(BAD_REQUEST, "이미 닉네임이 등록된 회원입니다!"),
+    EXISTS_MEMBER_NICKNAME_STATUS(BAD_REQUEST, "이미 존재한 닉네임입니다!"),
 
     NOT_EXISTS_MEMBER_ID(BAD_REQUEST, "존재하지 않는 회원 id 입니다!"),
     NOT_EXISTS_MEMBER_REFRESH(NOT_FOUND, "refresh 토큰이 만료되었습니다!"),
@@ -24,6 +27,7 @@ public enum ErrorCode {
     NOT_EXISTS_MEMBER_SOCIAL_PROVIDER(BAD_REQUEST, "socialProvider를 입력해주세요!"),
     NOT_EXISTS_MEMBER_NICKNAME_INPUT(BAD_REQUEST, "닉네임을 입력해주세요!"),
     NOT_EXISTS_MEMBER_NICKNAME_GET(BAD_REQUEST, "닉네임 정보가 없습니다!"),
+    NOT_EXISTS_MEMBER_NICKNAME_INIT_GET(FORBIDDEN, "초기에 닉네임을 등록하지 않은 회원입니다!"),
 
     INVALID_MEMBER_ID(BAD_REQUEST, "회원 id 입력 형식이 올바르지 않습니다!"),
     INVALID_MEMBER_TOKEN(FORBIDDEN, "유효하지 않는 토큰입니다!"),
@@ -32,6 +36,7 @@ public enum ErrorCode {
     INVALID_MEMBER_NICKNAME_WORDS(BAD_REQUEST, "닉네임 입력시 한글 또는 영어로 입력해주세요!"),
     INVALID_MEMBER_NICKNAME_LENGTH(BAD_REQUEST, "닉네임 입력 길이는 15자 이하로 입력 바랍니다!"),
     INVALID_MEMBER_NICKNAME_SPACE(BAD_REQUEST, "닉네임 입력시 공백 없이 입력해주세요!"),
+    INVALID_MEMBER_NICKNAME_SAME_WITH_INIT(BAD_REQUEST, "회원님이 사용중인 닉네임입니다!"),
     INVALID_MEMBER_STATUS_ON_LOGOUT(FORBIDDEN, "해당 회원은 로그아웃 한 상태입니다!"),
     INVALID_MEMBER_STATUS_ON_DELETE(FORBIDDEN, "해당 회원은 탈퇴 처리된 회원입니다!"),
     INVALID_MEMBER_STATUS_ON_LOGIN(FORBIDDEN, "해당 회원은 이미 로그인 한 상태입니다!"),
