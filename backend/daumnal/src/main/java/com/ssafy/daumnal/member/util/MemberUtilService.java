@@ -6,6 +6,8 @@ import com.ssafy.daumnal.member.entity.SocialProvider;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 import static com.ssafy.daumnal.member.constants.MemberConstants.*;
 
@@ -99,7 +101,7 @@ public class MemberUtilService {
      * @param nickname
      */
     public void validateInputMemberNickname(String nickname) {
-        if (nickname == null) {
+        if (!StringUtils.hasText(nickname)) {
             throw new NoExistException(NOT_EXISTS_MEMBER_NICKNAME_INPUT);
         }
 
@@ -137,6 +139,47 @@ public class MemberUtilService {
     public void validateNicknameEmpty(String nickname) {
         if (!StringUtils.hasText(nickname)) {
             throw new InvalidException(NOT_EXISTS_MEMBER_NICKNAME_GET);
+        }
+    }
+
+    /**
+     * 초기에 닉네임 등록한 회원인지 확인하기
+     * @param originNickname
+     */
+    public void validateExistsInitialNickname(String originNickname) {
+        if (!StringUtils.hasText(originNickname)) {
+            throw new NoExistException(NOT_EXISTS_MEMBER_NICKNAME_INIT_GET);
+        }
+    }
+
+    /**
+     * 회원이 사용 중인 닉네임을 입력하고 있는 경우 확인하기
+     * @param nickname
+     * @param originNickname
+     */
+    public void validateNicknameEqualInit(String nickname, String originNickname) {
+        if (Objects.isNull(nickname) || Objects.isNull(originNickname)) {
+            throw new InvalidException(SERVER_ERROR);
+        }
+
+        if (nickname.equals(originNickname)) {
+            throw new InvalidException(INVALID_MEMBER_NICKNAME_SAME_WITH_INIT);
+        }
+    }
+
+    /**
+     * 닉네임 등록 후 다시 재등록 하는 상황인 경우
+     * @param nickname
+     */
+    public void validateMemberNicknameNull(String nickname) {
+        if (Objects.nonNull(nickname)) {
+            throw new InvalidException(INVALID_MEMBER_NICKNAME_NOT_NULL);
+        }
+    }
+
+    public void validateMemberNicknameNonNull(String nickname) {
+        if (Objects.isNull(nickname)) {
+            throw new InvalidException(INVALID_MEMBER_NICKNAME_NULL);
         }
     }
 }
