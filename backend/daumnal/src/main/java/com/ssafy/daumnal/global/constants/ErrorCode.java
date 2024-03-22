@@ -13,8 +13,6 @@ public enum ErrorCode {
     //일반
     NOT_EXISTS_ID(BAD_REQUEST, "존재하지 않는 id 입니다."),
 
-    INVALID_INPUT_DATA(BAD_REQUEST, "데이터 입력 형식이 올바르지 않습니다!"),
-
     //회원
     EXISTS_MEMBER(BAD_REQUEST, "존재한 회원입니다!"),
     EXISTS_MEMBER_NICKNAME_STATUS(BAD_REQUEST, "이미 닉네임이 등록된 회원입니다!"),
