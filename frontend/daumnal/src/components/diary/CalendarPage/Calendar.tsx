@@ -25,16 +25,15 @@ interface CalendarProps {
 const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelectedYear} ) => {
 
   const [selectedDate, setSelectedDate] = useState<Value | null>(new Date());
-  const [selectedDay, setSelectedDay] = useState<number>(new Date().getDate())
+  const [selectedDiaryDate, setSelectedDiaryDate] = useState<Date | null>(null)
 
   const monthOfActiveDate = moment(isDate(selectedDate) ? selectedDate : new Date()).format('YYYY-MM');
   const [activeMonth, setActiveMonth] = useState(monthOfActiveDate);
 
   const [diaryList, setDiaryList] = useState<DiaryEntry[]>([]);
+  const [diaryModalList, setDiaryModalList] = useState<number[][]>([])
 
   const [isDiaryModalOpen, setIsDiaryModalOpen] = useState<boolean>(false);
-  const [isDayClick, setIsDayClick] = useState<boolean>(false)
-
 
   const getActiveMonth = (activeStartDate: moment.MomentInput) => {
     const newActiveMonth = moment(activeStartDate).format('YYYY-MM');
@@ -49,16 +48,15 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
   const handleDayClick = (date: Date) => {
 
     setSelectedDate(date); // 선택된 날짜를 상태에 설정합니다.
-  
+
     const newSelectedDay: number = date.getDate();
-    setSelectedDay(newSelectedDay);
   
     // diaryList에서 selectedDay와 일치하는 일기 찾기
     const foundDiary = diaryList.find(diary => diary.diaryDay === newSelectedDay);
-  
 
     if (foundDiary) {
-      setIsDayClick(true)
+      setIsDiaryModalOpen(true)
+      setSelectedDiaryDate(date)
     } 
 
   };
@@ -89,19 +87,16 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
 
   }, [activeMonth, setSelectedYear, setSelectedMonth])
 
-  
-  useEffect(() => {
-
-    if (isDayClick) {
-      setIsDiaryModalOpen(true)
-    }
-
-  }, [isDayClick])
 
   useEffect(() => {
+    // diaryList의 각 요소에서 diaryDay와 diaryId만 추출하여 새로운 배열을 생성
+    const updatedDiaryModalList = diaryList.map(diary => [diary.diaryDay, diary.diaryId]);
+    
+    // 생성된 배열을 diaryModalList 상태에 저장
+    setDiaryModalList(updatedDiaryModalList);
+    // console.log(diaryModalList)
 
-
-  }, [diaryList])
+  }, [diaryList]);
   
 
 
@@ -153,9 +148,9 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
         onClickDay={(value, event) => handleDayClick(value)}/>
     </div> 
     {isDiaryModalOpen && <DiaryDetailModal 
-    onDiaryModalClose={() => { setIsDiaryModalOpen(false); setIsDayClick(false); }} 
-    // diaryList={diaryList}
-    // setSelectedDay={setSelectedDay}
+    onDiaryModalClose={() => { setIsDiaryModalOpen(false);  }} 
+    diaryModalList={diaryModalList}
+    selectedDiaryDate={selectedDiaryDate}
     />}     
     </div>
 
