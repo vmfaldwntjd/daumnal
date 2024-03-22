@@ -158,12 +158,28 @@ public class MemberUtilService {
      * @param originNickname
      */
     public void validateNicknameEqualInit(String nickname, String originNickname) {
-        if (Objects.nonNull(nickname) || Objects.nonNull(originNickname)) {
+        if (Objects.isNull(nickname) || Objects.isNull(originNickname)) {
             throw new InvalidException(SERVER_ERROR);
         }
 
         if (nickname.equals(originNickname)) {
             throw new InvalidException(INVALID_MEMBER_NICKNAME_SAME_WITH_INIT);
+        }
+    }
+
+    /**
+     * 닉네임 등록 후 다시 재등록 하는 상황인 경우
+     * @param nickname
+     */
+    public void validateMemberNicknameNull(String nickname) {
+        if (Objects.nonNull(nickname)) {
+            throw new InvalidException(INVALID_MEMBER_NICKNAME_NOT_NULL);
+        }
+    }
+
+    public void validateMemberNicknameNonNull(String nickname) {
+        if (Objects.isNull(nickname)) {
+            throw new InvalidException(INVALID_MEMBER_NICKNAME_NULL);
         }
     }
 }
