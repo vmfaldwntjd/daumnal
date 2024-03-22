@@ -1,10 +1,7 @@
 package com.ssafy.daumnal.global.config;
 
 import com.ssafy.daumnal.global.dto.ApiResponse;
-import com.ssafy.daumnal.global.exception.ExistException;
-import com.ssafy.daumnal.global.exception.InvalidException;
-import com.ssafy.daumnal.global.exception.NoExistException;
-import com.ssafy.daumnal.global.exception.NotSameException;
+import com.ssafy.daumnal.global.exception.*;
 
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -52,6 +49,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ApiResponse<?> handleNotSameException(NotSameException e) {
+
+        return ApiResponse.error(e.getCode());
+    }
+
+    @ExceptionHandler
+    public ApiResponse<?> handleLLimitExceededException(LimitExceededException e) {
 
         return ApiResponse.error(e.getCode());
     }

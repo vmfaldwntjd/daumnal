@@ -30,4 +30,18 @@ public class PlaylistController {
 
         return ApiResponse.success(SuccessCode.CREATE_PLAYLIST);
     }
+
+    /**
+     * 플레이리스트에 노래 추가
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 노래를 넣을 플레이리스트 id
+     * @param musicId 플레이리스트에 추가할 노래 id
+     * @return
+     */
+    @PostMapping("/{playlistId}/musics/{musicId}")
+    public ApiResponse<?> addMusicToPlaylist(Authentication authentication, @PathVariable Long playlistId, @PathVariable Long musicId) {
+        playlistService.addMusicToPlaylist(jwtProvider.getMemberInfo(authentication), playlistId, musicId);
+
+        return ApiResponse.success(SuccessCode.ADD_MUSIC_TO_PLAYLIST);
+    }
 }

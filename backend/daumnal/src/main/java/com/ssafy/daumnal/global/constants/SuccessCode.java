@@ -41,7 +41,8 @@ public enum SuccessCode {
     GET_BACKGROUND_MUSICS(OK, "배경 음악 정보 조회에 성공하였습니다!"),
     GET_BACKGROUND_MUSIC(OK, "선택한 배경 음악 정보 조회에 성공하였습니다!"),
     UPDATE_BACKGROUND_MUSIC(OK, "배경 음악 정보를 변경 완료하였습니다!"),
-    CREATE_PLAYLIST(CREATED, "플레이리스트를 생성하는데 성공했습니다!");
+    CREATE_PLAYLIST(CREATED, "플레이리스트를 생성하는데 성공했습니다!"),
+    ADD_MUSIC_TO_PLAYLIST(CREATED, "플레이리스트에 노래를 추가하는데 성공했습니다!");
 
     private final HttpStatus status;
     private final String message;
