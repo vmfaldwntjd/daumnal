@@ -62,4 +62,19 @@ public class DiaryController {
         GetCalendarResponse response = diaryService.getCalendar(memberId, year, month);
         return ApiResponse.success(SuccessCode.GET_DIARY_CALENDAR,response);
     }
+
+    /**
+     * 오늘 작성한 일기에서 추천된 노래 저장
+     * @param authentication 로그인 상태인 회원
+     * @param diaryId 오늘 작성한 일기 id
+     * @param musicId 추천된 노래 id
+     * @return
+     */
+    @PatchMapping("/{diaryId}/musics/{musicId}")
+    public ApiResponse<?> addTodayRecommendedMusic(Authentication authentication,
+                                            @PathVariable Long diaryId, @PathVariable Long musicId) {
+        diaryService.addTodayRecommendedMusic(jwtProvider.getMemberInfo(authentication), diaryId, musicId);
+
+        return ApiResponse.success(SuccessCode.UPDATE_TODAY_RECOMMENDED_MUSIC);
+    }
 }
