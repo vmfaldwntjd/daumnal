@@ -38,6 +38,7 @@ public enum ErrorCode {
     INVALID_MEMBER_NICKNAME_SPACE(BAD_REQUEST, "닉네임 입력시 공백 없이 입력해주세요!"),
     INVALID_MEMBER_NICKNAME_SAME_WITH_INIT(BAD_REQUEST, "회원님이 사용중인 닉네임입니다!"),
     INVALID_MEMBER_NICKNAME_NOT_NULL(FORBIDDEN, "회원님은 이미 닉네임 등록 완료하였습니다!"),
+    INVALID_MEMBER_NICKNAME_NULL(FORBIDDEN, "회원님은 닉네임 등록을 하지 않은 상태입니다!"),
     INVALID_MEMBER_STATUS_ON_LOGOUT(FORBIDDEN, "해당 회원은 로그아웃 한 상태입니다!"),
     INVALID_MEMBER_STATUS_ON_DELETE(FORBIDDEN, "해당 회원은 탈퇴 처리된 회원입니다!"),
     INVALID_MEMBER_STATUS_ON_LOGIN(FORBIDDEN, "해당 회원은 이미 로그인 한 상태입니다!"),

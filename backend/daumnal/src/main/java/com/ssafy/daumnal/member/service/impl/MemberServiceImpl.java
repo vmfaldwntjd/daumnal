@@ -79,12 +79,13 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateMemberStatusNotLogout(memberStatus);
 
         String originNickname = member.getNickname();
+        memberUtilService.validateMemberNicknameNonNull(originNickname);
         memberUtilService.validateExistsInitialNickname(originNickname);
 
         memberUtilService.validateInputMemberNickname(nickname);
         memberUtilService.validateNicknameEqualInit(nickname, originNickname);
 
-        if (member.getNickname() != null && memberRepository.existsMemberByNickname(nickname)) {
+        if (memberRepository.existsMemberByNickname(nickname)) {
             throw new ExistException(EXISTS_MEMBER_NICKNAME_STATUS);
         }
 
