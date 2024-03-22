@@ -10,6 +10,9 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 public enum ErrorCode {
 
+    // 서버
+    SERVER_ERROR(INTERNAL_SERVER_ERROR, "서버 오류입니다!"),
+
     //일반
     NOT_EXISTS_ID(BAD_REQUEST, "존재하지 않는 id 입니다."),
 
