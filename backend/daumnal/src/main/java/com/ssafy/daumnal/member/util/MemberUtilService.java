@@ -139,4 +139,14 @@ public class MemberUtilService {
             throw new InvalidException(NOT_EXISTS_MEMBER_NICKNAME_GET);
         }
     }
+
+    /**
+     * 초기에 닉네임 등록한 회원인지 확인하기
+     * @param originNickname
+     */
+    public void validateExistsInitialNickname(String originNickname) {
+        if (!StringUtils.hasText(originNickname)) {
+            throw new NoExistException(NOT_EXISTS_MEMBER_NICKNAME_INIT_GET);
+        }
+    }
 }
