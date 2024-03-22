@@ -89,7 +89,6 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateExistsDiaryTitle(diaryTitle);
         diaryUtilService.validateExistsDiaryContent(diaryContent);
         diaryUtilService.validateExistAllEmotions(diaryEmotion);
-        diaryUtilService.validateDiaryContentLength(diaryContent);
 
         String[] tags = diaryHashTag.split(SPLIT_REGEX);
         diaryUtilService.validateHashTagCount(tags);
