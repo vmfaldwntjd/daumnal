@@ -8,7 +8,8 @@ interface PlaylistControlModalProps {
   selectedPlaylistId: number | null;
 }
 
-const PlaylistControlModal: React.FC<PlaylistControlModalProps> = ({ onClickToggleModal, selectedPlaylistId }) => {
+const PlaylistControlModal: React.FC<PlaylistControlModalProps> = () => {
+  // 플레이리스트 수정 모달 상태 변수
   const [isOpenEditModal, setOpenEditModal] = useState<boolean>(false);
 
   // 플레이리스트 수정 모달 열고 닫는 함수
@@ -19,13 +20,17 @@ const PlaylistControlModal: React.FC<PlaylistControlModalProps> = ({ onClickTogg
   return (
     <div className="relative z-1">
       <ModalContent onClick={(e) => e.stopPropagation()}>
+        {/* 플레이리스트 정보 수정 모달 */}
         {isOpenEditModal && (
           <EditPlaylistModalContainer>
             <EditPlaylistModal onClickToggleModal={handleEditPlaylist} />
           </EditPlaylistModalContainer>
         )}
+        {/* 플레이리스트 정보 수정 모달 버튼 */}
         <button className="font-NanumSquare mb-[4px]" onClick={handleEditPlaylist}>수정</button>
+        {/* 구분선 */}
         <hr className="border-none h-[0.5px] bg-[#efefef]" />
+        {/* 플레이리스트 삭제 확인 */}
         <button className="font-NanumSquare mt-[6px]">삭제</button>
       </ModalContent>
     </div>

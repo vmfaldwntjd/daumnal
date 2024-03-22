@@ -126,10 +126,11 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
           />
           {/* 플레이리스트 수정/삭제 모달 */}
           {isOpenInfoModal && (
-            <PlaylistModalContainer ref={modalRef}> {/* 모달을 위한 ref 추가 */}
+            <PlaylistModalContainer ref={modalRef}>
               <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} />
             </PlaylistModalContainer>
           )}
+          {/* 플레이리스트 수정/삭제 모달 버튼 */}
           <button className="relative z-1 self-end text-3xl mb-[155px] ml-[15px]" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
         </Top>
         {/* 플레이리스트 이름 */}
@@ -180,7 +181,7 @@ const Top = styled.div`
 const Musics = styled.div`
   width: 70%;
   height: 60vh;
-  overflow-y: auto; /* 세로 스크롤 추가 */
+  overflow-y: auto;
   background-color: #F8F6EE;
   display: flex;
   flex-direction: column;
