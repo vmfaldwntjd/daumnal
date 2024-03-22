@@ -24,7 +24,7 @@ public enum ErrorCode {
     NOT_EXISTS_MEMBER_SOCIAL_PROVIDER(BAD_REQUEST, "socialProvider를 입력해주세요!"),
     NOT_EXISTS_MEMBER_NICKNAME_INPUT(BAD_REQUEST, "닉네임을 입력해주세요!"),
     NOT_EXISTS_MEMBER_NICKNAME_GET(BAD_REQUEST, "닉네임 정보가 없습니다!"),
-    NOT_EXISTS_MEMBER_NICKNAME_INIT_GET(BAD_REQUEST, "초기에 닉네임을 등록하지 않은 회원입니다!"),
+    NOT_EXISTS_MEMBER_NICKNAME_INIT_GET(FORBIDDEN, "초기에 닉네임을 등록하지 않은 회원입니다!"),
 
     INVALID_MEMBER_ID(BAD_REQUEST, "회원 id 입력 형식이 올바르지 않습니다!"),
     INVALID_MEMBER_TOKEN(FORBIDDEN, "유효하지 않는 토큰입니다!"),
