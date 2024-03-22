@@ -8,12 +8,12 @@ public class EmotionDTO {
     @Getter
     @Setter
     public static class DiaryEmotion {
-        private String fear;
-        private String surprise;
-        private String angry;
-        private String sadness;
-        private String neutral;
-        private String happiness;
-        private String disgust;
+        private Integer fear;
+        private Integer surprise;
+        private Integer angry;
+        private Integer sadness;
+        private Integer neutral;
+        private Integer happiness;
+        private Integer disgust;
     }
 }
