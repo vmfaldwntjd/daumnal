@@ -49,13 +49,6 @@ public class Playlist extends BaseEntity {
         this.member = member;
     }
 
-    @Builder
-    public Playlist(Long id, String name, String coverUrl) {
-        this.id = id;
-        this.name = name;
-        this.coverUrl = coverUrl;
-    }
-
     public GetPlaylistResponse toGetPlaylistResponse() {
 
         return GetPlaylistResponse.builder()

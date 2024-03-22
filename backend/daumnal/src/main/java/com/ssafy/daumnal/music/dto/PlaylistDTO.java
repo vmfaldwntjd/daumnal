@@ -41,12 +41,6 @@ public class PlaylistDTO {
 
     @Getter
     @Setter
-    public static class GetPlaylistsResponse {
-        List<GetPlaylistResponse> playlists;
-    }
-
-    @Getter
-    @Setter
     @AllArgsConstructor
     @Builder
     public static class GetPlaylistResponse {
