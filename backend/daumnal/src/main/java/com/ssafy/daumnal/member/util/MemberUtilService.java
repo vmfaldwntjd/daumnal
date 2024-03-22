@@ -176,4 +176,10 @@ public class MemberUtilService {
             throw new InvalidException(INVALID_MEMBER_NICKNAME_NOT_NULL);
         }
     }
+
+    public void validateMemberNicknameNonNull(String nickname) {
+        if (Objects.isNull(nickname)) {
+            throw new InvalidException(INVALID_MEMBER_NICKNAME_NULL);
+        }
+    }
 }
