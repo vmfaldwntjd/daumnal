@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_DELETE;
 import static com.ssafy.daumnal.member.constants.MemberConstants.MEMBER_LOGOUT;
@@ -84,12 +86,14 @@ public class MemberServiceImpl implements MemberService {
         int memberStatus = member.getStatus().getValue();
         memberUtilService.validateMemberStatusNotDelete(memberStatus);
         memberUtilService.validateMemberStatusNotLogout(memberStatus);
-        
+
         String originNickname = member.getNickname();
         memberUtilService.validateExistsInitialNickname(originNickname);
 
         memberUtilService.validateInputMemberNickname(nickname);
+        memberUtilService.validateNicknameEqualInit(nickname, originNickname);
 
+        // 이미 존재한 닉네임을 입력한 경우
         member.updateNickname(nickname);
 
         return GetMemberNicknameResponse.builder()
