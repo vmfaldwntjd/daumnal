@@ -37,6 +37,8 @@ public enum ErrorCode {
     INVALID_MEMBER_NICKNAME_LENGTH(BAD_REQUEST, "닉네임 입력 길이는 15자 이하로 입력 바랍니다!"),
     INVALID_MEMBER_NICKNAME_SPACE(BAD_REQUEST, "닉네임 입력시 공백 없이 입력해주세요!"),
     INVALID_MEMBER_NICKNAME_SAME_WITH_INIT(BAD_REQUEST, "회원님이 사용중인 닉네임입니다!"),
+    INVALID_MEMBER_NICKNAME_NOT_NULL(FORBIDDEN, "회원님은 이미 닉네임 등록 완료하였습니다!"),
+    INVALID_MEMBER_NICKNAME_NULL(FORBIDDEN, "회원님은 닉네임 등록을 하지 않은 상태입니다!"),
     INVALID_MEMBER_STATUS_ON_LOGOUT(FORBIDDEN, "해당 회원은 로그아웃 한 상태입니다!"),
     INVALID_MEMBER_STATUS_ON_DELETE(FORBIDDEN, "해당 회원은 탈퇴 처리된 회원입니다!"),
     INVALID_MEMBER_STATUS_ON_LOGIN(FORBIDDEN, "해당 회원은 이미 로그인 한 상태입니다!"),
@@ -63,9 +65,14 @@ public enum ErrorCode {
 
     //음악
     NOT_EXISTS_MUSIC_ID(BAD_REQUEST, "존재하지 않는 노래 id 입니다!"),
+    NOT_EXISTS_PLAYLIST_ID(BAD_REQUEST, "존재하지 않는 플레이리스트 id 입니다!"),
     NOT_EXISTS_BACKGROUND_MUSIC(NOT_FOUND, "존재하지 않는 배경음악입니다!"),
 
     INVALID_BACKGROUND_MUSIC_ID(BAD_REQUEST, "배경음악 id 입력 형식이 올바르지 않습니다!"),
+
+    NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER(BAD_REQUEST, "로그인 상태인 회원과 플레이리스트 소유자가 다릅니다!"),
+
+    PLAYLIST_AND_MUSIC_LIMIT_EXCEEDED(BAD_REQUEST, "플레이리스트에 더 이상 노래를 추가할 수 없습니다."),
 
     //파일
     NOT_EXISTS_FILE(BAD_REQUEST, "존재하지 않는 파일입니다.");
