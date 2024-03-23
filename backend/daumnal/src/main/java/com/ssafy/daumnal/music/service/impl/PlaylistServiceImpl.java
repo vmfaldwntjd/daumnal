@@ -119,7 +119,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     /**
-     * 플레이리스트의 노래 리스트 조회
+     * 플레이리스트에 저장된 노래 리스트 조회
      * @param memberId 로그인 상태인 회원 id
      * @param playlistId 조회할 플레이리스트 id
      * @return
