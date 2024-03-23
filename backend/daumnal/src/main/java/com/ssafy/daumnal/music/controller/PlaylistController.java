@@ -4,6 +4,7 @@ import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.global.dto.PageResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
+import com.ssafy.daumnal.music.dto.PlaylistDTO.GetMusicsInPlaylistResponse;
 import com.ssafy.daumnal.music.dto.PlaylistDTO.AddPlaylistRequest;
 import com.ssafy.daumnal.music.service.PlaylistService;
 import jakarta.validation.Valid;
@@ -61,5 +62,19 @@ public class PlaylistController {
         }
 
         return ApiResponse.success(SuccessCode.GET_PLAYLISTS, playlistsResponse);
+    }
+
+    /**
+     * 플레이리스트에 저장된 노래 리스트 조회
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 조회할 플레이리스트 id
+     * @return
+     */
+    @GetMapping("/{playlistId}/musics")
+    public ApiResponse<?> getMusicsInPlaylist(Authentication authentication, @PathVariable Long playlistId) {
+        GetMusicsInPlaylistResponse musicsInPlaylistResponse =
+            playlistService.getMusicsInPlaylist(jwtProvider.getMemberInfo(authentication), playlistId);
+
+        return ApiResponse.success(SuccessCode.GET_MUSICS_IN_PLAYLIST, musicsInPlaylistResponse);
     }
 }
