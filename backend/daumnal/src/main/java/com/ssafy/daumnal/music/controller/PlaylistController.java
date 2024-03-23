@@ -4,8 +4,7 @@ import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.global.dto.PageResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
-import com.ssafy.daumnal.music.dto.PlaylistDTO.GetMusicsInPlaylistResponse;
-import com.ssafy.daumnal.music.dto.PlaylistDTO.AddPlaylistRequest;
+import com.ssafy.daumnal.music.dto.PlaylistDTO.*;
 import com.ssafy.daumnal.music.service.PlaylistService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +61,20 @@ public class PlaylistController {
         }
 
         return ApiResponse.success(SuccessCode.GET_PLAYLISTS, playlistsResponse);
+    }
+
+    /**
+     * 플레이리스트 정보 조회
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 조회할 플레이리스트 id
+     * @return
+     */
+    @GetMapping("/{playlistId}")
+    public ApiResponse<?> getPlaylist(Authentication authentication, @PathVariable Long playlistId) {
+        GetPlaylistResponse getPlaylistResponse =
+            playlistService.getPlaylist(jwtProvider.getMemberInfo(authentication), playlistId);
+
+        return ApiResponse.success(SuccessCode.GET_PLAYLIST, getPlaylistResponse);
     }
 
     /**
