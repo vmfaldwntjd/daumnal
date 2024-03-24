@@ -1,7 +1,5 @@
 package com.ssafy.daumnal.global.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.daumnal.global.constants.ErrorCode;
 import com.ssafy.daumnal.global.dto.TokenMemberDTO;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -17,9 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.INVALID_MEMBER_TOKEN;
