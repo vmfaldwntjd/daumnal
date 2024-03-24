@@ -54,15 +54,14 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
 
     private static Map<String, Object> getErrorDetails(HttpServletResponse response, ErrorCode exception) {
-        ErrorCode err = exception;
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.setStatus(err.getStatus().value());
+        response.setStatus(exception.getStatus().value());
 
         Map<String, Object> errorDetails = new LinkedHashMap<>();
-        errorDetails.put("code", err.getStatus().value());
-        errorDetails.put("status", err.getStatus());
-        errorDetails.put("message", err.getMessage());
+        errorDetails.put("code", exception.getStatus().value());
+        errorDetails.put("status", exception.getStatus());
+        errorDetails.put("message", exception.getMessage());
         return errorDetails;
     }
 }
