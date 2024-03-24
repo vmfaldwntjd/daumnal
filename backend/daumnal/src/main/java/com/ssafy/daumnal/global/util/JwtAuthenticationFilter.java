@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 String requestURI = request.getRequestURI();
                 if (memberData.getType().equals("refresh") && !requestURI.equals("/api/members/reissue")) {
-                    throw new IOException("refresh 토큰 인증 오류");
+                    throw new JwtException("refresh 토큰 인증 오류");
                 }
                 UserDetails memberDetails = memberDetailsService.loadUserByUsername(String.valueOf(memberData.getMemberId()));
                 Authentication authToken = new UsernamePasswordAuthenticationToken(memberDetails,
