@@ -4,6 +4,7 @@ import com.ssafy.daumnal.global.dto.TokenResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.util.JwtProvider;
+import com.ssafy.daumnal.global.util.RedisRepository;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberLoginResponse;
 import com.ssafy.daumnal.member.dto.MemberDTO.GetMemberNicknameResponse;
 import com.ssafy.daumnal.member.entity.Member;
@@ -25,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
     private final MemberUtilService memberUtilService;
+    private final RedisRepository redisRepository;
 
 
     @Transactional
@@ -124,6 +126,9 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
 
         member.updateMemberStatus(MemberStatus.LOGOUT);
+
+        redisRepository.deleteValues(memberId + "_access");
+        redisRepository.deleteValues(memberId + "_refresh");
     }
 
     private GetMemberLoginResponse getGetMemberLoginResponse(String socialId, String socialProvider) {
