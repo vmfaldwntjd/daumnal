@@ -4,9 +4,13 @@ import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.music.entity.Playlist;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public class PlaylistDTO {
 
@@ -33,5 +37,15 @@ public class PlaylistDTO {
                     .member(member)
                     .build();
         }
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @Builder
+    public static class GetPlaylistResponse {
+        private Long playlistId;
+        private String playlistName;
+        private String playlistCoverUrl;
     }
 }
