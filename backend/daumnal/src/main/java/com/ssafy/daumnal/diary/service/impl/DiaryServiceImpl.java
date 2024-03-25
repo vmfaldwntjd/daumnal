@@ -7,6 +7,8 @@ import com.ssafy.daumnal.diary.repository.DiaryRepository;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
+import com.ssafy.daumnal.emotion.dto.nativedto.GetEmotionByMonth;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.global.exception.NoExistException;
@@ -206,6 +208,31 @@ public class DiaryServiceImpl implements DiaryService {
                 .musicId(String.valueOf(diary.getMusicId()))
                 .emotionId(String.valueOf(diary.getEmotion().getId()))
                 .diaryCreatedAt(diaryCreatedAt)
+                .build();
+    }
+
+    @Override
+    public GetAllEmotionByMonth getAllEmotionByMonth(String memberId, String year, String month) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        diaryUtilService.validateExistsDiaryYearInput(year);
+        diaryUtilService.validateExistsDiaryMonthInput(month);
+        diaryUtilService.validateDiaryYearInput(year);
+        diaryUtilService.validateDiaryMonthInput(month);
+
+        //Todo: 비즈니스 로직 작성
+        List<GetEmotionByMonth> allEmotionByMonth = diaryRepository.findAllEmotionByMonth(Long.parseLong(memberId),
+                Integer.parseInt(year), Integer.parseInt(month));
+
+        return GetAllEmotionByMonth.builder()
+                .diaryEmotions(allEmotionByMonth)
                 .build();
     }
 }
