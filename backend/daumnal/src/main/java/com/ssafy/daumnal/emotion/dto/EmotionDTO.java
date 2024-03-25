@@ -19,6 +19,8 @@ public class EmotionDTO {
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @Builder
     public static class DiaryEmotion {
         private Integer fear;
         private Integer surprise;
