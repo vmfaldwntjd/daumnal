@@ -19,7 +19,8 @@ spring:
   jwt:
     secret: ${JWT_SECRET}
     live:
-      access: 3600000 # access token 기한 1시간
+#      access: 3600000 # access token 기한 1시간
+      access: 60000
       refresh: 604800000 # refresh token 기한 일주일
 
   cache:
