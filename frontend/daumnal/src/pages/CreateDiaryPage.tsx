@@ -74,7 +74,7 @@ const CreateDiary: React.FC = () => {
  // 일기등록 버튼을 누르면 실행되는 함수
  const goToLoadingPage = () => {
 
-  if (title && removeTagsContent && removeTagsContent.length >= 20) {
+  if (title && removeTagsContent &&  removeTagsContent.length >= 20 && removeTagsContent.length <= 3000 ) {
     setIsLoading(true);
   }
 
@@ -84,6 +84,10 @@ const CreateDiary: React.FC = () => {
 
   else if (removeTagsContent.length < 20) {
     alert('일기 내용을 20자 이상 입력해주세요')
+  }
+
+  else if (removeTagsContent.length > 3000) {
+    alert('일기는 최대 3000자까지 입력 가능합니다. \n현재 글자 수 : ' + removeTagsContent.length)
   }
 };
 
