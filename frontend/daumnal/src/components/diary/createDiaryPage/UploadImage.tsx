@@ -40,6 +40,19 @@ const UploadImage: React.FC<UploadImageProps> = ({ setImage, setImagePreview, in
 
         if (e.target.files && e.target.files.length > 0) {
         const uploadFile:File = e.target.files[0]
+
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+        if (!allowedExtensions.exec(uploadFile.name)) {
+            alert('지원되는 파일 형식이 아닙니다.');
+            return;
+        }
+
+        if (uploadFile.size > 3 * 1024 * 1024) {
+            alert('3MB 이하의 이미지만 첨부 가능합니다');
+            return;
+        }
+
         setUploadImage(uploadFile);       
         }
 
