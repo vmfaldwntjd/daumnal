@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useLocation, useNavigate } from 'react-router-dom';
-import EmotionButton from '../components/EmotionButton';
+import MonthlyEmotionButton from '../components/MonthlyEmotionButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -182,7 +182,7 @@ const EmotionGraph = () => {
   }}
 >
           {emotions.map((emotion) => (
-            <EmotionButton
+            <MonthlyEmotionButton
               key={emotion}
               emotion={emotion}
               isSelected={selectedEmotions.includes(emotion)}

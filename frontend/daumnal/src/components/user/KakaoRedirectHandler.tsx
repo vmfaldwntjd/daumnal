@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import NicknameModal from '../modal/NicknameModal';
 import axiosInstance from '../../pages/api/axiosInstance';
 
+const { Kakao } = window;
+
 const KakaoRedirectHandler = () => {
   const navigate = useNavigate();
   const [isFirstLogin, setIsFirstLogin] = useState<boolean | null>(null);
@@ -17,12 +19,10 @@ const KakaoRedirectHandler = () => {
         console.error('카카오 인증 코드가 없습니다.');
         return;
       }
-
+  
       const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      // const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
-      const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
-      
-
+      const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
+  
       const response = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
         {},
@@ -32,44 +32,60 @@ const KakaoRedirectHandler = () => {
           },
         }
       );
-
-      console.log(response)
-
+  
       window.Kakao.Auth.setAccessToken(response.data.access_token);
-
+  
       const userInfoResponse = await window.Kakao.API.request({
         url: '/v2/user/me',
       });
-
+  
       const loginResponse = await axiosInstance.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/login`, {
         socialId: userInfoResponse.id.toString(),
         socialProvider: 'kakao',
       });
-
+  
       const responseData = loginResponse.data;
       if (responseData && responseData.code === 200) {
-        console.log(responseData)
-        // 여기서 로컬 스토리지에 저장하는 로직을 추가합니다.
-        localStorage.setItem('memberId', responseData.data.memberId);
-        localStorage.setItem('memberAccessToken', responseData.data.memberAccessToken);
-        localStorage.setItem('memberRefreshToken', responseData.data.memberRefreshToken);
-
+        const localMemberId = localStorage.getItem('memberId');
+        if (localMemberId !== responseData.data.memberId) {
+          localStorage.removeItem('memberId');
+          localStorage.removeItem('memberAccessToken');
+          localStorage.removeItem('memberRefreshToken');
+  
+          localStorage.setItem('memberId', responseData.data.memberId);
+          localStorage.setItem('memberAccessToken', responseData.data.memberAccessToken);
+          localStorage.setItem('memberRefreshToken', responseData.data.memberRefreshToken);
+        }
         setIsFirstLogin(responseData.data.firstLogin);
         if (responseData.data.firstLogin) {
-          // 첫 로그인이면 닉네임 모달을 띄웁니다.
         } else {
-          // 첫 로그인이 아니라면 바로 메인 페이지로 이동합니다.
           navigate('/main');
         }
       } else if (responseData.code === 403) {
-        // 이미 로그인 한 상태라면 메인 페이지로 이동합니다.
+        // // 403 에러 처리, 로그아웃 요청 후 다시 로그인 시도
+        // await Kakao.Auth.logout();
+        // console.log('카카오 로그아웃 성공')
+        // await handleLogout(); // 로그아웃 처리
+        // console.log('서버 로그아웃 성공')
+        // handleKakaoLogin(); // 다시 로그인 시도
         navigate('/main');
       }
     } catch (error) {
       console.error('로그인 과정에서 오류가 발생했습니다:', error);
+      // if (error instanceof Error && 'response' in error) {
+      //   const response = (error as any).response;
+      //   if (response && response.status === 400) {
+      //     const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
+      //     const redirectUri = encodeURIComponent(`${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`);
+      //     const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+      //     window.location.href = kakaoAuthUrl; // 사용자를 카카오 인증 페이지로 리디렉션
+      //   }
+      // } else {
+      //   console.error('로그인 과정에서 오류가 발생했습니다:', error);
+      // }
     }
   };
-
+  
   useEffect(() => {
     handleKakaoLogin();
   }, []);
@@ -114,6 +130,17 @@ const KakaoRedirectHandler = () => {
     } else {
       console.error('알 수 없는 오류가 발생했습니다:', error);
     }
+  }
+};
+
+// 로그아웃 처리 함수
+const handleLogout = async () => {
+  try {
+    const response = await axiosInstance.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/logout`);
+    localStorage.clear();
+    console.log('로그아웃 처리:', response.data.message);
+  } catch (error) {
+    console.error('로그아웃 과정에서 오류가 발생했습니다:', error);
   }
 };
 

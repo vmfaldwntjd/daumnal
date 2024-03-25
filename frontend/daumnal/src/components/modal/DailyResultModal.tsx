@@ -6,6 +6,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import DailyEmotionButton from '../DailyEmotionButton';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,7 +31,6 @@ const ChartWrapper = styled.div`
   max-height: calc(90% - 60px); // 제목과 버튼의 높이를 고려하여 계산
   margin: auto; // 중앙 정렬
 `;
-
 
 const ChartTitle = styled.h2`
   text-align: center;
@@ -107,6 +107,16 @@ const emotionColors: EmotionColors = {
   'neutral': '#ADADAD'
 };
 
+const emotionImages = {
+  happiness: '/image/happiness_face.png',
+  sadness: '/image/sadness_face.png',
+  angry: '/image/angry_face.png',
+  fear: '/image/fear_face.png',
+  disgust: '/image/disgust_face.png',
+  surprise: '/image/surprise_face.png',
+  neutral: '/image/neutral_face.png',
+};
+
 const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalClose, emotionId }) => {
   const validEmotionId = emotionId || 5342;
   const [emotionData, setEmotionData] = useState<EmotionData>({});
@@ -154,32 +164,39 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
       onComplete: function (this: ChartJS) {
         const ctx = this.ctx;
         const chartArea = this.chartArea;
-  
-        // 중앙에 텍스트를 그리기 위한 설정
-        ctx.save();
-        ctx.font = '20px Cafe24Oneprettynight';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
         const centerX = (chartArea.left + chartArea.right) / 2;
         const centerY = (chartArea.top + chartArea.bottom) / 2;
+    
         if (selectedEmotion && emotionData[selectedEmotion] !== undefined) {
-          // 'emotionData[selectedEmotion]' 값이 숫자인지 확인합니다.
           const emotionValue = emotionData[selectedEmotion];
           if (typeof emotionValue === 'number') {
-            const percentageValue = (emotionValue / 100).toFixed(2); // 소수점 두 자리까지 표시
-            const text = `${selectedEmotion}: ${percentageValue}%`;
-            ctx.fillText(text, centerX, centerY);
+            const percentageValue = (emotionValue / 100); // 소수점 두 자리까지 표시
+            const text = `${percentageValue}%`;
+            const imageSrc = emotionImages[selectedEmotion as keyof typeof emotionImages];
+    
+            // 이미지 로드
+            const img = new Image();
+            img.onload = function() {
+              // 이미지를 그린 후 텍스트 그리기
+              const imageX = centerX - img.width / 2;
+              const imageY = centerY - img.height / 2 - 30; // 이미지와 텍스트 사이에 간격 조정 (기존 20에서 30으로 변경)
+              ctx.drawImage(img, imageX, imageY);
+              ctx.font = '30px Cafe24Oneprettynight'; // 폰트 크기를 20px에서 24px로 증가
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(text, centerX, centerY + 30); // 이미지 아래에 텍스트 위치 조정 (간격을 더 늘림)
+            };
+            img.src = imageSrc;
           }
         }        
-        ctx.restore();
       },
     },
     cutout: '76%',
-    maintainAspectRatio: false, // 차트의 비율 유지를 비활성화하여, 부모 요소에 맞게 크기가 조정되도록 합니다.
+    maintainAspectRatio: false, // 차트의 비율 유지를 비활성화하여, 부모 요소에 맞게 크기가 조정되도록 합니다.    
   };
 
   return (
-    <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center"  > 
+    <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center"> 
       <div className="bg-bg_modal p-8 rounded-xl h-[90%] w-[600px] shadow-lg">
           <ChartTitle className='text-2xl'>2024년 3월 22일 금요일</ChartTitle>
           <ChartWrapper>
@@ -187,22 +204,29 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
           </ChartWrapper>
           <EmotionButtonsContainer>
             {emotions.slice(0, 4).map(emotion => (
-              <EmotionButton key={emotion} onClick={() => handleEmotionClick(emotion)}>
-                {emotion}
-              </EmotionButton>
+              <DailyEmotionButton 
+                key={emotion} 
+                emotion={emotion} 
+                handleEmotionClick={handleEmotionClick}
+                modalSize={{ width: 600, height: 800 }} // 예시로 너비 600px, 높이 800px을 설정합니다.
+              />
             ))}
           </EmotionButtonsContainer>
           <EmotionButtonsContainer>
             {emotions.slice(4).map(emotion => (
-              <EmotionButton key={emotion} onClick={() => handleEmotionClick(emotion)}>
-                {emotion}
-              </EmotionButton>
+              <DailyEmotionButton 
+                key={emotion} 
+                emotion={emotion} 
+                handleEmotionClick={handleEmotionClick}
+                modalSize={{ width: 600, height: 800 }} // 예시로 너비 600px, 높이 800px을 설정합니다.
+              />
             ))}
           </EmotionButtonsContainer>
           <Button onClick={onDailyResultModalClose}>일기로 돌아가기</Button>
       </div>
     </div>
   );
+   
 };
 
 export default DailyResultModal;

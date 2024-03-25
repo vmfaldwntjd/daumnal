@@ -1,13 +1,13 @@
 import React from 'react';
 
-interface EmotionButtonProps {
+interface MonthlyEmotionButtonProps {
   emotion: string;
   isSelected: boolean;
   toggleEmotion: (emotion: string) => void;
   containerSize: { width: number; height: number };
 }
 
-const EmotionButton: React.FC<EmotionButtonProps> = ({ emotion, isSelected, toggleEmotion, containerSize }) => {
+const MonthlyEmotionButton: React.FC<MonthlyEmotionButtonProps> = ({ emotion, isSelected, toggleEmotion, containerSize }) => {
   const imageUrl = isSelected ? `/image/${emotion}.png` : `/image/${emotion}_face.png`;
 
   // 버튼 크기를 컨테이너 크기에 맞게 계산
@@ -23,4 +23,4 @@ const EmotionButton: React.FC<EmotionButtonProps> = ({ emotion, isSelected, togg
   );
 };
 
-export default EmotionButton;
+export default MonthlyEmotionButton;
