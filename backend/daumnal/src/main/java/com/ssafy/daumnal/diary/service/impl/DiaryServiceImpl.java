@@ -6,14 +6,12 @@ import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
-import com.ssafy.daumnal.emotion.constants.EmotionConstants;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
 import com.ssafy.daumnal.emotion.dto.nativedto.GetEmotionByMonth;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.emotion.util.EmotionUtilService;
-import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
@@ -32,7 +30,6 @@ import java.util.Objects;
 
 import static com.ssafy.daumnal.diary.constants.DiaryConstants.*;
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
-import static com.ssafy.daumnal.member.constants.MemberConstants.NUMBER_REGEX;
 
 @Service
 @RequiredArgsConstructor
@@ -265,6 +262,27 @@ public class DiaryServiceImpl implements DiaryService {
                 .neutral(emotion.getNeutral())
                 .happiness(emotion.getHappiness())
                 .disgust(emotion.getDisgust())
+                .build();
+    }
+
+    @Override
+    public RemoveDiaryResponse removeDiary(String memberId, String diaryId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        diaryUtilService.validateDiaryIdNumber(diaryId);
+        Diary diary = diaryRepository.findById(Long.parseLong(diaryId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+
+        diaryRepository.deleteById(diary.getId());
+        return RemoveDiaryResponse.builder()
+                .diaryId(diaryId)
                 .build();
     }
 }

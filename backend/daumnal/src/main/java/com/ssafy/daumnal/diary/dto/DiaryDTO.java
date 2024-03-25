@@ -37,6 +37,13 @@ public class DiaryDTO {
     @Getter
     @AllArgsConstructor
     @Builder
+    public static class RemoveDiaryResponse {
+        private String diaryId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
     public static class GetCalendarResponse {
         private List<CalendarContent> calendarContents;
     }
