@@ -128,6 +128,17 @@ public class DiaryUtilService {
         }
     }
 
+    /**
+     * 일기 id를 자연수로 입력했는지 확인하기
+     *
+     * @param diaryId
+     */
+    public void validateDiaryIdNumber(String diaryId) {
+        if (!diaryId.matches(NUMBER_REGEX)) {
+            throw new InvalidException(INVALID_DIARY_ID);
+        }
+    }
+
     private boolean allEmotionsExist(DiaryEmotion diaryEmotion) {
         return diaryEmotion.getAngry() != null &&
                 diaryEmotion.getFear() != null &&

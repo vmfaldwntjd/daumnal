@@ -175,4 +175,37 @@ public class DiaryServiceImpl implements DiaryService {
         }
         diary.updateMusicId(musicId);
     }
+
+    @Override
+    public GetDiaryResponse getDiary(String memberId, String diaryId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+        diaryUtilService.validateDiaryIdNumber(diaryId);
+
+        Diary diary = diaryRepository.findById(Long.parseLong(diaryId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+
+        StringBuilder sb = new StringBuilder();
+        String[] date = diary.getCreatedAt().split(" ")[0].split("-");
+        String diaryCreatedAt = sb.append(date[0]).append("년 ")
+                .append(date[1]).append("월 ")
+                .append(date[2]).append("일")
+                .toString();
+
+        return GetDiaryResponse.builder()
+                .diaryTitle(diary.getTitle())
+                .diaryContent(diary.getContent())
+                .diaryHashTag(diary.getHashTag())
+                .diaryPhotoUrl(diary.getPhotoUrl())
+                .musicId(String.valueOf(diary.getMusicId()))
+                .emotionId(String.valueOf(diary.getEmotion().getId()))
+                .diaryCreatedAt(diaryCreatedAt)
+                .build();
+    }
 }
