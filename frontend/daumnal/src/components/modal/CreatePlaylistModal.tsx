@@ -19,7 +19,7 @@ interface ApiResponse {
 
 const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggleModal }) => {
   // 플레이리스트 제목 상태
-  const [playlistTitle, setPlaylistTitle] = useState('');
+  const [playlistName, setPlaylistName] = useState('');
   // 플레이리스트 커버 이미지 상태
   const [playlistCover, setPlaylistCover] = useState<File | null>(null);
   // 플레이리스트 커버 이미지 미리보기 상태
@@ -29,7 +29,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
 
   // 플레이리스트 제목 변경 이벤트 핸들러
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPlaylistTitle(event.target.value);
+    setPlaylistName(event.target.value);
   };
 
   // 플레이리스트 커버 이미지 변경 이벤트 핸들러
@@ -57,45 +57,50 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
     }
   };
 
-  useEffect(() => {
+  // 플레이리스트 생성 요청 핸들러
+  const handleCreatePlaylist = () => {
+    // 플레이리스트 제목이 유효한지 확인
+    if (!playlistName || playlistName.length > 20 || playlistName.length < 1) {
+      alert('플레이리스트 제목은 1글자 이상, 20글자 이하여야 합니다.');
+      return;
+    }
+
     // FormData 객체 생성
     const formData = new FormData();
 
     // playlistTitle 추가
-    formData.append('playlistTitle', playlistTitle);
+    formData.append('playlistName', playlistName);
     // playlistCover 추가
     if (playlistCover) {
       formData.append('playlistCover', playlistCover);
     }
-  
+
     // POST 요청 보내기
-    axiosImage.post<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/api/playlists`, formData)
+    axiosImage.post<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists`, formData)
       .then(response => {
         console.log('플레이리스트 생성 요청 성공!', response.data);
         if (response.data.code === 201) {
           console.log(`${response.data.status}: ${response.data.message}`);
-        } else if (response.data.code === 400) {
-          console.log(`${response.data.status}: ${response.data.message}`);
-        } else if (response.data.code === 403) {
+          onClickToggleModal();
+        } else {
           console.log(`${response.data.status}: ${response.data.message}`);
         }
       })
       .catch(error => {
-        console.error('플레이리스트 생성 요청 오류 발생!', error);
+        console.log('플레이리스트 생성 요청 오류 발생!', error);
       });
-  }, [playlistTitle, playlistCover]);
+  };
 
   return (
     <ModalBackdrop onClick={onClickToggleModal}> {/* 배경 클릭 시 모달 닫기 */}
       <ModalContent onClick={(e) => e.stopPropagation()}> {/* 모달 컨텐츠 클릭 시 버블링 방지 */}
-        {/* 플레이리스트 제목 (1글자 이상 20글자 이하, 필수값) */}
         <div className="flex items-center justify-center w-full border-b-2 border-[#9c9388] mb-8">
           <FontAwesomeIcon icon={faPenToSquare} className='text-3xl text-[#9c9388]' />
-          <TitleInput type="text" value={playlistTitle} placeholder='플레이리스트 이름을 입력해 주세요' onChange={handleTitleChange} />
+          <TitleInput type="text" value={playlistName} placeholder='플레이리스트 이름을 입력해 주세요' onChange={handleTitleChange} />
         </div>
         {/* 플레이리스트 커버 이미지 */}
         <div className="relative w-full mb-8">
-          {/* 점선 */}
+          {/* 테두리 점선 */}
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 left-0" style={{ pointerEvents: 'none' }}>
             <rect x="1" y="1" width="99%" height="99%" rx="8" ry="8"
               style={{ 
@@ -126,7 +131,8 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
             </button>
           )}
         </div>
-        <Button>확인</Button>
+        {/* 생성 요청 버튼 */}
+        <Button onClick={handleCreatePlaylist}>확인</Button>
       </ModalContent>
     </ModalBackdrop>
   );
