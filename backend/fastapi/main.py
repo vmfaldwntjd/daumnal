@@ -16,7 +16,7 @@ import recommend
 app = FastAPI()
 
 # cors 설정
-origins = ["*"]
+origins = ["https://daumnal-d.n-e.kr:4000", "http://localhost:4000"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
