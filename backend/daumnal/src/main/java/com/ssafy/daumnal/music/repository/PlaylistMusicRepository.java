@@ -1,7 +1,12 @@
 package com.ssafy.daumnal.music.repository;
 
+<<<<<<< HEAD
+import java.util.List;
+
+=======
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.music.entity.Music;
+>>>>>>> b00fd9de8b5bc8db2809db68d4ed2635f105273e
 import com.ssafy.daumnal.music.entity.Playlist;
 import com.ssafy.daumnal.music.entity.PlaylistMusic;
 import com.ssafy.daumnal.music.entity.PlaylistMusicId;
@@ -16,6 +21,8 @@ import java.util.List;
 public interface PlaylistMusicRepository extends JpaRepository<PlaylistMusic, PlaylistMusicId> {
 
     Long countByPlaylist(Playlist playlist);
+
+    List<PlaylistMusic> findByPlaylist(Playlist playlist);
 
     @Query(
             "SELECT pm.playlist FROM PlaylistMusic pm "
