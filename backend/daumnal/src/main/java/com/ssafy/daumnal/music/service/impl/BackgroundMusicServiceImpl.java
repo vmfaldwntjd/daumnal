@@ -4,8 +4,8 @@ import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
-import com.ssafy.daumnal.music.dto.BackgroundMusicDTO.BackGroundMusic;
-import com.ssafy.daumnal.music.dto.BackgroundMusicDTO.GetBackgroundMusicResponse;
+import com.ssafy.daumnal.music.dto.BackgroundMusicDTO.GetBackGroundMusicResponse;
+import com.ssafy.daumnal.music.dto.BackgroundMusicDTO.GetBackgroundMusicsResponse;
 import com.ssafy.daumnal.music.entity.BackgroundMusic;
 import com.ssafy.daumnal.music.repository.BackgroundMusicRepository;
 import com.ssafy.daumnal.music.service.BackgroundMusicService;
@@ -26,7 +26,7 @@ public class BackgroundMusicServiceImpl implements BackgroundMusicService {
     private final MemberUtilService memberUtilService;
 
     @Override
-    public GetBackgroundMusicResponse getAllBackgroundMusic(String memberId) {
+    public GetBackgroundMusicsResponse getAllBackgroundMusic(String memberId) {
         memberUtilService.validateMemberIdNumber(memberId);
 
         Member member = memberRepository.findById(Long.parseLong(memberId))
@@ -37,9 +37,9 @@ public class BackgroundMusicServiceImpl implements BackgroundMusicService {
         memberUtilService.validateMemberStatusNotLogout(status);
 
         List<BackgroundMusic> backgroundMusicContents = backgroundMusicRepository.findAll();
-        List<BackGroundMusic> backGroundMusics = new ArrayList<>();
+        List<GetBackGroundMusicResponse> backGroundMusics = new ArrayList<>();
         for (BackgroundMusic backgroundMusic : backgroundMusicContents) {
-            backGroundMusics.add(new BackGroundMusic(
+            backGroundMusics.add(new GetBackGroundMusicResponse(
                     String.valueOf(backgroundMusic.getId()),
                     backgroundMusic.getYoutubeId(),
                     backgroundMusic.getTitle(),
@@ -47,7 +47,7 @@ public class BackgroundMusicServiceImpl implements BackgroundMusicService {
             ));
         }
 
-        return GetBackgroundMusicResponse.builder()
+        return GetBackgroundMusicsResponse.builder()
                 .backGroundMusics(backGroundMusics)
                 .build();
     }
