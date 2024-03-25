@@ -74,7 +74,7 @@ public class DiaryUtilService {
      */
     public void validateHashTagInput(String[] tags) {
         
-        if (tags.length == 1 && tags[0].equals("")) {
+        if (tags.length == 1 && tags[0].isEmpty()) {
             return;
         }
 
