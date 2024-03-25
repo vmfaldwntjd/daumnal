@@ -53,7 +53,9 @@ const CreateDiary: React.FC = () => {
 
   // 입력된 일기에서 태그 삭제 함수
   const removeHTMLTags = (str: string) => {
-    const newStr = str.replace(/<[^>]*>?/gm, '');
+    const newStr = str.replace(/<[^>]*>/gm, (match) => {
+      return match.startsWith('</') ? '.' : '';
+    });
     setRemoveTagsContent(newStr)
     // console.log('removeTagsContent', removeTagsContent)
     return 
