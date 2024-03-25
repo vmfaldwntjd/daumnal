@@ -22,6 +22,7 @@ const UploadImage: React.FC<UploadImageProps> = ({ setImage, setImagePreview, in
                 const result = reader.result as string;
                 setUploadImagePreview(result);
                 setImagePreview(result); // 미리보기 URL을 상위 컴포넌트로 직접 전달
+                // console.log(result)
             };
         } else {
             // 이미지가 없는 경우 상태 초기화

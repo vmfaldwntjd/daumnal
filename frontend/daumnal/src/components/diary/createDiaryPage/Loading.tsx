@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axiosImage from '../../../pages/api/axiosImage';
 import axios from 'axios';
+import axiosInstance from '../../../pages/api/axiosInstance';
 
 const Images = styled.div`
   width: 100%;
@@ -65,7 +66,7 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
   useEffect(() => {
     if (loadedImages === 16) {
     console.log( removeTagsContent )
-    axios.post(`${process.env.REACT_APP_FASTAPI_BASE_URL}/diaries`, {
+    axiosInstance.post(`${process.env.REACT_APP_FASTAPI_BASE_URL}/diaries`, {
       'diaryContent': removeTagsContent
     })
     .then(function (response) {
