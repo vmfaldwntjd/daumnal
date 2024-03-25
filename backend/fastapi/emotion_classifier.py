@@ -1,5 +1,3 @@
-import re
-
 import torch
 from torch import nn
 from torch.utils.data import Dataset
@@ -9,14 +7,8 @@ import numpy as np
 from kobert_tokenizer import KoBERTTokenizer
 from transformers import BertModel
 
-from transformers import AdamW
-from transformers.optimization import get_cosine_schedule_with_warmup
-
 from pydantic import BaseModel
-import pandas as pd
-
-# train & test 데이터로 나누기
-from sklearn.model_selection import train_test_split
+import re
 
 
 class BERTDataset(Dataset):
@@ -65,19 +57,6 @@ class BERTClassifier(nn.Module):
         return self.classifier(out)
 
 
-# device = torch.device("cpu")
-# tokenizer = KoBERTTokenizer.from_pretrained('skt/kobert-base-v1')
-# bertmodel = BertModel.from_pretrained('skt/kobert-base-v1', return_dict=False)
-# vocab = nlp.vocab.BERTVocab.from_sentencepiece(tokenizer.vocab_file, padding_token='[PAD]')
-#
-# max_len = 64
-# batch_size = 64
-#
-# tok = tokenizer.tokenize
-# model = BERTClassifier(bertmodel, dr_rate=0.5).to(device)
-# model.load_state_dict(torch.load("trained_params.pt", map_location=torch.device('cpu')))
-# model.eval()
-
 device = None
 tokenizer = None
 bertmodel = None
@@ -103,8 +82,6 @@ def init():
 
 
 def predict(sentences):  # input = 감정분류하고자 하는 sentence
-
-    print('predict called')
     print(sentences)
     dataset_another = []
     for i, sentence in enumerate(sentences):
@@ -141,8 +118,8 @@ class Emotion(BaseModel):
     disgust: int = 0
 
 
-def analyze_init(diaryContent):
-    sentences = re.split('[.,!?]', diaryContent)
+def analyze_init(content):
+    sentences = re.split('[.,!?\n]', content)
 
     if len(sentences) < 3:
         return None
