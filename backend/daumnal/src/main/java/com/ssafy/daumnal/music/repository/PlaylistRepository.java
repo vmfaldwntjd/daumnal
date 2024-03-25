@@ -13,5 +13,6 @@ import java.util.List;
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     Page<Playlist> findByMember(Member member, Pageable pageable);
+    Long countByMember(Member member);
     List<Playlist> findByMember(Member member);
 }

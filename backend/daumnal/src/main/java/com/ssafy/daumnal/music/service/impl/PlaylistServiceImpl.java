@@ -1,14 +1,12 @@
 package com.ssafy.daumnal.music.service.impl;
 
-import com.ssafy.daumnal.global.dto.PageResponse;
 import com.ssafy.daumnal.global.exception.LimitExceededException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
-import com.ssafy.daumnal.music.dto.PlaylistDTO.GetPlaylistResponse;
-import com.ssafy.daumnal.music.dto.PlaylistDTO.AddPlaylistRequest;
+import com.ssafy.daumnal.music.dto.PlaylistDTO.*;
 import com.ssafy.daumnal.music.entity.Music;
 import com.ssafy.daumnal.music.entity.Playlist;
 import com.ssafy.daumnal.music.entity.PlaylistMusic;
@@ -18,12 +16,13 @@ import com.ssafy.daumnal.music.repository.PlaylistRepository;
 import com.ssafy.daumnal.music.service.PlaylistService;
 import com.ssafy.daumnal.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
-import static com.ssafy.daumnal.global.constants.PageSize.PLAYLIST_LIST_SIZE;
+import static com.ssafy.daumnal.music.constants.MusicConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +48,9 @@ public class PlaylistServiceImpl implements PlaylistService {
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
 
+        if (playlistRepository.countByMember(member) >= PLAYLIST_MAX_NUMBER) {
+            throw new LimitExceededException(PLAYLIST_LIMIT_EXCEEDED);
+        }
         if (addPlaylistRequest.getPlaylistCover() != null) {
             String coverUrl = s3Service.uploadPlaylistCover(addPlaylistRequest.getPlaylistCover(), null);
             playlistRepository.save(addPlaylistRequest.toEntityWithCoverUrl(coverUrl, member));
@@ -77,8 +79,8 @@ public class PlaylistServiceImpl implements PlaylistService {
         if (!playlist.getMember().equals(member)) {
             throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
         }
-        if (playlistMusicRepository.countByPlaylist(playlist) >= 30) {
-            throw new LimitExceededException(PLAYLIST_AND_MUSIC_LIMIT_EXCEEDED);
+        if (playlistMusicRepository.countByPlaylist(playlist) >= MUSICS_IN_PLAYLIST_MAX_NUMBER) {
+            throw new LimitExceededException(MUSICS_IN_PLAYLIST_LIMIT_EXCEEDED);
         }
         Music music = musicRepository.findById(musicId)
                         .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
@@ -93,23 +95,24 @@ public class PlaylistServiceImpl implements PlaylistService {
     /**
      * 플레이리스트 목록 조회
      * @param memberId 로그인 상태인 회원 id
-     * @param pgno 현재 페이지 수
      * @return
      */
     @Override
-    public PageResponse getPlaylists(String memberId, int pgno) {
+    public GetPlaylistsResponse getPlaylists(String memberId) {
         memberUtilService.validateMemberIdNumber(memberId);
         Member member = memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
 
-        PageRequest pageRequest = PageRequest.of(pgno - 1, PLAYLIST_LIST_SIZE);
-        Page<Playlist> playlistsPage = playlistRepository.findByMember(member, pageRequest);
-        Page<GetPlaylistResponse> playlistsPageResponse = playlistsPage.map(Playlist::toGetPlaylistResponse);
+        List<Playlist> playlists = playlistRepository.findByMember(member);
+        List<GetPlaylistResponse> playlistsResponse = new ArrayList<>();
+        for (Playlist playlist : playlists) {
+            playlistsResponse.add(playlist.toGetPlaylistResponse());
+        }
 
-        return PageResponse.builder()
-                .page(playlistsPageResponse)
+        return GetPlaylistsResponse.builder()
+                .playlists(playlistsResponse)
                 .build();
     }
 }
