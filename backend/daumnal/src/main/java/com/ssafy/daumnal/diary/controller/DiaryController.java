@@ -125,4 +125,20 @@ public class DiaryController {
 
         return ApiResponse.success(SuccessCode.GET_DIARY_DAY_EMOTION, response);
     }
+
+    /**
+     * 일기 삭제 API
+     *
+     * @param authentication
+     * @param diaryId
+     * @return
+     */
+    @DeleteMapping("/{diaryId}")
+    public ApiResponse<?> removeDiary(Authentication authentication,
+                                      @PathVariable String diaryId) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+
+        RemoveDiaryResponse response = diaryService.removeDiary(memberId, diaryId);
+        return ApiResponse.success(SuccessCode.DELETE_DIARY, response);
+    }
 }
