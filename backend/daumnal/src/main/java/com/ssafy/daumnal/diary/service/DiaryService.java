@@ -20,4 +20,6 @@ public interface DiaryService {
     GetDiaryResponse getDiary(String memberId, String diaryId);
 
     GetAllEmotionByMonth getAllEmotionByMonth(String memberId, String year, String month);
+
+    DiaryEmotion getEmotionByDay(String memberId, String emotionId);
 }
