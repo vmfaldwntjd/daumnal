@@ -73,6 +73,11 @@ public class DiaryUtilService {
      * @param tags
      */
     public void validateHashTagInput(String[] tags) {
+        
+        if (tags.length == 1 && tags[0].isEmpty()) {
+            return;
+        }
+
         for (String tag : tags) {
             if (!tag.matches(HASH_TAG_REGEX)) {
                 throw new InvalidException(INVALID_DIARY_HASHTAG_WORDS);
