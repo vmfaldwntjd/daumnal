@@ -3,6 +3,7 @@ package com.ssafy.daumnal.diary.service;
 import com.ssafy.daumnal.diary.dto.DiaryDTO;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetCalendarResponse;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryResponse;
+import com.ssafy.daumnal.diary.dto.DiaryDTO.RemoveDiaryResponse;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,4 +23,6 @@ public interface DiaryService {
     GetAllEmotionByMonth getAllEmotionByMonth(String memberId, String year, String month);
 
     DiaryEmotion getEmotionByDay(String memberId, String emotionId);
+
+    RemoveDiaryResponse removeDiary(String memberId, String diaryId);
 }

@@ -264,4 +264,25 @@ public class DiaryServiceImpl implements DiaryService {
                 .disgust(emotion.getDisgust())
                 .build();
     }
+
+    @Override
+    public RemoveDiaryResponse removeDiary(String memberId, String diaryId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        diaryUtilService.validateDiaryIdNumber(diaryId);
+        Diary diary = diaryRepository.findById(Long.parseLong(diaryId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+
+        diaryRepository.deleteById(diary.getId());
+        return RemoveDiaryResponse.builder()
+                .diaryId(diaryId)
+                .build();
+    }
 }
