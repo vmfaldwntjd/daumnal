@@ -2,6 +2,7 @@ package com.ssafy.daumnal.music.entity;
 
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import com.ssafy.daumnal.member.entity.Member;
+import com.ssafy.daumnal.music.dto.PlaylistDTO.*;
 import com.ssafy.daumnal.music.dto.PlaylistDTO.GetPlaylistResponse;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -55,6 +56,15 @@ public class Playlist extends BaseEntity {
                 .playlistId(id)
                 .playlistName(name)
                 .playlistCoverUrl(coverUrl)
+                .build();
+    }
+
+    public GetPlaylistToSaveMusicResponse toGetPlaylistToSaveMusicResponse(boolean isSelected) {
+
+        return GetPlaylistToSaveMusicResponse.builder()
+                .playlistId(id)
+                .playlistName(name)
+                .isSelected(isSelected)
                 .build();
     }
 }
