@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public class PlaylistDTO {
 
     @Getter
@@ -47,5 +45,15 @@ public class PlaylistDTO {
         private Long playlistId;
         private String playlistName;
         private String playlistCoverUrl;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class GetPlaylistToSaveMusicResponse {
+        private Long playlistId;
+        private String playlistName;
+        private boolean isSelected;
     }
 }
