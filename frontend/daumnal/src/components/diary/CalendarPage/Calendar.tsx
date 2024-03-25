@@ -4,6 +4,7 @@ import './Calendar.css';
 import DiaryDetailModal from '../../modal/DiaryDetailModal';
 import moment from 'moment';
 import axios from 'axios';
+import axiosInstance from '../../../pages/api/axiosInstance';
 
 type ValuePiece = Date | null;
 
@@ -12,9 +13,9 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 interface DiaryEntry {
   emotionFirst: string;
   diaryHashTag: string;
-  diaryId: number;
-  musicId: number;
-  diaryDay: number;
+  diaryId: string;
+  musicId: string;
+  diaryDay: string;
 }
 
 interface CalendarProps {
@@ -52,7 +53,7 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
     const newSelectedDay: number = date.getDate();
   
     // diaryList에서 selectedDay와 일치하는 일기 찾기
-    const foundDiary = diaryList.find(diary => diary.diaryDay === newSelectedDay);
+    const foundDiary = diaryList.find(diary => parseInt(diary.diaryDay, 10) === newSelectedDay);
 
     if (foundDiary) {
       setIsDiaryModalOpen(true)
@@ -71,14 +72,14 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
     setSelectedYear(year);
     setSelectedMonth(month);
 
-    axios.get('https://b9cf3818-a936-414c-ae32-753e014c0a30.mock.pstmn.io/diaries/calendar')
-    // axios.get(`${process.env.REACT_APP_FASTAPI_BASE_URL}/diaries/calendar?year=${year}&month=${month}`)
+    // axios.get('https://b9cf3818-a936-414c-ae32-753e014c0a30.mock.pstmn.io/diaries/calendar')
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/calendar?year=${year}&month=${month}`)
         .then(response => {
           // console.log(month)
           // console.log(year)
+          console.log(response.data)
 
           setDiaryList(response.data.data.calendarContents)
-          // console.log(diaryList)
 
         })
         .catch(error => {
@@ -90,7 +91,8 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
 
   useEffect(() => {
     // diaryList의 각 요소에서 diaryDay와 diaryId만 추출하여 새로운 배열을 생성
-    const updatedDiaryModalList = diaryList.map(diary => [diary.diaryDay, diary.diaryId]);
+    console.log(diaryList)
+    const updatedDiaryModalList = diaryList.map(diary => [parseInt(diary.diaryDay, 10), parseInt(diary.diaryId, 10)]);
     
     // 생성된 배열을 diaryModalList 상태에 저장
     setDiaryModalList(updatedDiaryModalList);
@@ -110,7 +112,8 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
       return null; // 혹은 필요에 따라 다른 값을 반환할 수 있음
     }
 
-    const contentForDay = diaryList.find(diary => diary.diaryDay === day);
+    const contentForDay = diaryList.find(diary => parseInt(diary.diaryDay, 10) === day);
+
 
     if (contentForDay) {
 
@@ -134,6 +137,7 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
       </div>
     ); 
   };
+
 
 
   return (
