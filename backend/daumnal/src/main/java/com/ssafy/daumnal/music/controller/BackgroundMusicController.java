@@ -2,6 +2,7 @@ package com.ssafy.daumnal.music.controller;
 
 import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
+import com.ssafy.daumnal.music.dto.BackgroundMusicDTO.GetBackGroundMusicResponse;
 import com.ssafy.daumnal.music.service.BackgroundMusicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -36,6 +37,8 @@ public class BackgroundMusicController {
     @GetMapping("/{backgroundMusicId}")
     public ApiResponse<?> getBackgroundMusic(Authentication authentication,
                                              @PathVariable String backgroundMusicId) {
-        return ApiResponse.success(GET_BACKGROUND_MUSIC);
+        return ApiResponse.success(GET_BACKGROUND_MUSIC,
+                backgroundMusicService.getBackgroundMusic(jwtProvider.getMemberInfo(authentication),
+                backgroundMusicId));
     }
 }

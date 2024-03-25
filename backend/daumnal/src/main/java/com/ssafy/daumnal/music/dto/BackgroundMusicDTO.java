@@ -18,6 +18,7 @@ public class BackgroundMusicDTO {
 
     @Getter
     @AllArgsConstructor
+    @Builder
     public static class GetBackGroundMusicResponse {
         private String backgroundMusicId;
         private String backgroundMusicYoutubeId;
