@@ -1,9 +1,15 @@
 package com.ssafy.daumnal.music.controller;
 
+import com.ssafy.daumnal.global.dto.ApiResponse;
+import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.music.service.BackgroundMusicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.ssafy.daumnal.global.constants.SuccessCode.GET_BACKGROUND_MUSICS;
 
 @RestController
 @RequiredArgsConstructor
@@ -11,4 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class BackgroundMusicController {
 
     private final BackgroundMusicService backgroundMusicService;
+    private final JwtProvider jwtProvider;
+
+    /**
+     * 배경음악 조회 API
+     *
+     * @param authentication
+     * @return
+     */
+    @GetMapping
+    public ApiResponse<?> getAllBackgroundMusic(Authentication authentication) {
+        return ApiResponse.success(GET_BACKGROUND_MUSICS,
+                backgroundMusicService.getAllBackgroundMusic(jwtProvider.getMemberInfo(authentication)));
+    }
 }
