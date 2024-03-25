@@ -57,7 +57,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
     <Container>
       {/* 플레이리스트 상세 컴포넌트 전환을 위한 클릭 이벤트 핸들러 */}
       <button onClick={handleMovePlaylist(playlistId)}>
-        <img
+        <img className="h-[200px]"
           src={playlistCoverUrl || defaultImageUrl}
           alt="플레이리스트 커버 이미지"
         />

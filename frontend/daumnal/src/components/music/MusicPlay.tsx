@@ -67,7 +67,7 @@ const MusicPlay: React.FC = () => {
       {/* 노래 정보 */}
       <p className="text-2xl mb-4">노래 제목</p>
       <p className="text-xl mb-8">아티스트</p>
-      <img className="mb-8 w-60 rounded-full" src="/image/playlist_default.png" alt="앨범 커버" />
+      <img className="mb-8 w-60 rounded-full" src="https://lh3.googleusercontent.com/cizq9uWlcIXukhMyfbyhB1j9HABtLOMrsg5SSMZXa5xmgzEd2iEC0I4CLYWIrEAegbW6Vq9akiVUFRHXtw=w544-h544-l90-rj" alt="앨범 커버" />
       {/* 컨트롤박스 */}
       <div>
         <ReactPlayer
