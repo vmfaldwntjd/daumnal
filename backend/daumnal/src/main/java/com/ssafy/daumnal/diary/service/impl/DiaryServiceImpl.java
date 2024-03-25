@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.diary.service.impl;
 
+import com.ssafy.daumnal.diary.dto.nativedto.CalendarContent;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -140,11 +140,10 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateDiaryYearInput(year);
         diaryUtilService.validateDiaryMonthInput(month);
 
-
-        List<CalendarContent> calendarContents = new ArrayList<>();
-
         //Todo: 비즈니스 로직 구현
-
+        // 특정 year, 특정 month에 쓴 일기 내역들 시간 순으로 가져오기 (완료)
+        List<CalendarContent> calendarContents = diaryRepository.findDiariesByYearAndMonth(Long.parseLong(memberId),
+                Integer.parseInt(year), Integer.parseInt(month));
 
         return GetCalendarResponse.builder()
                 .calendarContents(calendarContents)
