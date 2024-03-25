@@ -2,6 +2,7 @@ package com.ssafy.daumnal.diary.controller;
 
 import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.service.DiaryService;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
@@ -88,5 +89,23 @@ public class DiaryController {
 
         GetDiaryResponse response = diaryService.getDiary(memberId, diaryId);
         return ApiResponse.success(SuccessCode.GET_DIARY, response);
+    }
+
+    /**
+     * 월별 감정 정보 조회 API
+     *
+     * @param authentication
+     * @param year
+     * @param month
+     * @return
+     */
+    @GetMapping("/emotions")
+    public ApiResponse<?> getAllEmotionByMonth(Authentication authentication,
+                                      @RequestParam(required = false) String year,
+                                      @RequestParam(required = false) String month) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+
+        GetAllEmotionByMonth response = diaryService.getAllEmotionByMonth(memberId, year, month);
+        return ApiResponse.success(SuccessCode.GET_DIARY_MONTH_EMOTION, response);
     }
 }
