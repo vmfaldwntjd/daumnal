@@ -17,7 +17,15 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     List<Diary> findDiariesByMemberOrderByCreatedAtDesc(Member member);
 
-    @Query(value = "select diary.id as diaryId, music_id as musicId, greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) as emotionFirst,\n" +
+    @Query(value = "select diary.id as diaryId, music_id as musicId, case\n" +
+            "           when angry = greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) then 'angry'\n" +
+            "           when disgust = greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) then 'disgust'\n" +
+            "           when fear = greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) then 'fear'\n" +
+            "           when happiness = greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) then 'happiness'\n" +
+            "           when neutral = greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) then 'neutral'\n" +
+            "           when sadness = greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) then 'sadness'\n" +
+            "           when surprise = greatest(angry, disgust, fear, happiness, neutral, sadness, surprise) then 'surprise'\n" +
+            "       end as emotionFirst,\n" +
             "       hash_tag as diaryHashTag, day(diary.created_at) as diaryDay from diary\n" +
             "inner join emotion on diary.emotion_id = emotion.id\n" +
             "where member_id = :memberId and year(diary.created_at) = :yearSql and month(diary.created_at) = :monthSql", nativeQuery = true)
