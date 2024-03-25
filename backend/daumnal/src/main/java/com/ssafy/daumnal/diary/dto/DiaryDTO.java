@@ -38,6 +38,6 @@ public class DiaryDTO {
     @AllArgsConstructor
     @Builder
     public static class GetCalendarResponse {
-        List<CalendarContent> calendarContents;
+        private List<CalendarContent> calendarContents;
     }
 }
