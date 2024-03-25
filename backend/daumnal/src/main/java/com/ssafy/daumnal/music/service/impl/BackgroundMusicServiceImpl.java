@@ -12,6 +12,7 @@ import com.ssafy.daumnal.music.service.BackgroundMusicService;
 import com.ssafy.daumnal.music.util.BackgroundMusicUtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,33 @@ public class BackgroundMusicServiceImpl implements BackgroundMusicService {
 
         BackgroundMusic backgroundMusic = backgroundMusicRepository.findById(Long.parseLong(backgroundMusicId))
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_BACKGROUND_MUSIC));
+
+        return GetBackGroundMusicResponse.builder()
+                .backgroundMusicId(backgroundMusicId)
+                .backgroundMusicYoutubeId(backgroundMusic.getYoutubeId())
+                .backgroundMusicTitle(backgroundMusic.getTitle())
+                .backgroundMusicCategory(backgroundMusic.getCategory())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public GetBackGroundMusicResponse modifyBackgroundMusic(String memberId, String backgroundMusicId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        backgroundMusicUtilService.validateBackgroundMusicIdNumber(backgroundMusicId);
+
+        BackgroundMusic backgroundMusic = backgroundMusicRepository.findById(Long.parseLong(backgroundMusicId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_BACKGROUND_MUSIC));
+
+        member.updateBackgroundMusicId(Long.parseLong(backgroundMusicId));
 
         return GetBackGroundMusicResponse.builder()
                 .backgroundMusicId(backgroundMusicId)
