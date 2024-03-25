@@ -19,12 +19,12 @@ interface ApiResponse {
 
 const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, category, context }) => {
   const navigate = useNavigate();
-  const [musicId, setMusicId] = useState<string>() // 노래 id
+  const [musicId, setMusicId] = useState<number>() // 노래 id
 
   // 선택된 캐릭터에 대한 노래 추천 결과 요청 및 페이지 이동 핸들러
   const handleCharacterClick = (category: string) => () => {
     // 선택된 캐릭터에 대한 노래 추천 결과 요청
-    axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${category}/diaries/2`)
+    axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${category}/diaries/2`) // 2 -> %{diaryId}
       .then(response => {
         console.log('노래 추천 요청 성공!', response.data);
         if (response.data.status === "OK") {
@@ -43,7 +43,7 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, category,
   }
 
   return (
-    <Container onClick={handleCharacterClick(name)}>
+    <Container onClick={handleCharacterClick(category)}>
       {/* 캐릭터 설명 */}
       <Text>
         <p className="mt-4 text-3xl">{name}</p>

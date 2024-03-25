@@ -1,46 +1,39 @@
 // 노래 담기/빼기 모달
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import axiosInstance from '../../pages/api/axiosInstance';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquare } from '@fortawesome/free-regular-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import CreatePlaylistModal from './CreatePlaylistModal';
+import { response } from 'express';
+
 
 interface MusicInfoModalProps {
   onClickToggleModal: (playlistId: number) => void;
   selectedMusicId: number | null;
 }
 
-const MusicInfoModal: React.FC<MusicInfoModalProps> = () => {
+interface ApiResponse {
+  data: any;
+  code: number;
+  status: string;
+  message: string;
+}
+
+interface Playlist {
+  playlistId: number;
+  playlistName: string;
+  playlistCoverUrl: string;
+}
+
+const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
   // 플레이리스트 생성 모달 상태 변수
   const [isOpenCreateModal, setOpenCreateModal] = useState<boolean>(false);
+  // 플레이리스트 목록 상태 변수
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   // 선택된 체크리스트 배열
   const [selectedPlaylists, setSelectedPlaylists] = useState<number[]>([]);
-  // 가상의 플레이리스트 목록 데이터
-  const data = {
-		"playlists": [
-			{
-				"playlistId": 1,
-				"playlistName": "=^._.^=💛",
-				"playlistCoverUrl": "url"
-			},
-			{
-				"playlistId": 2,
-				"playlistName": "밤양갱도 갱이다",
-				"playlistCoverUrl": "url"
-			},
-      {
-				"playlistId": 3,
-				"playlistName": "💜wldms",
-				"playlistCoverUrl": "url"
-			},
-			{
-				"playlistId": 4,
-				"playlistName": "🍊💚",
-				"playlistCoverUrl": "url"
-			}
-    ]
-  }
 
   // 플레이리스트 생성 모달 열고 닫는 함수
   const handleCreatePlaylist = useCallback(() => {
@@ -56,13 +49,30 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = () => {
     }
   };
 
+  // 노래 담고 뺄 수 있는 플레이리스트 목록 요청
+  useEffect(() => {
+    axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${selectedMusicId}/playlists`)
+      .then(response => {
+        console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 성공!', response.data);
+        if (response.data.code === 200) {
+          console.log(`${response.data.status}: ${response.data.message}`);
+          setPlaylists(response.data.data.playlists);
+        } else {
+          console.log(`${response.data.status}: ${response.data.message}`);
+        }
+      })
+      .catch(error => {
+        console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 실패!', error);
+      });
+  }, []);
+
   return (
     <div className="text-left text-[#776B5D] z-1">
       <ModalContent onClick={(e) => e.stopPropagation()}>
         {/* 플레이리스트 목록 */}
         <div className="font-NanumSquare">
           {/* 플레이리스트 목록 체크리스트 */}
-          {data.playlists.map(playlist => (
+          {playlists.map(playlist => (
             <PlaylistItem
               key={playlist.playlistId}
               onClick={() => handlePlaylistSelect(playlist.playlistId)}

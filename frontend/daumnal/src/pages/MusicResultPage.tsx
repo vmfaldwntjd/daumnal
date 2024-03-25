@@ -7,10 +7,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
 
-// interface MusicResultPageProps {
-//   selectedCharacter: string;
-// }
-
 interface ApiResponse {
   data: any;
   code: number;
