@@ -28,7 +28,7 @@ public enum SuccessCode {
     UPLOAD_DIARY_PHOTO(CREATED, "일기 내용 중 사진 업로드 성공"),
     UPLOAD_PLAYLIST_COVER(CREATED, "플레이리스트 커버 업로드 성공"),
     CREATE_DIARY(OK, "일기 입력에 성공하였습니다!"),
-    GET_DIARY(CREATED, "선택한 일기 정보 조회에 성공하였습니다!"),
+    GET_DIARY(OK, "선택한 일기 정보 조회에 성공하였습니다!"),
     GET_DIARY_STATUS(OK, "일기 작성 여부 결과를 성공적으로 가져왔습니다!"),
     GET_DIARY_MONTH_EMOTION(OK, "월별 일기 감정 정보 조회에 성공하였습니다!"),
     GET_DIARY_DAY_EMOTION(OK, "일기의 감정 정보 조회에 성공하였습니다!"),
@@ -43,6 +43,7 @@ public enum SuccessCode {
     GET_PLAYLISTS(OK, "플레이리스트 목록을 조회하는데 성공했습니다!"),
     GET_PLAYLIST(OK, "플레이리스트 정보를 조회하는데 성공했습니다!"),
     GET_MUSICS_IN_PLAYLIST(OK, "플레이리스트의 노래 리스트를 조회하는데 성공했습니다!"),
+    GET_PLAYLISTS_TO_SAVE_MUSIC(OK, "노래를 저장할 플레이리스트 목록을 조회하는데 성공했습니다!"),
     UPDATE_BACKGROUND_MUSIC(OK, "배경 음악 정보를 변경 완료하였습니다!"),
     CREATE_PLAYLIST(CREATED, "플레이리스트를 생성하는데 성공했습니다!"),
     ADD_MUSIC_TO_PLAYLIST(CREATED, "플레이리스트에 노래를 추가하는데 성공했습니다!");

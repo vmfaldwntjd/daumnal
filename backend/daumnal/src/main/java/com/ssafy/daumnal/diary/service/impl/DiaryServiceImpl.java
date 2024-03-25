@@ -1,13 +1,17 @@
 package com.ssafy.daumnal.diary.service.impl;
 
+import com.ssafy.daumnal.diary.dto.nativedto.CalendarContent;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
+import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
+import com.ssafy.daumnal.emotion.dto.nativedto.GetEmotionByMonth;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
+import com.ssafy.daumnal.emotion.util.EmotionUtilService;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
@@ -21,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +42,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final S3Service s3Service;
     private final EmotionRepository emotionRepository;
     private final MusicRepository musicRepository;
+    private final EmotionUtilService emotionUtilService;
 
     @Transactional
     @Override
@@ -140,11 +144,10 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateDiaryYearInput(year);
         diaryUtilService.validateDiaryMonthInput(month);
 
-
-        List<CalendarContent> calendarContents = new ArrayList<>();
-
         //Todo: 비즈니스 로직 구현
-
+        // 특정 year, 특정 month에 쓴 일기 내역들 시간 순으로 가져오기 (완료)
+        List<CalendarContent> calendarContents = diaryRepository.findDiariesByYearAndMonth(Long.parseLong(memberId),
+                Integer.parseInt(year), Integer.parseInt(month));
 
         return GetCalendarResponse.builder()
                 .calendarContents(calendarContents)
@@ -175,5 +178,111 @@ public class DiaryServiceImpl implements DiaryService {
             throw new NoExistException(NOT_EXISTS_MUSIC_ID);
         }
         diary.updateMusicId(musicId);
+    }
+
+    @Override
+    public GetDiaryResponse getDiary(String memberId, String diaryId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+        diaryUtilService.validateDiaryIdNumber(diaryId);
+
+        Diary diary = diaryRepository.findById(Long.parseLong(diaryId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+
+        StringBuilder sb = new StringBuilder();
+        String[] date = diary.getCreatedAt().split(" ")[0].split("-");
+        String diaryCreatedAt = sb.append(date[0]).append("년 ")
+                .append(date[1]).append("월 ")
+                .append(date[2]).append("일")
+                .toString();
+
+        return GetDiaryResponse.builder()
+                .diaryTitle(diary.getTitle())
+                .diaryContent(diary.getContent())
+                .diaryHashTag(diary.getHashTag())
+                .diaryPhotoUrl(diary.getPhotoUrl())
+                .musicId(String.valueOf(diary.getMusicId()))
+                .emotionId(String.valueOf(diary.getEmotion().getId()))
+                .diaryCreatedAt(diaryCreatedAt)
+                .build();
+    }
+
+    @Override
+    public GetAllEmotionByMonth getAllEmotionByMonth(String memberId, String year, String month) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        diaryUtilService.validateExistsDiaryYearInput(year);
+        diaryUtilService.validateExistsDiaryMonthInput(month);
+        diaryUtilService.validateDiaryYearInput(year);
+        diaryUtilService.validateDiaryMonthInput(month);
+
+        //Todo: 비즈니스 로직 작성
+        List<GetEmotionByMonth> allEmotionByMonth = diaryRepository.findAllEmotionByMonth(Long.parseLong(memberId),
+                Integer.parseInt(year), Integer.parseInt(month));
+
+        return GetAllEmotionByMonth.builder()
+                .diaryEmotions(allEmotionByMonth)
+                .build();
+    }
+
+    @Override
+    public DiaryEmotion getEmotionByDay(String memberId, String emotionId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        emotionUtilService.validateEmotionIdNumber(emotionId);
+
+        Emotion emotion = emotionRepository.findById(Long.parseLong(emotionId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_EMOTION_ID));
+
+        return DiaryEmotion.builder()
+                .fear(emotion.getFear())
+                .surprise(emotion.getSurprise())
+                .angry(emotion.getAngry())
+                .sadness(emotion.getSadness())
+                .neutral(emotion.getNeutral())
+                .happiness(emotion.getHappiness())
+                .disgust(emotion.getDisgust())
+                .build();
+    }
+
+    @Override
+    public RemoveDiaryResponse removeDiary(String memberId, String diaryId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        diaryUtilService.validateDiaryIdNumber(diaryId);
+        Diary diary = diaryRepository.findById(Long.parseLong(diaryId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+
+        diaryRepository.deleteById(diary.getId());
+        return RemoveDiaryResponse.builder()
+                .diaryId(diaryId)
+                .build();
     }
 }

@@ -1,5 +1,7 @@
 package com.ssafy.daumnal.music.dto;
 
+import java.util.List;
+
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.music.entity.Playlist;
 import jakarta.validation.constraints.NotNull;
@@ -10,8 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicResponse;
-
-import java.util.List;
 
 public class PlaylistDTO {
 
@@ -56,5 +56,15 @@ public class PlaylistDTO {
     @Builder
     public static class GetMusicsInPlaylistResponse {
         private List<GetMusicResponse> musics;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class GetPlaylistToSaveMusicResponse {
+        private Long playlistId;
+        private String playlistName;
+        private boolean isSelected;
     }
 }

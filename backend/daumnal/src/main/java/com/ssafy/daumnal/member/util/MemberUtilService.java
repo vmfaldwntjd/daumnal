@@ -177,6 +177,11 @@ public class MemberUtilService {
         }
     }
 
+    /**
+     * 초기에 닉네임 등록이 잘 된 회원인지 확인하기
+     *
+     * @param nickname
+     */
     public void validateMemberNicknameNonNull(String nickname) {
         if (Objects.isNull(nickname)) {
             throw new InvalidException(INVALID_MEMBER_NICKNAME_NULL);
