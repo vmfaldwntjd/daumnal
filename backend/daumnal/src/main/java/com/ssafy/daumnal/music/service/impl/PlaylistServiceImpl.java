@@ -1,6 +1,5 @@
 package com.ssafy.daumnal.music.service.impl;
 
-import com.ssafy.daumnal.global.dto.PageResponse;
 import com.ssafy.daumnal.global.exception.LimitExceededException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.exception.NotSameException;
