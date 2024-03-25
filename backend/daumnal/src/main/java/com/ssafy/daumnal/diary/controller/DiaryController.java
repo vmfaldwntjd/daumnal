@@ -1,9 +1,6 @@
 package com.ssafy.daumnal.diary.controller;
 
-import com.ssafy.daumnal.diary.dto.DiaryDTO.AddDiaryResponse;
-import com.ssafy.daumnal.diary.dto.DiaryDTO.DiaryRequest;
-import com.ssafy.daumnal.diary.dto.DiaryDTO.GetCalendarResponse;
-import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryWrittenTodayResponse;
+import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
@@ -76,5 +73,20 @@ public class DiaryController {
         diaryService.addTodayRecommendedMusic(jwtProvider.getMemberInfo(authentication), diaryId, musicId);
 
         return ApiResponse.success(SuccessCode.UPDATE_TODAY_RECOMMENDED_MUSIC);
+    }
+
+    /**
+     * 일기 내용 조회 API
+     *
+     * @param authentication
+     * @param diaryId
+     * @return
+     */
+    @GetMapping("/{diaryId}")
+    public ApiResponse<?> getDiary(Authentication authentication, @PathVariable String diaryId) {
+        String memberId = jwtProvider.getMemberInfo(authentication);
+
+        GetDiaryResponse response = diaryService.getDiary(memberId, diaryId);
+        return ApiResponse.success(SuccessCode.GET_DIARY, response);
     }
 }

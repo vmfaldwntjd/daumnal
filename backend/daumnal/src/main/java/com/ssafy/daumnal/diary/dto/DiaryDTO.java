@@ -38,6 +38,19 @@ public class DiaryDTO {
     @AllArgsConstructor
     @Builder
     public static class GetCalendarResponse {
-        List<CalendarContent> calendarContents;
+        private List<CalendarContent> calendarContents;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class GetDiaryResponse {
+        private String diaryTitle;
+        private String diaryContent;
+        private String diaryHashTag;
+        private String diaryPhotoUrl;
+        private String musicId;
+        private String emotionId;
+        private String diaryCreatedAt;
     }
 }
