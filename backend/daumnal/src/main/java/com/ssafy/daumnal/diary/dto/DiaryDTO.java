@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.diary.dto;
 
+import com.ssafy.daumnal.diary.dto.nativedto.CalendarContent;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,13 +39,5 @@ public class DiaryDTO {
     @Builder
     public static class GetCalendarResponse {
         List<CalendarContent> calendarContents;
-    }
-
-    public static class CalendarContent {
-        private String emotionFirst;
-        private String diaryHashTag;
-        private String diaryId;
-        private String musicId;
-        private Integer diaryDay;
     }
 }
