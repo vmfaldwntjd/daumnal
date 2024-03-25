@@ -12,13 +12,14 @@ public class BackgroundMusicDTO {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class GetBackgroundMusicResponse {
-        private List<BackGroundMusic> backGroundMusics;
+    public static class GetBackgroundMusicsResponse {
+        private List<GetBackGroundMusicResponse> backGroundMusics;
     }
 
     @Getter
     @AllArgsConstructor
-    public static class BackGroundMusic {
+    @Builder
+    public static class GetBackGroundMusicResponse {
         private String backgroundMusicId;
         private String backgroundMusicYoutubeId;
         private String backgroundMusicTitle;
