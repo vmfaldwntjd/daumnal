@@ -16,7 +16,6 @@ interface ApiResponse {
   message: string;
 }
 
-// Playlist 인터페이스 정의
 interface Playlist {
   playlistId: number;
   playlistName: string;
@@ -26,7 +25,7 @@ interface Playlist {
 const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
   // 생성 모달 상태 변수
   const [isOpenCreateModal, setOpenCreateModal] = useState<boolean>(false);
-
+  // 플레이리스트 목록 상태 변수
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
 
   // 플레이리스트 생성 모달 열고 닫는 함수
