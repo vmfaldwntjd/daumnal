@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useLocation, useNavigate } from 'react-router-dom';
 import EmotionButton from '../components/EmotionButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -34,6 +36,7 @@ const EmotionGraph = () => {
   const { selectedYear, selectedMonth } = location.state || {};
   const [diaryData, setDiaryData] = useState<DiaryData[]>([]);
   const [selectedEmotions, setSelectedEmotions] = useState<string[]>([]);
+  const [chartKey, setChartKey] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +69,20 @@ const EmotionGraph = () => {
     updateSize(); // 초기 사이즈 측정
     return () => window.removeEventListener('resize', updateSize);
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // 창 크기가 변경될 때마다 차트 키 값을 새로운 난수로 설정하여 차트를 재생성합니다.
+      setChartKey(Math.random());
+    };
+  
+    window.addEventListener('resize', handleResize);
+    // 컴포넌트 마운트 시 초기 사이즈 측정
+    handleResize();
+  
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // 의존성 배열이 비어있으므로 컴포넌트가 마운트될 때 한 번만 실행됩니다.
 
   useEffect(() => {
     console.log(`선택된 년도: ${selectedYear}, 선택된 월: ${selectedMonth}`);
@@ -123,13 +140,13 @@ const EmotionGraph = () => {
   return (
     <div className='h-screen w-full p-12'>
       <div className='relative w-full pt-1 pb-1 px-6 bg-white rounded-xl shadow-lg flex flex-col justify-center m-auto'>
-        {/* 뒤로 가기 버튼 추가 */}
-        <button
-          onClick={() => navigate('/calendar', { state: { selectedYear, selectedMonth } })} // navigate 함수를 사용하여 이전 페이지로 이동
-          className="absolute top-5 left-5 bg-gray-200 p-2 rounded-full"
-        >
-          뒤로 가기
-        </button>
+      <button
+        onClick={() => navigate('/calendar', { state: { selectedYear, selectedMonth } })}
+        className="absolute top-5 left-5 p-2 rounded-full fa-xl"
+        // style={{width: 'calc(100% * 0.0238)',height: 'calc(100% * 0.0606)'}}
+      >
+        <FontAwesomeIcon icon={faAngleLeft} />
+      </button>
       <h2 className="text-center mb-6 text-base pt-2 px-4 lg:text-xl">
         {`${selectedYear || '년도'}년 ${selectedMonth || '월'}월`}
       </h2>
@@ -137,30 +154,33 @@ const EmotionGraph = () => {
             className='w-full h-full mb-6' // 그래프 컨테이너
             style={{
               width: 'calc(100% * 0.863)', // 부모 너비의 약 86.3%
-              height: 'calc(100% * 0.595)', // 부모 높이의 약 59.5%
+              // height: 'calc(100% * 0.595)', // 부모 높이의 약 59.5%
+              // height: '100%',
               margin: 'auto' // 중앙 정렬
             }}
           >
-          <Line options={options} data={data} />
+          <Line key={chartKey} options={options} data={data} />
         </div>
         <div className="text-center mb-4"> {/* 감정 선택 안내 문구 */}
           <h2 className="text-xl pt-1 font-semibold">원하는 감정을 선택해주세요.</h2>
         </div>
-        <div className='flex flex-wrap justify-center items-center gap-4' // 감정 버튼 그룹
-          ref={buttonContainerRef}
-          style={{
-            width: '92.16%',
-            height: '13.94%',
-            margin: 'auto',
-            backgroundColor: '#FFF9ED', 
-            borderRadius: '10px', 
-            padding: '20px', 
-            display: 'flex', // flexbox 디스플레이 설정
-            justifyContent: 'space-around', // 버튼 사이의 공간을 균등하게 분배
-            alignItems: 'center', // 버튼을 세로 중앙에 배치
-            flexWrap: 'wrap' // 필요한 경우 다음 줄로 넘김
-          }}
-        >
+        <div
+  className='flex flex-wrap justify-center items-center gap-4' // 감정 버튼 그룹
+  ref={buttonContainerRef}
+  style={{
+    width: '92.16%',
+    height: '13.94%',
+    margin: 'auto',
+    backgroundColor: '#FFF9ED', 
+    borderRadius: '10px', 
+    padding: '20px', 
+    display: 'flex', // flexbox 디스플레이 설정
+    justifyContent: 'space-around', // 버튼 사이의 공간을 균등하게 분배
+    alignItems: 'center', // 버튼을 세로 중앙에 배치
+    flexWrap: 'wrap', // 필요한 경우 다음 줄로 넘김
+    marginBottom: '10px' // 여기에 marginBottom 속성 추가
+  }}
+>
           {emotions.map((emotion) => (
             <EmotionButton
               key={emotion}
