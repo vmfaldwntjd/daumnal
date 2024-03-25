@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public class PlaylistDTO {
 
     @Getter
@@ -35,6 +37,14 @@ public class PlaylistDTO {
                     .member(member)
                     .build();
         }
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class GetPlaylistsResponse {
+        private List<GetPlaylistResponse> playlists;
     }
 
     @Getter
