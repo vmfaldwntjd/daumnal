@@ -13,9 +13,9 @@ import com.ssafy.daumnal.member.entity.SocialProvider;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.service.MemberService;
 import com.ssafy.daumnal.member.util.MemberUtilService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 
@@ -131,6 +131,7 @@ public class MemberServiceImpl implements MemberService {
         redisRepository.deleteValues(memberId + "_refresh");
     }
 
+    @Transactional
     @Override
     public GetMemberNicknameResponse modifyMemberStatusDelete(String memberId) {
         memberUtilService.validateMemberIdNumber(memberId);
