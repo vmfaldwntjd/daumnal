@@ -39,7 +39,7 @@ public enum SuccessCode {
     //음악
     GET_BACKGROUND_MUSICS(OK, "배경 음악 정보 조회에 성공하였습니다!"),
     GET_BACKGROUND_MUSIC(OK, "선택한 배경 음악 정보 조회에 성공하였습니다!"),
-    GET_EMPTY_PLAYLISTS(NO_CONTENT, "플레이리스트 목록을 조회하는데 성공했지만, 저장된 플레이리스트 데이터가 없습니다!"),
+    GET_EMPTY_PLAYLISTS(NO_CONTENT, "플레이리스트 목록을 조회하는데 성공했지만, 생성된 플레이리스트가 없습니다!"),
     GET_PLAYLISTS(OK, "플레이리스트 목록을 조회하는데 성공했습니다!"),
     GET_PLAYLISTS_TO_SAVE_MUSIC(OK, "노래를 저장할 플레이리스트 목록을 조회하는데 성공했습니다!"),
     UPDATE_BACKGROUND_MUSIC(OK, "배경 음악 정보를 변경 완료하였습니다!"),
