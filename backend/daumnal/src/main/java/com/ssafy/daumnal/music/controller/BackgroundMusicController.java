@@ -44,6 +44,13 @@ public class BackgroundMusicController {
                 backgroundMusicId));
     }
 
+    /**
+     * 배경음악 변경 API
+     * 
+     * @param authentication
+     * @param backgroundMusicId
+     * @return
+     */
     @PatchMapping("/{backgroundMusicId}")
     public ApiResponse<?> modifyBackgroundMusic(Authentication authentication,
                                              @PathVariable String backgroundMusicId) {
