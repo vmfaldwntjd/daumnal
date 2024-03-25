@@ -12,4 +12,6 @@ public interface MemberService {
     GetMemberNicknameResponse getMemberNickname(String memberId);
 
     void modifyMemberStatusLogout(String memberId);
+
+    GetMemberNicknameResponse modifyMemberStatusDelete(String memberId);
 }
