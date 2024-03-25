@@ -2,7 +2,7 @@ package com.ssafy.daumnal.music.dto;
 
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.music.entity.Playlist;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public class PlaylistDTO {
     @Getter
     @Setter
     public static class AddPlaylistRequest {
-        @NotNull(message = "플레이리스트 이름을 입력하지 않았습니다!")
+        @NotBlank(message = "플레이리스트 이름을 입력하지 않았습니다!")
         @Size(min = 1, max = 20, message = "플레이리스트 이름의 글자 수 제한을 지키지 않았습니다!")
         private String playlistName;
         private MultipartFile playlistCover;

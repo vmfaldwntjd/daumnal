@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 import static com.ssafy.daumnal.global.constants.PageSize.PLAYLIST_LIST_SIZE;
+import static com.ssafy.daumnal.music.constants.MusicConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +50,9 @@ public class PlaylistServiceImpl implements PlaylistService {
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
 
+        if (playlistRepository.countByMember(member) >= PLAYLIST_MAX_NUMBER) {
+            throw new LimitExceededException(PLAYLIST_LIMIT_EXCEEDED);
+        }
         if (addPlaylistRequest.getPlaylistCover() != null) {
             String coverUrl = s3Service.uploadPlaylistCover(addPlaylistRequest.getPlaylistCover(), null);
             playlistRepository.save(addPlaylistRequest.toEntityWithCoverUrl(coverUrl, member));
@@ -77,8 +81,8 @@ public class PlaylistServiceImpl implements PlaylistService {
         if (!playlist.getMember().equals(member)) {
             throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
         }
-        if (playlistMusicRepository.countByPlaylist(playlist) >= 30) {
-            throw new LimitExceededException(PLAYLIST_AND_MUSIC_LIMIT_EXCEEDED);
+        if (playlistMusicRepository.countByPlaylist(playlist) >= MUSICS_IN_PLAYLIST_MAX_NUMBER) {
+            throw new LimitExceededException(MUSICS_IN_PLAYLIST_LIMIT_EXCEEDED);
         }
         Music music = musicRepository.findById(musicId)
                         .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
