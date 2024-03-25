@@ -13,9 +13,9 @@ import com.ssafy.daumnal.member.entity.SocialProvider;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.service.MemberService;
 import com.ssafy.daumnal.member.util.MemberUtilService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 
@@ -129,6 +129,26 @@ public class MemberServiceImpl implements MemberService {
 
         redisRepository.deleteValues(memberId + "_access");
         redisRepository.deleteValues(memberId + "_refresh");
+    }
+
+    @Transactional
+    @Override
+    public GetMemberNicknameResponse modifyMemberStatusDelete(String memberId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        member.updateMemberStatus(MemberStatus.DELETE);
+
+        return GetMemberNicknameResponse.builder()
+                .memberId(String.valueOf(member.getId()))
+                .memberNickname(member.getNickname())
+                .build();
     }
 
     private GetMemberLoginResponse getGetMemberLoginResponse(String socialId, String socialProvider) {
