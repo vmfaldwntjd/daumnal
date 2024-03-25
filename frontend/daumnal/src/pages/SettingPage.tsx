@@ -32,7 +32,7 @@ const SettingPage: React.FC = () => {
       await Kakao.Auth.logout();
 
       // axios를 이용하여 서버에 로그아웃 요청을 보냅니다.
-      const response = await axiosInstance.patch(`${process.env.REACT_APP_MOCK_SERVER}/members/logout`);
+      const response = await axiosInstance.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/logout`);
 
       if (response.data.code === 200) {
         console.log(response.data.message); 
