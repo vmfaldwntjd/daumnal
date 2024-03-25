@@ -73,6 +73,11 @@ public class DiaryUtilService {
      * @param tags
      */
     public void validateHashTagInput(String[] tags) {
+        
+        if (tags.length == 1 && tags[0].isEmpty()) {
+            return;
+        }
+
         for (String tag : tags) {
             if (!tag.matches(HASH_TAG_REGEX)) {
                 throw new InvalidException(INVALID_DIARY_HASHTAG_WORDS);
@@ -125,6 +130,17 @@ public class DiaryUtilService {
     public void validateDiaryMonthInput(String month) {
         if (!month.matches(NUMBER_REGEX)) {
             throw new InvalidException(INVALID_DIARY_MONTH_INPUT);
+        }
+    }
+
+    /**
+     * 일기 id를 자연수로 입력했는지 확인하기
+     *
+     * @param diaryId
+     */
+    public void validateDiaryIdNumber(String diaryId) {
+        if (!diaryId.matches(NUMBER_REGEX)) {
+            throw new InvalidException(INVALID_DIARY_ID);
         }
     }
 

@@ -29,3 +29,8 @@ spring:
     redis:
       host: ${EC2_ACCESS_IP}
       port: 6379
+
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
