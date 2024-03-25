@@ -145,6 +145,9 @@ public class MemberServiceImpl implements MemberService {
 
         member.updateMemberStatus(MemberStatus.DELETE);
 
+        redisRepository.deleteValues(memberId + "_access");
+        redisRepository.deleteValues(memberId + "_refresh");
+        
         return GetMemberNicknameResponse.builder()
                 .memberId(String.valueOf(member.getId()))
                 .memberNickname(member.getNickname())
