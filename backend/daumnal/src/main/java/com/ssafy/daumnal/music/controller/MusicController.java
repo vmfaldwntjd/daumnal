@@ -42,4 +42,17 @@ public class MusicController {
 
         return ApiResponse.success(SuccessCode.CREATE_MUSICS);
     }
+
+    /**
+     * 노래 정보 조회
+     * @param authentication 로그인 상태인 회원
+     * @param musicId 조회할 노래
+     * @return
+     */
+    @GetMapping("/{musicId}")
+    public ApiResponse<?> getMusic(Authentication authentication, @PathVariable Long musicId) {
+        GetMusicResponse getMusicResponse = musicService.getMusic(jwtProvider.getMemberInfo(authentication), musicId);
+
+        return ApiResponse.success(SuccessCode.GET_MUSIC, getMusicResponse);
+    }
 }

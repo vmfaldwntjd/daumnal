@@ -7,4 +7,6 @@ public interface MusicService {
     GetPlaylistsToSaveMusicResponse getPlaylistsToSaveMusic(String memberId, Long musicId);
 
     void addMusics(AddMusicsRequest addMusicsRequest);
+
+    GetMusicResponse getMusic(String memberId, Long musicId);
 }
