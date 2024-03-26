@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface DailyEmotionButtonProps {
   emotion: string;
   handleEmotionClick: (emotion: string) => void;
-  modalSize: { width: number; height: number }; // 모달 사이즈를 props로 추가합니다.
+  modalSize: { width: number; height: number };
 }
 
-const DailyEmotionButton: React.FC<DailyEmotionButtonProps> = ({ emotion, handleEmotionClick, modalSize }) => {
-  const [isSelected, setIsSelected] = useState(false);
-
-  const handleClick = () => {
-    setIsSelected(!isSelected);
-    handleEmotionClick(emotion);
-  };
-
+const DailyEmotionButton: React.FC<DailyEmotionButtonProps & { isSelected: boolean }> = ({ emotion, handleEmotionClick, modalSize, isSelected }) => {
   // isSelected 상태를 기반으로 이미지 URL 결정
   const imageUrl = isSelected ? `/image/${emotion}.png` : `/image/${emotion}_face.png`;
 
@@ -26,7 +19,7 @@ const DailyEmotionButton: React.FC<DailyEmotionButtonProps> = ({ emotion, handle
   const scaledHeight = (buttonHeight / 898) * modalSize.height; // 기준 모달 높이 대비 비율 계산
 
   return (
-    <button onClick={handleClick} style={{ margin: '0 10px' }}>
+    <button onClick={() => handleEmotionClick(emotion)} style={{ margin: '0 32px' }}>
       <img src={imageUrl} alt={emotion} style={{ width: `${scaledWidth}px`, height: `${scaledHeight}px` }} />
     </button>
   );
