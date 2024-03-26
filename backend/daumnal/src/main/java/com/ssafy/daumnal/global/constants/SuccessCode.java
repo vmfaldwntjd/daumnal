@@ -47,6 +47,7 @@ public enum SuccessCode {
     GET_EMPTY_PLAYLISTS(NO_CONTENT, "플레이리스트 목록을 조회하는데 성공했지만, 생성된 플레이리스트가 없습니다!"),
     GET_PLAYLISTS(OK, "플레이리스트 목록을 조회하는데 성공했습니다!"),
     GET_PLAYLIST(OK, "플레이리스트 정보를 조회하는데 성공했습니다!"),
+    GET_MUSIC(OK, "노래 정보를 조회하는데 성공했습니다!"),
     GET_MUSICS_IN_PLAYLIST(OK, "플레이리스트의 노래 리스트를 조회하는데 성공했습니다!"),
     GET_PLAYLISTS_TO_SAVE_MUSIC(OK, "노래를 저장할 플레이리스트 목록을 조회하는데 성공했습니다!"),
     DELETE_MUSIC_IN_PLAYLIST(OK, "플레이리스트에 저장된 노래를 삭제하는데 성공했습니다!");
