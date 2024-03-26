@@ -2,6 +2,7 @@ package com.ssafy.daumnal.member.service.impl;
 
 import com.ssafy.daumnal.global.dto.TokenResponse;
 import com.ssafy.daumnal.global.exception.ExistException;
+import com.ssafy.daumnal.global.exception.InvalidException;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.global.util.RedisRepository;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
+import static com.ssafy.daumnal.member.entity.MemberStatus.LOGIN;
+import static com.ssafy.daumnal.member.entity.MemberStatus.LOGOUT;
 
 @Service
 @RequiredArgsConstructor
@@ -125,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
 
-        member.updateMemberStatus(MemberStatus.LOGOUT);
+        member.updateMemberStatus(LOGOUT);
 
         redisRepository.deleteValues(memberId + "_access");
         redisRepository.deleteValues(memberId + "_refresh");
@@ -183,9 +186,14 @@ public class MemberServiceImpl implements MemberService {
                     .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
 
             memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
-            memberUtilService.validateMemberStatusReLogin(member.getStatus().getValue());
 
-            member.updateMemberStatus(MemberStatus.LOGIN);
+            try {
+                memberUtilService.validateMemberStatusReLogin(member.getStatus().getValue());
+            } catch (InvalidException e) {
+                member.updateMemberStatus(LOGOUT);
+            }
+
+            member.updateMemberStatus(LOGIN);
 
             TokenResponse tokenResponse = jwtProvider.generateToken(member.getId(),
                     Long.parseLong(socialId), socialProvider);
