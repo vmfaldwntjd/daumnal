@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import MonthlyEmotionButton from '../components/MonthlyEmotionButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import axiosInstance from './api/axiosInstance';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -41,10 +42,14 @@ const EmotionGraph = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_MOCK_SERVER}/diaries/emotions?year=${selectedYear}&month=${selectedMonth}`);
-        const json = await response.json();
-        if (json.code === 200) {
-          setDiaryData(json.data.diaryEmotions);
+        const response = await axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/emotions`, {
+          params: {
+            year: selectedYear,
+            month: selectedMonth,
+          }
+        });
+        if (response.data.code === 200) {
+          setDiaryData(response.data.data.diaryEmotions);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -52,6 +57,7 @@ const EmotionGraph = () => {
     };
     fetchData();
   }, [selectedYear, selectedMonth]);
+  
 
   const buttonContainerRef = useRef<HTMLDivElement>(null);
   const [buttonContainerSize, setButtonContainerSize] = useState({ width: 0, height: 0 });

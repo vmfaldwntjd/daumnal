@@ -21,8 +21,8 @@ const KakaoRedirectHandler = () => {
       }
   
       const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      // const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
-      const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
+      const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
+      // const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
   
       const response = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
@@ -44,29 +44,26 @@ const KakaoRedirectHandler = () => {
         socialId: userInfoResponse.id.toString(),
         socialProvider: 'kakao',
       });
-  
+      
       const responseData = loginResponse.data;
       if (responseData && responseData.code === 200) {
-        const localMemberId = localStorage.getItem('memberId');
-        if (localMemberId !== responseData.data.memberId) {
-          localStorage.removeItem('memberId');
-          localStorage.removeItem('memberAccessToken');
-          localStorage.removeItem('memberRefreshToken');
-  
-          localStorage.setItem('memberId', responseData.data.memberId);
-          localStorage.setItem('memberAccessToken', responseData.data.memberAccessToken);
-          localStorage.setItem('memberRefreshToken', responseData.data.memberRefreshToken);
-        }
+        // 기존 로컬 스토리지 정보를 항상 삭제합니다.
+        localStorage.removeItem('memberId');
+        localStorage.removeItem('memberAccessToken');
+        localStorage.removeItem('memberRefreshToken');
+      
+        // 새로운 로그인 정보로 로컬 스토리지를 업데이트합니다.
+        localStorage.setItem('memberId', responseData.data.memberId);
+        localStorage.setItem('memberAccessToken', responseData.data.memberAccessToken);
+        localStorage.setItem('memberRefreshToken', responseData.data.memberRefreshToken);
+      
         setIsFirstLogin(responseData.data.firstLogin);
-        if (responseData.data.firstLogin) {
-        } else {
+        if (!responseData.data.firstLogin) {
           navigate('/main');
         }
-      } else if (responseData.code === 403) {
-        handleLogout();
-
-        navigate('/main');
-      }
+      } else {
+        console.error('로그인 과정에서 예상치 못한 오류가 발생했습니다:', responseData.message);
+      }      
     } catch (error) {
       console.error('로그인 과정에서 오류가 발생했습니다:', error);
     }
