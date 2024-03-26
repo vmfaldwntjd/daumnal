@@ -27,12 +27,12 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
   const [diaryHashTag, setDiaryHashTag] = useState<string | null>(null)
   const [diaryImage, setDiaryImage] = useState<string | null>(null)
   const [diaryMusicId, setDiaryMusicId] = useState<number>()
-  const [diaryEmotionId, setDiaryEmotionId] = useState<number>()
+  const [diaryEmotionId, setDiaryEmotionId] = useState<string>()
 
 
   // diaryId로 해당 diary 정보 가져오기 로직 구현
   const getDiaryInfo = () => {
-    axios.get('https://7a0464f2-3707-4ae0-bc93-13a5c84152ad.mock.pstmn.io/diaryId')
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/${selectedDiaryId}`)
     .then (function (response:any) {
       const diaryInfo = response.data.data
       console.log(diaryInfo)
@@ -141,7 +141,7 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
             <FontAwesomeIcon icon={faChevronRight} size="2xl" className="text-[60px]  text-button_faChevron group-hover:text-white"  />           
           </button> 
         </div>}
-        { isDailyResultModalOpen && <DailyResultModal onDailyResultModalClose={()=> setIsDailyResultModalOpen(false)}/>}
+        { isDailyResultModalOpen && <DailyResultModal onDailyResultModalClose={()=> setIsDailyResultModalOpen(false)}  diaryEmotionId={diaryEmotionId} diaryDate={diaryDate}/>}
       </div>
 
       );

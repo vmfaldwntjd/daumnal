@@ -21,7 +21,8 @@ const KakaoRedirectHandler = () => {
       }
   
       const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
+      // const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
+      const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
   
       const response = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
@@ -62,27 +63,12 @@ const KakaoRedirectHandler = () => {
           navigate('/main');
         }
       } else if (responseData.code === 403) {
-        // // 403 에러 처리, 로그아웃 요청 후 다시 로그인 시도
-        // await Kakao.Auth.logout();
-        // console.log('카카오 로그아웃 성공')
-        // await handleLogout(); // 로그아웃 처리
-        // console.log('서버 로그아웃 성공')
-        // handleKakaoLogin(); // 다시 로그인 시도
+        handleLogout();
+
         navigate('/main');
       }
     } catch (error) {
       console.error('로그인 과정에서 오류가 발생했습니다:', error);
-      // if (error instanceof Error && 'response' in error) {
-      //   const response = (error as any).response;
-      //   if (response && response.status === 400) {
-      //     const clientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      //     const redirectUri = encodeURIComponent(`${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`);
-      //     const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
-      //     window.location.href = kakaoAuthUrl; // 사용자를 카카오 인증 페이지로 리디렉션
-      //   }
-      // } else {
-      //   console.error('로그인 과정에서 오류가 발생했습니다:', error);
-      // }
     }
   };
   
@@ -136,9 +122,8 @@ const KakaoRedirectHandler = () => {
 // 로그아웃 처리 함수
 const handleLogout = async () => {
   try {
-    const response = await axiosInstance.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/logout`);
     localStorage.clear();
-    console.log('로그아웃 처리:', response.data.message);
+    console.log('로그아웃 처리 성공')
   } catch (error) {
     console.error('로그아웃 과정에서 오류가 발생했습니다:', error);
   }
