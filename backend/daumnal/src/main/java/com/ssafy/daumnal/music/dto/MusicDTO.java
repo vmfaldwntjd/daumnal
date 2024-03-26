@@ -10,6 +10,19 @@ import java.util.List;
 
 public class MusicDTO {
 
+	@Getter
+	@Setter
+	@AllArgsConstructor
+	@Builder
+	public static class GetMusicResponse {
+		private Long musicId;
+		private String musicYoutubeId;
+		private String musicTitle;
+		private String musicSingerName;
+		private String musicCoverUrl;
+		private String musicLyrics;
+	}
+
     @Getter
     @Setter
     @Builder

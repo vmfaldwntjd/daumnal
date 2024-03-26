@@ -1,7 +1,6 @@
 package com.ssafy.daumnal.music.service;
 
 import com.ssafy.daumnal.music.dto.PlaylistDTO.*;
-import com.ssafy.daumnal.music.dto.PlaylistDTO.AddPlaylistRequest;
 
 public interface PlaylistService {
 
@@ -10,4 +9,8 @@ public interface PlaylistService {
     void addMusicToPlaylist(String memberId, Long playlistId, Long musicId);
 
     GetPlaylistsResponse getPlaylists(String memberId);
+
+    GetPlaylistResponse getPlaylist(String memberId, Long playlistId);
+
+    GetMusicsInPlaylistResponse getMusicsInPlaylist(String memberId, Long playlistId);
 }

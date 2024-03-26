@@ -6,6 +6,7 @@ import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
+import com.ssafy.daumnal.music.dto.MusicDTO.*;
 import com.ssafy.daumnal.music.dto.PlaylistDTO.*;
 import com.ssafy.daumnal.music.entity.Music;
 import com.ssafy.daumnal.music.entity.Playlist;
@@ -17,12 +18,12 @@ import com.ssafy.daumnal.music.service.PlaylistService;
 import com.ssafy.daumnal.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import static com.ssafy.daumnal.global.constants.ErrorCode.*;
+import static com.ssafy.daumnal.music.constants.MusicConstants.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ssafy.daumnal.global.constants.ErrorCode.*;
-import static com.ssafy.daumnal.music.constants.MusicConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -114,5 +115,58 @@ public class PlaylistServiceImpl implements PlaylistService {
         return GetPlaylistsResponse.builder()
                 .playlists(playlistsResponse)
                 .build();
+    }
+
+    /**
+     * 플레이리스트 정보 조회
+     * @param memberId 로그인 상태인 회원 id
+     * @param playlistId 정보 조회할 플레이리스트 id
+     * @return
+     */
+    @Override
+    public GetPlaylistResponse getPlaylist(String memberId, Long playlistId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Playlist playlist = playlistRepository.findById(playlistId)
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_PLAYLIST_ID));
+        if (!playlist.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
+        }
+
+        return playlist.toGetPlaylistResponse();
+    }
+
+    /**
+     * 플레이리스트에 저장된 노래 리스트 조회
+     * @param memberId 로그인 상태인 회원 id
+     * @param playlistId 조회할 플레이리스트 id
+     * @return
+     */
+    @Override
+    public GetMusicsInPlaylistResponse getMusicsInPlaylist(String memberId, Long playlistId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Playlist playlist = playlistRepository.findById(playlistId)
+            .orElseThrow(() -> new NoExistException(NOT_EXISTS_PLAYLIST_ID));
+        if (!playlist.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
+        }
+        List<PlaylistMusic> musicsInPlaylist = playlistMusicRepository.findByPlaylist(playlist);
+        List<GetMusicResponse> musicsInPlaylistResponse = new ArrayList<>();
+        for (PlaylistMusic playlistMusic : musicsInPlaylist) {
+            musicsInPlaylistResponse.add(playlistMusic.getMusic().toGetMusicResponse());
+        }
+
+        return GetMusicsInPlaylistResponse.builder()
+            .musics(musicsInPlaylistResponse)
+            .build();
     }
 }
