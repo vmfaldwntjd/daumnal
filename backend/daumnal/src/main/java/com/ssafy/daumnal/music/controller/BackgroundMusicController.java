@@ -18,7 +18,7 @@ public class BackgroundMusicController {
     private final JwtProvider jwtProvider;
 
     /**
-     * 배경음악 조회 API
+     * 배경음악 목록 조회 API
      *
      * @param authentication
      * @return
@@ -45,7 +45,7 @@ public class BackgroundMusicController {
     }
 
     /**
-     * 배경음악 변경 API
+     * 배경음악 선택 API: 배경음악을 선택하면 회원이 선택한 배경 음악으로 변경이 된다.
      *
      * @param authentication
      * @param backgroundMusicId
