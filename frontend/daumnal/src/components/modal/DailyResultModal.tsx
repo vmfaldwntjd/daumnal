@@ -83,7 +83,7 @@ interface EmotionData {
 
 interface DailyResultModalProps {
   onDailyResultModalClose: () => void;
-  emotionId?: number;
+  diaryEmotionId?: string;
   diaryDate?: string;
 }
 
@@ -117,8 +117,8 @@ const emotionImages = {
   neutral: '/image/neutral_face.png',
 };
 
-const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalClose, emotionId }) => {
-  const validEmotionId = emotionId || 5342;
+const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalClose, diaryEmotionId, diaryDate }) => {
+  const validEmotionId = diaryEmotionId || 5342;
   const [emotionData, setEmotionData] = useState<EmotionData>({});
 
   const fetchEmotionData = async () => {
