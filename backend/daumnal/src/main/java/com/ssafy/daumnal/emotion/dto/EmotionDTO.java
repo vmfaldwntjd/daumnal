@@ -1,10 +1,7 @@
 package com.ssafy.daumnal.emotion.dto;
 
 import com.ssafy.daumnal.emotion.dto.nativedto.GetEmotionByMonth;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -21,6 +18,7 @@ public class EmotionDTO {
     @Setter
     @AllArgsConstructor
     @Builder
+    @NoArgsConstructor
     public static class DiaryEmotion {
         private Integer fear;
         private Integer surprise;
