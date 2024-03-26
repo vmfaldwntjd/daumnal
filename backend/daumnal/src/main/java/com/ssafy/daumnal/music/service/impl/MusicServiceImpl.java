@@ -1,5 +1,7 @@
 package com.ssafy.daumnal.music.service.impl;
 
+import com.ssafy.daumnal.emotion.entity.Emotion;
+import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.global.exception.NoExistException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
@@ -12,6 +14,8 @@ import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.music.repository.PlaylistMusicRepository;
 import com.ssafy.daumnal.music.repository.PlaylistRepository;
 import com.ssafy.daumnal.music.service.MusicService;
+import com.ssafy.daumnal.s3.service.S3Service;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,7 @@ public class MusicServiceImpl implements MusicService {
     private final MemberRepository memberRepository;
     private final PlaylistRepository playlistRepository;
     private final PlaylistMusicRepository playlistMusicRepository;
+    private final EmotionRepository emotionRepository;
     private final MemberUtilService memberUtilService;
 
     /**
@@ -57,5 +62,18 @@ public class MusicServiceImpl implements MusicService {
         return GetPlaylistsToSaveMusicResponse.builder()
                 .playlists(getPlaylistsToSaveMusicResponse)
                 .build();
+    }
+
+    /**
+     * 크롤링한 노래 리스트 추가
+     * @param addMusicsRequest 추가할 노래 리스트
+     */
+    @Override
+    @Transactional
+    public void addMusics(AddMusicsRequest addMusicsRequest) {
+        for (AddMusicRequest addMusicRequest : addMusicsRequest.getMusics()) {
+            Emotion emotion = emotionRepository.save(addMusicRequest.getMusicEmotion().toEntity());
+            musicRepository.save(addMusicRequest.toEntityWith(emotion));
+        }
     }
 }
