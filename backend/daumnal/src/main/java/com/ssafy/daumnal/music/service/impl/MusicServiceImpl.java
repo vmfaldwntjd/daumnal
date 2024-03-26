@@ -76,4 +76,24 @@ public class MusicServiceImpl implements MusicService {
             musicRepository.save(addMusicRequest.toEntityWith(emotion));
         }
     }
+
+    /**
+     * 노래 정보 조회
+     * @param memberId 로그인 상태인 회원 id
+     * @param musicId 조회할 노래 id
+     * @return
+     */
+    @Override
+    public GetMusicResponse getMusic(String memberId, Long musicId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Music music = musicRepository.findById(musicId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
+
+        return music.toGetMusicResponse();
+    }
 }
