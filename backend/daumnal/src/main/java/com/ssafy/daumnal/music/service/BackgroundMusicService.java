@@ -9,4 +9,6 @@ public interface BackgroundMusicService {
     GetBackGroundMusicResponse getBackgroundMusic(String memberId, String backgroundMusicId);
 
     GetBackGroundMusicResponse modifyBackgroundMusic(String memberId, String backgroundMusicId);
+
+    GetBackGroundMusicResponse getBackgroundMusicMemberSelect(String memberId);
 }
