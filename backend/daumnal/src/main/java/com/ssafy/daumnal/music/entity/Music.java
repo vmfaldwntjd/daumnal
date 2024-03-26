@@ -6,6 +6,7 @@ import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicResponse;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -49,6 +50,17 @@ public class Music extends BaseEntity {
     @JoinColumn(name = "emotion_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Emotion emotion;
+
+    @Builder
+    public Music(String youtubeId, String title, String lyrics, String singerName, String coverUrl, MusicCategory category, Emotion emotion) {
+        this.youtubeId = youtubeId;
+        this.title = title;
+        this.lyrics = lyrics;
+        this.singerName = singerName;
+        this.coverUrl = coverUrl;
+        this.category = category;
+        this.emotion = emotion;
+    }
 
     public GetMusicResponse toGetMusicResponse() {
 
