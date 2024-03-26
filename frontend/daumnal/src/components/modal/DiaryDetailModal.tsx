@@ -4,6 +4,7 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import DailyResultModal from './DailyResultModal';
 import axios from 'axios';
 import axiosInstance from '../../pages/api/axiosInstance';
+import DiaryMusicPlayBar from '../diary/CalendarPage/DiaryMusicPlayBar';
 
 
 interface DiaryDetailModalProps {
@@ -26,7 +27,7 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
   const [diaryContent, setDiaryContent] = useState<string>('')
   const [diaryHashTag, setDiaryHashTag] = useState<string | null>(null)
   const [diaryImage, setDiaryImage] = useState<string | null>(null)
-  const [diaryMusicId, setDiaryMusicId] = useState<number>()
+  const [diaryMusicId, setDiaryMusicId] = useState<string>()
   const [diaryEmotionId, setDiaryEmotionId] = useState<string>()
 
 
@@ -127,6 +128,7 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
           <div className="flex flex-col bg-bg_modal p-12 my-8 rounded-xl h-[90%] w-[600px] shadow-lg" onClick={(e) => e.stopPropagation()}>
             <div className='overflow-y-auto'>
               <div className='diaryInfo flex flex-col items-center'>
+                <DiaryMusicPlayBar diaryMusicId={diaryMusicId}/>
                 <div className='text-2xl text-bold mb-4 '>{diaryDate}</div>
                 <div className='text-2xl text-bold mb-4'>{diaryTitle}</div>
                 {diaryHashTag && <div className='mb-4'>{diaryHashTag.split(' ').map(tag => `#${tag}`).join(' ')}</div> }
@@ -141,7 +143,7 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
             <FontAwesomeIcon icon={faChevronRight} size="2xl" className="text-[60px]  text-button_faChevron group-hover:text-white"  />           
           </button> 
         </div>}
-        { isDailyResultModalOpen && <DailyResultModal onDailyResultModalClose={()=> setIsDailyResultModalOpen(false)}  diaryEmotionId={diaryEmotionId} diaryDate={diaryDate}/>}
+        { isDailyResultModalOpen && <DailyResultModal onDailyResultModalClose={()=> setIsDailyResultModalOpen(false)}  diaryEmotionId={diaryEmotionId} diaryDate={diaryDate}/> }
       </div>
 
       );
