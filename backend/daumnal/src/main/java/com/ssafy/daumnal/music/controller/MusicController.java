@@ -7,10 +7,7 @@ import com.ssafy.daumnal.music.dto.MusicDTO.*;
 import com.ssafy.daumnal.music.service.MusicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,5 +29,17 @@ public class MusicController {
                 musicService.getPlaylistsToSaveMusic(jwtProvider.getMemberInfo(authentication), musicId);
 
         return ApiResponse.success(SuccessCode.GET_PLAYLISTS_TO_SAVE_MUSIC, getPlaylistsToSaveMusicResponse);
+    }
+
+    /**
+     * 크롤링한 노래 리스트 추가
+     * @param addMusicsRequest 추가할 노래 리스트
+     * @return
+     */
+    @PostMapping
+    public ApiResponse<?> addMusics(@RequestBody AddMusicsRequest addMusicsRequest) {
+        musicService.addMusics(addMusicsRequest);
+
+        return ApiResponse.success(SuccessCode.CREATE_MUSICS);
     }
 }
