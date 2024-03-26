@@ -140,9 +140,17 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
   const sortedEmotionColors = emotions.map(emotion => emotionColors[emotion]);
 
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태를 관리하는 상태
 
-  const handleEmotionClick = (emotion: string) => {
+  // 감정 클릭 핸들러
+  const handleEmotionClick = (emotion : string) => {
     setSelectedEmotion(emotion);
+    setIsModalOpen(true); // 여기서 모달을 열도록 설정
+  };
+
+  // 모달 닫기 핸들러
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   const chartData = {
@@ -200,31 +208,41 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
   return (
     <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center"> 
       <div className="bg-bg_modal p-8 rounded-xl h-[90%] w-[600px] shadow-lg">
-          <ChartTitle className='text-2xl'>2024년 3월 22일 금요일</ChartTitle>
-          <ChartWrapper>
+          <ChartTitle className='text-2xl'>{diaryDate}</ChartTitle>
+          <ChartWrapper className='pb-2'>
             <Doughnut data={chartData} options={chartOptions} />
           </ChartWrapper>
-          <EmotionButtonsContainer>
-            {emotions.slice(0, 4).map(emotion => (
-              <DailyEmotionButton 
-                key={emotion} 
-                emotion={emotion} 
-                handleEmotionClick={handleEmotionClick}
-                modalSize={{ width: 600, height: 800 }} // 예시로 너비 600px, 높이 800px을 설정합니다.
-              />
-            ))}
-          </EmotionButtonsContainer>
-          <EmotionButtonsContainer>
-            {emotions.slice(4).map(emotion => (
-              <DailyEmotionButton 
-                key={emotion} 
-                emotion={emotion} 
-                handleEmotionClick={handleEmotionClick}
-                modalSize={{ width: 600, height: 800 }} // 예시로 너비 600px, 높이 800px을 설정합니다.
-              />
-            ))}
-          </EmotionButtonsContainer>
-          <Button onClick={onDailyResultModalClose}>일기로 돌아가기</Button>
+          <div className="">
+            <div className='flex justify-center gap-20'>
+            <EmotionButtonsContainer>
+              {emotions.slice(0, 4).map(emotion => (
+                <DailyEmotionButton 
+                  key={emotion} 
+                  emotion={emotion}
+                  isSelected={selectedEmotion === emotion} 
+                  handleEmotionClick={handleEmotionClick}
+                  modalSize={{ width: 600, height: 800 }} // 예시로 너비 600px, 높이 800px을 설정합니다.
+                />
+              ))}
+            </EmotionButtonsContainer>
+            </div>
+            <div className='flex justify-center gap-20'>
+            <EmotionButtonsContainer>
+              {emotions.slice(4).map(emotion => (
+                <DailyEmotionButton 
+                  key={emotion} 
+                  emotion={emotion}
+                  isSelected={selectedEmotion === emotion}
+                  handleEmotionClick={handleEmotionClick}
+                  modalSize={{ width: 600, height: 800 }} // 예시로 너비 600px, 높이 800px을 설정합니다.
+                />
+              ))}
+            </EmotionButtonsContainer>
+            </div>
+          </div>
+          <div className='flex justify-center'>
+            <button onClick={onDailyResultModalClose} className='mt-8 border text-sm py-2 px-4 border-button_border bg-bg_button rounded-lg lg:text-[17px] lg:px-4'>{`<<`} 일기로 돌아가기</button>
+          </div>
       </div>
     </div>
   );
