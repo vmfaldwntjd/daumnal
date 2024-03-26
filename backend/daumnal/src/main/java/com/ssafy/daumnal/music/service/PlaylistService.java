@@ -13,4 +13,6 @@ public interface PlaylistService {
     GetPlaylistResponse getPlaylist(String memberId, Long playlistId);
 
     GetMusicsInPlaylistResponse getMusicsInPlaylist(String memberId, Long playlistId);
+
+    void removeMusicInPlaylist(String memberId, Long playlistId, Long musicId);
 }
