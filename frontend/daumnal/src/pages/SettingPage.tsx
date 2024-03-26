@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from './api/axiosInstance';
 import NicknameModal from '../components/modal/NicknameModal';
+import ChangeBGMModal from '../components/modal/ChangeBgmModal';
 
 const { Kakao } = window;
 
@@ -11,6 +12,18 @@ const SettingPage: React.FC = () => {
   const [nickname, setNickname] = useState('');
   // 모달 상태 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // BGM 모달 상태 관리
+  const [isBGMModalOpen, setIsBGMModalOpen] = useState(false);
+
+  // BGM 모달을 여는 함수
+  const openBGMModal = () => {
+    setIsBGMModalOpen(true);
+  };
+
+  // BGM 모달을 닫는 함수
+  const closeBGMModal = () => {
+    setIsBGMModalOpen(false);
+  };
 
   useEffect(() => {
     // 페이지 로드 시 닉네임 조회 요청
@@ -105,6 +118,7 @@ const SettingPage: React.FC = () => {
           alt="BGM 변경"
           className="mt-10 hover:cursor-pointer"
           style={{ width: '823px', height: '82px' }}
+          onClick={openBGMModal}
         />
         <img
           src="./image/setting_logout.png"
@@ -119,6 +133,7 @@ const SettingPage: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmit={(newNickname) => updateNickname(newNickname)}
       />
+      {isBGMModalOpen && <ChangeBGMModal isOpen={isBGMModalOpen} onClose={closeBGMModal} />}
     </div>
     
   );
