@@ -17,6 +17,8 @@ public interface PlaylistMusicRepository extends JpaRepository<PlaylistMusic, Pl
 
     Long countByPlaylist(Playlist playlist);
 
+    List<PlaylistMusic> findByPlaylist(Playlist playlist);
+
     @Query(
             "SELECT pm.playlist FROM PlaylistMusic pm "
             + "WHERE pm.music = :music "

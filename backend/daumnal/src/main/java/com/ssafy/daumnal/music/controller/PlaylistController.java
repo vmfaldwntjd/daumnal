@@ -60,4 +60,32 @@ public class PlaylistController {
 
         return ApiResponse.success(SuccessCode.GET_PLAYLISTS, playlistsResponse);
     }
+
+    /**
+     * 플레이리스트 정보 조회
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 조회할 플레이리스트 id
+     * @return
+     */
+    @GetMapping("/{playlistId}")
+    public ApiResponse<?> getPlaylist(Authentication authentication, @PathVariable Long playlistId) {
+        GetPlaylistResponse getPlaylistResponse =
+            playlistService.getPlaylist(jwtProvider.getMemberInfo(authentication), playlistId);
+
+        return ApiResponse.success(SuccessCode.GET_PLAYLIST, getPlaylistResponse);
+    }
+
+    /**
+     * 플레이리스트에 저장된 노래 리스트 조회
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 조회할 플레이리스트 id
+     * @return
+     */
+    @GetMapping("/{playlistId}/musics")
+    public ApiResponse<?> getMusicsInPlaylist(Authentication authentication, @PathVariable Long playlistId) {
+        GetMusicsInPlaylistResponse musicsInPlaylistResponse =
+            playlistService.getMusicsInPlaylist(jwtProvider.getMemberInfo(authentication), playlistId);
+
+        return ApiResponse.success(SuccessCode.GET_MUSICS_IN_PLAYLIST, musicsInPlaylistResponse);
+    }
 }

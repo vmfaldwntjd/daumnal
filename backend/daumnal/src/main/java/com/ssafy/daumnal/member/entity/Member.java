@@ -48,4 +48,8 @@ public class Member extends BaseEntity {
     public void updateMemberStatus(MemberStatus status) {
         this.status = status;
     }
+
+    public void updateBackgroundMusicId(Long backgroundMusicId) {
+        this.backgroundMusicId = backgroundMusicId;
+    }
 }

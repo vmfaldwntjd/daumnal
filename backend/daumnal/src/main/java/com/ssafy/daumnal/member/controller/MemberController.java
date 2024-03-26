@@ -104,4 +104,16 @@ public class MemberController {
         memberService.modifyMemberStatusLogout(memberId);
         return ApiResponse.success(SuccessCode.UPDATE_MEMBER_LOGOUT);
     }
+
+    /**
+     * 회원 탈퇴 API
+     *
+     * @param authentication
+     * @return
+     */
+    @DeleteMapping
+    public ApiResponse<?> removeMember(Authentication authentication) {
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_STATUS_DELETE,
+                memberService.modifyMemberStatusDelete(jwtProvider.getMemberInfo(authentication)));
+    }
 }

@@ -2,6 +2,8 @@ package com.ssafy.daumnal.music.entity;
 
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.global.entity.BaseEntity;
+import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicResponse;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,4 +49,16 @@ public class Music extends BaseEntity {
     @JoinColumn(name = "emotion_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Emotion emotion;
+
+    public GetMusicResponse toGetMusicResponse() {
+
+        return GetMusicResponse.builder()
+            .musicId(id)
+            .musicYoutubeId(youtubeId)
+            .musicTitle(title)
+            .musicSingerName(singerName)
+            .musicCoverUrl(coverUrl)
+            .musicLyrics(lyrics)
+            .build();
+    }
 }
