@@ -11,6 +11,7 @@ import com.ssafy.daumnal.music.dto.PlaylistDTO.*;
 import com.ssafy.daumnal.music.entity.Music;
 import com.ssafy.daumnal.music.entity.Playlist;
 import com.ssafy.daumnal.music.entity.PlaylistMusic;
+import com.ssafy.daumnal.music.entity.PlaylistMusicId;
 import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.music.repository.PlaylistMusicRepository;
 import com.ssafy.daumnal.music.repository.PlaylistRepository;
@@ -168,5 +169,36 @@ public class PlaylistServiceImpl implements PlaylistService {
         return GetMusicsInPlaylistResponse.builder()
             .musics(musicsInPlaylistResponse)
             .build();
+    }
+
+    /**
+     * 플레이리스트에 저장된 노래 삭제
+     * @param memberId 로그인 상태인 회원 id
+     * @param playlistId 삭제할 노래가 들어있는 플레이리스트 id
+     * @param musicId 플레이리스트에서 삭제할 노래 id
+     */
+    @Override
+    public void removeMusicInPlaylist(String memberId, Long playlistId, Long musicId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Playlist playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_PLAYLIST_ID));
+        if (!playlist.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
+        }
+        Music music = musicRepository.findById(musicId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
+        PlaylistMusicId playlistMusicId = PlaylistMusicId.builder()
+                .playlist(playlist)
+                .music(music)
+                .build();
+        if (!playlistMusicRepository.existsById(playlistMusicId)) {
+            throw new NoExistException(NOT_EXISTS_MUSIC_IN_PLAYLIST);
+        }
+        playlistMusicRepository.deleteById(playlistMusicId);
     }
 }

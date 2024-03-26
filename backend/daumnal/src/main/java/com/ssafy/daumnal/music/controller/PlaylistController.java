@@ -88,4 +88,18 @@ public class PlaylistController {
 
         return ApiResponse.success(SuccessCode.GET_MUSICS_IN_PLAYLIST, musicsInPlaylistResponse);
     }
+
+    /**
+     * 플레이리스트에 저장된 노래 삭제
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 삭제할 노래가 들어있는 플레이리스트 id
+     * @param musicId 플레이리스트에서 삭제할 노래 id
+     * @return
+     */
+    @DeleteMapping("/{playlistId}/musics/{musicId}")
+    public ApiResponse<?> removeMusicInPlaylist(Authentication authentication, @PathVariable Long playlistId, @PathVariable Long musicId) {
+        playlistService.removeMusicInPlaylist(jwtProvider.getMemberInfo(authentication), playlistId, musicId);
+
+        return ApiResponse.success(SuccessCode.DELETE_MUSIC_IN_PLAYLIST);
+    }
 }

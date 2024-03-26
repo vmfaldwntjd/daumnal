@@ -68,6 +68,7 @@ public enum ErrorCode {
     NOT_EXISTS_MUSIC_ID(BAD_REQUEST, "존재하지 않는 노래 id 입니다!"),
     NOT_EXISTS_PLAYLIST_ID(BAD_REQUEST, "존재하지 않는 플레이리스트 id 입니다!"),
     NOT_EXISTS_BACKGROUND_MUSIC(NOT_FOUND, "존재하지 않는 배경음악입니다!"),
+    NOT_EXISTS_MUSIC_IN_PLAYLIST(NOT_FOUND, "플레이리스트에 해당 노래가 저장되어 있지 않습니다!"),
 
     INVALID_BACKGROUND_MUSIC_ID(BAD_REQUEST, "배경음악 id 입력 형식이 올바르지 않습니다!"),
 
