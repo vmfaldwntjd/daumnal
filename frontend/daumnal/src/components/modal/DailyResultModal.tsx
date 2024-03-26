@@ -1,4 +1,3 @@
-// 코드 작성
 // 도넛 차트의 가운데에 선택된 감정과 해당 감정의 백분율을 표시하는 기능을 추가합니다.
 
 import React, { useEffect, useState } from 'react';
@@ -83,7 +82,7 @@ interface EmotionData {
 
 interface DailyResultModalProps {
   onDailyResultModalClose: () => void;
-  emotionId?: number;
+  diaryEmotionId?: string;
   diaryDate?: string;
 }
 
@@ -117,8 +116,8 @@ const emotionImages = {
   neutral: '/image/neutral_face.png',
 };
 
-const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalClose, emotionId }) => {
-  const validEmotionId = emotionId || 5342;
+const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalClose, diaryEmotionId, diaryDate }) => {
+  const validEmotionId = diaryEmotionId || 5342;
   const [emotionData, setEmotionData] = useState<EmotionData>({});
 
   const fetchEmotionData = async () => {
