@@ -64,29 +64,24 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
 
   
   useEffect(() => {
-
-    const parts = activeMonth.split('-');
+    if (!isDiaryModalOpen) {
+      const parts = activeMonth.split('-');
     const year = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10);
 
     setSelectedYear(year);
     setSelectedMonth(month);
 
-    // axios.get('https://b9cf3818-a936-414c-ae32-753e014c0a30.mock.pstmn.io/diaries/calendar')
     axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/calendar?year=${year}&month=${month}`)
         .then(response => {
-          // console.log(month)
-          // console.log(year)
-          console.log(response.data)
-
+          // console.log(response.data)
           setDiaryList(response.data.data.calendarContents)
-
         })
         .catch(error => {
           console.error('캘린더 정보 호출 중 오류 발생:', error);
         });
-
-  }, [activeMonth, setSelectedYear, setSelectedMonth])
+    }
+  }, [activeMonth, setSelectedYear, setSelectedMonth, isDiaryModalOpen])
 
 
   useEffect(() => {
@@ -123,11 +118,13 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
       return (
         <div className='flex flex-col items-center justify-center'>
         <div className={emotion}>{day}</div> {/* 날짜를 표시하는 부분 */}
+        {contentForDay.diaryHashTag &&
         <div className="" > {/* 해시태그를 다음 줄부터 시작 */}
           {hashtags.map((tag, index) => (
             <div className="text-sm" key={index}>{tag}</div>
           ))}
         </div>
+        }
       </div>
       );
     }

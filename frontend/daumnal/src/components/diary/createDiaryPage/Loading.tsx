@@ -3,7 +3,6 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axiosImage from '../../../pages/api/axiosImage';
-import axios from 'axios';
 import axiosInstance from '../../../pages/api/axiosInstance';
 
 const Images = styled.div`
@@ -50,11 +49,8 @@ type DiaryEmotion = {
 };
 
 const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, title, hashTag, content, image }) => {
-
-
-
   
-  const [loadedImages, setLoadedImages] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<number>(0);
 
   const navigate = useNavigate();
 
@@ -108,9 +104,10 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
         //일기 등록하는 axios 로직 구현
         axiosImage.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries`, formData)
         .then (function (response:any) {
-          console.log(response.data)
+          // console.log(response.data)
+          console.log(response.data.data.diaryId)
           
-          navigate('/select-character')
+          navigate('/select-character', { state: { diaryId: response.data.data.diaryId} })
 
         })
         .catch(function (error:any) {
