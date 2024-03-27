@@ -17,10 +17,13 @@ import com.ssafy.daumnal.music.repository.PlaylistMusicRepository;
 import com.ssafy.daumnal.music.repository.PlaylistRepository;
 import com.ssafy.daumnal.music.service.PlaylistService;
 import com.ssafy.daumnal.s3.service.S3Service;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
+import static com.ssafy.daumnal.global.constants.S3Path.PLAYLIST_PATH;
 import static com.ssafy.daumnal.music.constants.MusicConstants.*;
+import static com.ssafy.daumnal.music.constants.PlaylistContants.PLAYLIST_DEFAULT_COVER_URL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,7 @@ public class PlaylistServiceImpl implements PlaylistService {
             throw new LimitExceededException(PLAYLIST_LIMIT_EXCEEDED);
         }
         if (addPlaylistRequest.getPlaylistCover() != null) {
-            String coverUrl = s3Service.uploadPlaylistCover(addPlaylistRequest.getPlaylistCover(), null);
+            String coverUrl = s3Service.upload(addPlaylistRequest.getPlaylistCover(), PLAYLIST_PATH);
             playlistRepository.save(addPlaylistRequest.toEntityWithCoverUrl(coverUrl, member));
         }
         if (addPlaylistRequest.getPlaylistCover() == null) {
@@ -200,5 +203,34 @@ public class PlaylistServiceImpl implements PlaylistService {
             throw new NoExistException(NOT_EXISTS_MUSIC_IN_PLAYLIST);
         }
         playlistMusicRepository.deleteById(playlistMusicId);
+    }
+
+    /**
+     * 플레이리스트 정보 수정
+     * @param memberId 로그인 상태인 회원 id
+     * @param playlistId 정보 수정할 플레이리스트 id
+     */
+    @Override
+    @Transactional
+    public void modifyPlaylist(String memberId, Long playlistId, ModifyPlaylistRequest modifyPlaylistRequest) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Playlist playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_PLAYLIST_ID));
+        if (!playlist.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
+        }
+        if (!playlist.getCoverUrl().equals(PLAYLIST_DEFAULT_COVER_URL)) {
+            s3Service.delete(playlist.getCoverUrl());
+        }
+        String coverUrl = null;
+        if (modifyPlaylistRequest.getPlaylistCover() != null) {
+            coverUrl = s3Service.upload(modifyPlaylistRequest.getPlaylistCover(), PLAYLIST_PATH);
+        }
+        playlist.updateNameOrCoverUrl(modifyPlaylistRequest.getPlaylistName(), coverUrl);
     }
 }

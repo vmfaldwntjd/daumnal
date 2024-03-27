@@ -30,6 +30,7 @@ import java.util.Objects;
 
 import static com.ssafy.daumnal.diary.constants.DiaryConstants.*;
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
+import static com.ssafy.daumnal.global.constants.S3Path.DIARY_PHOTO_PATH;
 
 @Service
 @RequiredArgsConstructor
@@ -101,7 +102,7 @@ public class DiaryServiceImpl implements DiaryService {
         String photoUrl = null;
 
         if (Objects.nonNull(diaryPhoto)) {
-            photoUrl = s3Service.uploadDiaryPhoto(diaryPhoto);
+            photoUrl = s3Service.upload(diaryPhoto, DIARY_PHOTO_PATH);
         }
 
         Emotion emotion = Emotion.builder()

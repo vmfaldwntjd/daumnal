@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 
+import static com.ssafy.daumnal.music.constants.PlaylistContants.PLAYLIST_DEFAULT_COVER_URL;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -29,7 +31,7 @@ public class Playlist extends BaseEntity {
     private String name;
 
     @Column(name = "cover_url")
-    @ColumnDefault("'https://daumnal.s3.ap-northeast-2.amazonaws.com/playlistCover/playlist_default.png'")
+    @ColumnDefault(PLAYLIST_DEFAULT_COVER_URL)
     private String coverUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,5 +68,10 @@ public class Playlist extends BaseEntity {
                 .playlistName(name)
                 .isSelected(isSelected)
                 .build();
+    }
+
+    public void updateNameOrCoverUrl(String playlistName, String playlistCoverUrl) {
+        this.name = (playlistName != null) ? playlistName : name;
+        this.coverUrl = (playlistCoverUrl != null) ? playlistCoverUrl : coverUrl;
     }
 }

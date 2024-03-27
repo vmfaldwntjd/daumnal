@@ -75,10 +75,13 @@ public enum ErrorCode {
     NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER(BAD_REQUEST, "로그인 상태인 회원과 플레이리스트 소유자가 다릅니다!"),
 
     PLAYLIST_LIMIT_EXCEEDED(BAD_REQUEST, "더 이상 플레이리스트를 생성할 수 없습니다!"),
-    MUSICS_IN_PLAYLIST_LIMIT_EXCEEDED(BAD_REQUEST, "플레이리스트에 더 이상 노래를 추가할 수 없습니다."),
+    MUSICS_IN_PLAYLIST_LIMIT_EXCEEDED(BAD_REQUEST, "플레이리스트에 더 이상 노래를 추가할 수 없습니다!"),
 
     //파일
-    NOT_EXISTS_FILE(BAD_REQUEST, "존재하지 않는 파일입니다.");
+    NOT_EXISTS_FILE_TO_UPLOAD(BAD_REQUEST, "업로드할 파일이 존재하지 않습니다!"),
+    NOT_EXISTS_FILE_PATH(INTERNAL_SERVER_ERROR, "업로드할 파일 경로를 설정하지 않았습니다!"),
+    NOT_UPLOADS_FILE(INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다!"),
+    INVALID_URL_FORMAT(BAD_REQUEST, "요청한 URL 형식이 올바르지 않습니다!");
 
     private final HttpStatus status;
     private final String message;

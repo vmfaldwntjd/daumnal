@@ -77,4 +77,11 @@ public class PlaylistDTO {
         private String playlistName;
         private boolean isSelected;
     }
+
+    @Getter
+    @Setter
+    public static class ModifyPlaylistRequest {
+        private String playlistName;
+        private MultipartFile playlistCover;
+    }
 }
