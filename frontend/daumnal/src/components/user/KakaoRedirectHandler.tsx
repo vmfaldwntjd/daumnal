@@ -21,8 +21,8 @@ const KakaoRedirectHandler = () => {
       }
   
       const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      // const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
-      const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
+      const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
+      // const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
   
       const response = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
@@ -59,7 +59,7 @@ const KakaoRedirectHandler = () => {
       
         setIsFirstLogin(responseData.data.firstLogin);
         if (!responseData.data.firstLogin) {
-          navigate('/main');
+          navigate('/main', { replace: true });
         }
       } else {
         console.error('로그인 과정에서 예상치 못한 오류가 발생했습니다:', responseData.message);
@@ -95,7 +95,7 @@ const KakaoRedirectHandler = () => {
     if (response.data.code === 201) {
       // 성공 응답 처리
       console.log(response.data.message); // 성공 메시지 로그로 출력
-      navigate('/main'); // 메인 페이지로 이동
+      navigate('/main', { replace: true }); // 메인 페이지로 이동
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
