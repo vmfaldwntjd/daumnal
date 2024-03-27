@@ -115,4 +115,17 @@ public class PlaylistController {
 
         return ApiResponse.success(SuccessCode.UPDATE_PLAYLIST);
     }
+
+    /**
+     * 플레이리스트 삭제
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 삭제할 플레이리스트 id
+     * @return
+     */
+    @DeleteMapping("/{playlistId}")
+    public ApiResponse<?> removePlaylist(Authentication authentication, @PathVariable Long playlistId) {
+        playlistService.removePlaylist(jwtProvider.getMemberInfo(authentication), playlistId);
+
+        return ApiResponse.success(SuccessCode.DELETE_PLAYLIST);
+    }
 }

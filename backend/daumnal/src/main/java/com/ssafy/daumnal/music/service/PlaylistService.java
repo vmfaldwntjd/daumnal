@@ -17,4 +17,6 @@ public interface PlaylistService {
     void removeMusicInPlaylist(String memberId, Long playlistId, Long musicId);
 
     void modifyPlaylist(String memberId, Long playlistId, ModifyPlaylistRequest modifyPlaylistRequest);
+
+    void removePlaylist(String memberId, Long playlistId);
 }
