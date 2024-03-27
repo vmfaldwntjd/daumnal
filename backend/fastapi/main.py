@@ -99,18 +99,13 @@ async def recommend_music(
         authorization: str = Header(..., alias="Authorization")
 ):
     try:
-        print('test1')
         diary_info, diary_emotion = qs.get_diary_with_emotion(diary_id)
-        print('test2')
         if diary_info[0].music_id is not None:
             raise UnicornException(status="alreadyRecommended")
         elif diary_emotion[0] is None:
             raise UnicornException(status="wrongDiaryNumber")
-        print('test3')
         music_ids, music_emotions = qs.get_music_with_emotion(music_category)
-        print('test4')
         recommended_music_id = recommend.recomm(diary_emotion[0], music_ids, music_emotions)
-        print('test5')
 
         base_url = "https://daumnal-d.n-e.kr:4000/api"
         url = f"{base_url}/diaries/{diary_id}/musics/{recommended_music_id.id}"
