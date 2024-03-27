@@ -155,9 +155,9 @@ const toggleIcon = () => {
             <p className="bg-bg_main text-3xl text-center">{date}</p>
             {/* 조건부 렌더링을 사용하여 아이콘 변경 */}
             {iconState ? (
-              <FontAwesomeIcon icon={faVolumeHigh} onClick={toggleIcon} />
+              <button onClick={toggleIcon} ><FontAwesomeIcon icon={faVolumeHigh} /></button>
             ) : (
-              <FontAwesomeIcon icon={faVolumeXmark} style={{color: "#696864"}} onClick={toggleIcon} />
+              <button onClick={toggleIcon} ><FontAwesomeIcon icon={faVolumeXmark} style={{color: "#696864"}}/></button>
             )}
           </label>
         <div>

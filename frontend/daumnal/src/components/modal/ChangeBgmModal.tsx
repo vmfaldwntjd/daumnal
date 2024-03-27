@@ -18,18 +18,31 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const [selectedBGM, setSelectedBGM] = useState<string>('');
 
   useEffect(() => {
-    if (isOpen) {
-      const fetchBgms = async () => {
-        try {
-          const response = await axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/background-musics`);
-          if (response.data.code === 200) {
-            setBgms(response.data.data.backGroundMusics);
-          }
-        } catch (error) {
-          console.error('BGM 정보를 가져오는 중 오류가 발생했습니다.', error);
+    const fetchBgms = async () => {
+      try {
+        const response = await axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/background-musics`);
+        if (response.data.code === 200) {
+          setBgms(response.data.data.backGroundMusics);
         }
-      };
+      } catch (error) {
+        console.error('BGM 정보를 가져오는 중 오류가 발생했습니다.', error);
+      }
+    };
+
+    const fetchMemberSelectedBGM = async () => {
+      try {
+        const response = await axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/background-musics/member-select`);
+        if (response.data.code === 200) {
+          setSelectedBGM(response.data.data.backgroundMusicId);
+        }
+      } catch (error) {
+        console.error('회원의 배경 음악 정보 조회 중 오류가 발생했습니다.', error);
+      }
+    };
+
+    if (isOpen) {
       fetchBgms();
+      fetchMemberSelectedBGM();
     }
   }, [isOpen]);
 
