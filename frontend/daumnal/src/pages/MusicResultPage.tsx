@@ -50,23 +50,6 @@ const MusicResultPage: React.FC = () => {
 
   // 캐릭터 이미지 경로 지정
   const characterImageUrl = getCharacterImageUrl(selectedCharacter);
-
-  // 추천된 노래 정보 요청
-  // useEffect(() => {
-  //   axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_FASTAPI_BASE_URL}/musics/${category}/diaries/2`) // 2 -> %{diaryId}
-  //     .then(response => {
-  //       console.log('노래 추천 요청 성공!', response.data);
-  //       if (response.data.status === "OK") {
-  //         console.log(response.data.data)
-  //         setMusicId(response.data.data.musicId)
-  //       } else {
-  //         console.log(response.data.status)
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log('노래 추천 요청 오류 발생!', error);
-  //     });
-  // }, []);
     
   useEffect(() => {
     console.log(`추천받은 노래 id: ${musicId}`)
