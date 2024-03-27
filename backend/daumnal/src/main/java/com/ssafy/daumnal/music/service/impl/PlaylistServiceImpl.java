@@ -233,4 +233,25 @@ public class PlaylistServiceImpl implements PlaylistService {
         }
         playlist.updateNameOrCoverUrl(modifyPlaylistRequest.getPlaylistName(), coverUrl);
     }
+
+    /**
+     * 플레이리스트 삭제
+     * @param memberId 로그인 상태인 회원 id
+     * @param playlistId 삭제할 플레이리스트 id
+     */
+    @Override
+    public void removePlaylist(String memberId, Long playlistId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Playlist playlist = playlistRepository.findById(playlistId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_PLAYLIST_ID));
+        if (!playlist.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
+        }
+        playlistRepository.deleteById(playlistId);
+    }
 }
