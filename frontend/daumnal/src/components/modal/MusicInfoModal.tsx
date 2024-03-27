@@ -64,7 +64,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
       .catch(error => {
         console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 실패!', error);
       });
-  }, []);
+  }, [playlists]);
 
   return (
     <div className="text-left text-[#776B5D] z-1">
@@ -88,7 +88,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
           ))}
         </div>
         {/* 구분선 */}
-        <hr className="border-none h-[0.8px] bg-[#efefef]" />
+        <hr className="border-none h-[0.5px] bg-[#cacaca]" />
         {/* 새 플레이리스트 생성 모달 */}
         {isOpenCreateModal && (
           <CreatePlaylistModalContainer>
@@ -106,6 +106,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
 };
 
 const ModalContent = styled.div`
+  height: 210px;
   min-width: 120px;
   display: flex;
   flex-direction: column;
@@ -114,6 +115,7 @@ const ModalContent = styled.div`
   box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   padding: 0px 10px;
+  overflow-y: auto;
 `;
 
 const PlaylistItem = styled.div<{ selected: boolean }>`

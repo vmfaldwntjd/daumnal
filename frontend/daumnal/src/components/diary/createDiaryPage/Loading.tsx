@@ -100,15 +100,12 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
         formData.forEach((value, key) => {
           console.log(key, value, typeof(value));
         });
-
+        
         //일기 등록하는 axios 로직 구현
         axiosImage.post(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries`, formData)
         .then (function (response:any) {
           // console.log(response.data)
-          console.log(response.data.data.diaryId)
-          
-          navigate('/select-character', { state: { diaryId: response.data.data.diaryId} })
-
+          navigate('/select-character', { state: { diaryId: response.data.data.diaryId } })
         })
         .catch(function (error:any) {
           console.log('일기 등록 에러발생', error.response);

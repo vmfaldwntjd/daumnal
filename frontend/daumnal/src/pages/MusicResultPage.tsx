@@ -21,11 +21,11 @@ const MusicResultPage: React.FC = () => {
   const [musicTitle, setMusicTitle] = useState<string>('') // 노래 제목
   const [musicSingerName, setMusicSingerName] = useState<string>('') // 노래 아티스트
 
-  // 캐릭터 선택 페이지에서 선택된 캐릭터 정보 가져오기
-  const { selectedCharacter } = location.state;
+  // 캐릭터 선택 페이지에서 선택된 캐릭터, 받은 노래 id 가져오기
+  const { selectedCharacter, musicId } = location.state;
 
   // 캐릭터 선택 페이지에서 받은 노래 정보 가져오기
-  const { musicId } = location.state;
+  // const { musicId } = location.state;
 
   // 결과 확인 후 확인 버튼 클릭시 캘린더 페이지로 이동시키는 함수
   const handleResultClick = () => {
@@ -50,24 +50,24 @@ const MusicResultPage: React.FC = () => {
 
   // 캐릭터 이미지 경로 지정
   const characterImageUrl = getCharacterImageUrl(selectedCharacter);
-
-  // 추천된 노래 정보 요청
+    
   useEffect(() => {
+    console.log(`추천받은 노래 id: ${musicId}`)
     axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${musicId}`)
-      .then(response => {
-        console.log('추천된 노래 정보 요청 성공!', response.data);
-        if (response.data.code === 200) {
-          console.log(`${response.data.status}: ${response.data.message}`);
-          setMusicCoverUrl(response.data.data.musicCoverUrl)
-          setMusicTitle(response.data.data.musicTitle)
-          setMusicSingerName(response.data.data.musicSingerName)
-        } else {
-          console.log(`${response.data.status}: ${response.data.message}`);
-        }
-      })
-      .catch(error => {
-        console.log('추천된 노래 정보 요청 오류 발생!', error);
-      });
+    .then(response => {
+      console.log('추천된 노래 정보 요청 성공!', response.data);
+      if (response.data.code === 200) {
+        console.log(`${response.data.status}: ${response.data.message}`);
+        setMusicCoverUrl(response.data.data.musicCoverUrl)
+        setMusicTitle(response.data.data.musicTitle)
+        setMusicSingerName(response.data.data.musicSingerName)
+      } else {
+        console.log(`${response.data.status}: ${response.data.message}`);
+      }
+    })
+    .catch(error => {
+      console.log('추천된 노래 정보 요청 오류 발생!', error);
+    });
   }, []);
 
   return (
