@@ -1,11 +1,27 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faVolumeHigh, faPenToSquare, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
 import QuillEditor from '../components/diary/createDiaryPage/QuillEditor';
 import UploadImage from '../components/diary/createDiaryPage/UploadImage';
 import Loading from '../components/diary/createDiaryPage/Loading';
+import DiaryMusicPlayBar from '../components/diary/createDiaryPage/BGMPlayBar';
+import axiosInstance from './api/axiosInstance';
 
+interface BackgroundMusic {
+  backgroundMusicId: number;
+  backgroundMusicYoutubeId: string;
+  backgroundMusicTitle: string;
+  backgroundMusicCategory: string;
+}
+
+// 응답 객체의 타입을 정의합니다.
+interface ApiResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: BackgroundMusic;
+}
 
 const CreateDiary: React.FC = () => {
 
@@ -25,6 +41,8 @@ const CreateDiary: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [iconState, setIconState] = useState<boolean>(true);
+  const [backgroundMusicYoutubeId, setBackgroundMusicYoutubeId] = useState<string>('');
 
 
   // 일기 제목 변경 이벤트 핸들러
@@ -66,6 +84,22 @@ const CreateDiary: React.FC = () => {
     removeHTMLTags(content);
   }, [content]);
 
+  useEffect(() => {
+    const fetchBackgroundMusic = async () => {
+      try {
+        // ApiResponse 타입을 사용하여 axios 응답의 구조를 명시합니다.
+        const response = await axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/background-musics/member-select`);
+        if (response.data && response.data.status === 'OK') {
+          setBackgroundMusicYoutubeId(response.data.data.backgroundMusicYoutubeId);
+        }
+      } catch (error) {
+        console.error('배경 음악 정보를 가져오는 데 실패했습니다.', error);
+      }
+    };
+
+    fetchBackgroundMusic();
+  }, []);
+
 
   // 이미지 변경 이벤트 핸들러
   const handleImageChange = (selectedImage: File | null) => {
@@ -93,17 +127,26 @@ const CreateDiary: React.FC = () => {
   }
 };
 
+// 아이콘 클릭 이벤트 핸들러
+const toggleIcon = () => {
+  setIconState(!iconState);
+};
 
   return (
     <div>
     {!isLoading && <div className="flex flex-col items-center justify-center w-full h-screen py-16">
-      <div className='w-full flex items-center justify-between px-16'> {/* 위쪽 구역 */}
+      <div className='w-full flex items-center justify-between px-16'>
         {/* 오늘 날짜 */}
         <div className='w-[85px]'></div>
         <label className="flex items-center gap-4 justify-center">
-          <p className="bg-bg_main text-3xl text-center">{date}</p>
-          <FontAwesomeIcon icon={faVolumeHigh} />                   
-        </label>
+            <p className="bg-bg_main text-3xl text-center">{date}</p>
+            {/* 조건부 렌더링을 사용하여 아이콘 변경 */}
+            {iconState ? (
+              <FontAwesomeIcon icon={faVolumeHigh} onClick={toggleIcon} />
+            ) : (
+              <FontAwesomeIcon icon={faVolumeXmark} style={{color: "#696864"}} onClick={toggleIcon} />
+            )}
+          </label>
         <div>
           <button onClick={goToLoadingPage} className="border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>   
         </div>
@@ -142,9 +185,11 @@ const CreateDiary: React.FC = () => {
     <div>
      {isLoading && <Loading setIsLoading={setIsLoading} removeTagsContent={removeTagsContent} title={title} hashTag={hashTag} content={content} image={image} />} 
     </div>
-
-    </div>
-
+    <DiaryMusicPlayBar
+      backgroundMusicYoutubeId={backgroundMusicYoutubeId}
+      playState={iconState}
+    />
+  </div>
   );
 };
 
