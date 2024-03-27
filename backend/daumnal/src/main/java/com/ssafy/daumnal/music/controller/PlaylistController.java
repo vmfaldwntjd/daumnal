@@ -102,4 +102,17 @@ public class PlaylistController {
 
         return ApiResponse.success(SuccessCode.DELETE_MUSIC_IN_PLAYLIST);
     }
+
+    /**
+     * 플레이리스트 정보 수정
+     * @param authentication 로그인 상태인 회원
+     * @param playlistId 정보 수정할 플레이리스트 id
+     * @return
+     */
+    @PatchMapping("/{playlistId}")
+    public ApiResponse<?> modifyPlaylist(Authentication authentication, @PathVariable Long playlistId, @ModelAttribute ModifyPlaylistRequest modifyPlaylistRequest) {
+        playlistService.modifyPlaylist(jwtProvider.getMemberInfo(authentication), playlistId, modifyPlaylistRequest);
+
+        return ApiResponse.success(SuccessCode.UPDATE_PLAYLIST);
+    }
 }
