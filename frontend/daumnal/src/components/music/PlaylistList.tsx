@@ -35,12 +35,12 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
 
   // 플레이리스트 목록 요청
   useEffect(() => {
-    axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists?pgno=#}`)
+    axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists`)
       .then(response => {
         console.log('플레이리스트 목록 요청 성공!', response.data);
         if (response.data.code === 200) {
           console.log(`${response.data.status}: ${response.data.message}`);
-          setPlaylists(response.data.data.content);
+          setPlaylists(response.data.data.playlists);
         } else {
           console.log(`${response.data.status}: ${response.data.message}`);
         }

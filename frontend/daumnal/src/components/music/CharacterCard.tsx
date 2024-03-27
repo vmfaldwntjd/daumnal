@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../pages/api/axiosInstance';
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -18,28 +19,29 @@ interface ApiResponse {
 }
 
 const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, category, context }) => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [musicId, setMusicId] = useState<number>() // 노래 id
+  // 일기 id
+  const { diaryId } = location.state;
 
   // 선택된 캐릭터에 대한 노래 추천 결과 요청 및 페이지 이동 핸들러
   const handleCharacterClick = (category: string) => () => {
+    console.log(`일기 id: ${diaryId}, 카테고리: ${category}`);
     // 선택된 캐릭터에 대한 노래 추천 결과 요청
-    axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${category}/diaries/2`) // 2 -> %{diaryId}
+    axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_FASTAPI_BASE_URL}/musics/${category}/diaries/${diaryId}`)
       .then(response => {
         console.log('노래 추천 요청 성공!', response.data);
         if (response.data.status === "OK") {
-          console.log(response.data.data)
-          setMusicId(response.data.data.musicId)
+          console.log(response.data.data.musicId)
+          // 결과 페이지로 이동
+          navigate("/music-result", { state: { selectedCharacter: name, musicId: response.data.data.musicId } });
         } else {
-          console.log(response.data.status)
+          console.log(`status: ${response.data.status}: message: ${response.data.message}`);
         }
       })
       .catch(error => {
         console.log('노래 추천 요청 오류 발생!', error);
       });
-
-    // 결과 페이지로 이동
-    navigate("/music-result", { state: { selectedCharacter: name, musicId: musicId } });
   }
 
   return (
