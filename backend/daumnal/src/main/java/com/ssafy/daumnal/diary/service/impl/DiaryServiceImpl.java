@@ -286,4 +286,35 @@ public class DiaryServiceImpl implements DiaryService {
                 .diaryId(diaryId)
                 .build();
     }
+
+    /**
+     * 좋아하는 가사 문장 리스트 추가
+     * @param memberId 로그인 상태인 회원 id
+     * @param diaryId 추가할 일기 id
+     * @param addFavoriteLyrics 좋아하는 가사 문장 번호 배열
+     */
+    @Override
+    @Transactional
+    public void addFavoriteLyrics(String memberId, Long diaryId, AddFavoriteLyrics addFavoriteLyrics) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+        if (!diary.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < addFavoriteLyrics.getDiaryLyricsLineNumbers().length; i++) {
+            sb.append(addFavoriteLyrics.getDiaryLyricsLineNumbers()[i]);
+            if (i < addFavoriteLyrics.getDiaryLyricsLineNumbers().length - 1) {
+                sb.append(" ");
+            }
+        }
+        diary.updateLyricsLineNumber(sb.toString());
+    }
 }

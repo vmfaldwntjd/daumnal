@@ -60,4 +60,10 @@ public class DiaryDTO {
         private String emotionId;
         private String diaryCreatedAt;
     }
+
+    @Getter
+    @Setter
+    public static class AddFavoriteLyrics {
+        private int[] diaryLyricsLineNumbers;
+    }
 }
