@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.diary.service;
 
+import com.ssafy.daumnal.diary.dto.DiaryDTO.AddFavoriteLyrics;
 import com.ssafy.daumnal.diary.dto.DiaryDTO;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetCalendarResponse;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryResponse;
@@ -25,4 +26,6 @@ public interface DiaryService {
     DiaryEmotion getEmotionByDay(String memberId, String emotionId);
 
     RemoveDiaryResponse removeDiary(String memberId, String diaryId);
+
+    void addFavoriteLyrics(String memberId, Long diaryId, AddFavoriteLyrics addFavoriteLyrics);
 }

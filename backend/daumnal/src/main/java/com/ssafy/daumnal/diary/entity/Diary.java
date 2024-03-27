@@ -54,4 +54,8 @@ public class Diary extends BaseEntity {
     public void updateMusicId(Long musicId) {
         this.musicId = musicId;
     }
+
+    public void updateLyricsLineNumber(String lyricsLineNumber) {
+        this.lyricsLineNumber = lyricsLineNumber;
+    }
 }

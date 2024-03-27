@@ -141,4 +141,18 @@ public class DiaryController {
         RemoveDiaryResponse response = diaryService.removeDiary(memberId, diaryId);
         return ApiResponse.success(SuccessCode.DELETE_DIARY, response);
     }
+
+    /**
+     * 좋아하는 가사 문장 리스트 추가
+     * @param authentication 로그인 상태인 회원
+     * @param diaryId 추가할 일기 id
+     * @param addFavoriteLyrics 좋아하는 가사 문장 번호 배열
+     * @return
+     */
+    @PatchMapping("/{diaryId}/lyrics")
+    public ApiResponse<?> addFavoriteLyrics(Authentication authentication, @PathVariable Long diaryId, @RequestBody AddFavoriteLyrics addFavoriteLyrics) {
+        diaryService.addFavoriteLyrics(jwtProvider.getMemberInfo(authentication), diaryId, addFavoriteLyrics);
+
+        return ApiResponse.success(SuccessCode.ADD_FAVORITE_LYRICS);
+    }
 }
