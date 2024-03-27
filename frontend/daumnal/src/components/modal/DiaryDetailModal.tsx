@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight, faTrashCan, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import DailyResultModal from './DailyResultModal';
@@ -15,7 +14,6 @@ interface DiaryDetailModalProps {
   }
 
 const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, diaryModalList, selectedDiaryDate }) => {
-  const navigate = useNavigate();
 
   const [selectedDiaryId, setSelectedDiaryId] = useState<number>(0)
   const [currentDiaryIndex, setCurrentDiaryIndex] = useState<number>(-1)
