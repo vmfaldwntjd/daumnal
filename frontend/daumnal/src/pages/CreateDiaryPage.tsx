@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeHigh, faPenToSquare, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
@@ -7,6 +7,7 @@ import UploadImage from '../components/diary/createDiaryPage/UploadImage';
 import Loading from '../components/diary/createDiaryPage/Loading';
 import DiaryMusicPlayBar from '../components/diary/createDiaryPage/BGMPlayBar';
 import axiosInstance from './api/axiosInstance';
+import Swal from 'sweetalert2'
 
 interface BackgroundMusic {
   backgroundMusicId: number;
@@ -115,15 +116,27 @@ const CreateDiary: React.FC = () => {
   }
 
   else if (!title) {
-    alert('제목을 입력해주세요')
+    Swal.fire({
+      title: "제목을 입력해주세요",
+      text: "제목은 최대 20자까지 입력 가능합니다",
+      icon: "warning"
+    });
   }
 
   else if (removeTagsContent.length < 20) {
-    alert('일기 내용을 20자 이상 입력해주세요')
+    Swal.fire({
+      title: "일기가 너무 짧아요",
+      text: "내용을 20자 이상 입력해주세요",
+      icon: "warning"
+    });
   }
 
   else if (removeTagsContent.length > 3000) {
-    alert('일기는 최대 3000자까지 입력 가능합니다. \n현재 글자 수 : ' + removeTagsContent.length)
+    Swal.fire({
+      title: "일기는 최대 3000자까지 입력 가능합니다.",
+      text: '현재 글자 수 : ' + removeTagsContent.length,
+      icon: "warning"
+    });
   }
 };
 

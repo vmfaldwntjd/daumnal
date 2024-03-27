@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axiosImage from '../../../pages/api/axiosImage';
 import axiosInstance from '../../../pages/api/axiosInstance';
+import Swal from 'sweetalert2'
 
 const Images = styled.div`
   width: 100%;
@@ -114,12 +115,20 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
       }
 
       else if (response.data.status === "emotionLack") {
-        alert('감정 분석에 실패했어요 조금만 더 감정을 담아서 써주세요')
+        Swal.fire({
+          title: "감정분석에 실패했어요",
+          text: "조금만 더 감정을 담아서 써주세요",
+          icon: "error"
+        });
         setIsLoading(false)
       }
 
       else if (response.data.status === "sentenceLack" ) {
-        alert('감정 분석에 실패했어요 문장이 너무 적어요')
+        Swal.fire({
+          title: "감정 분석에 실패했어요",
+          text: "문장이 너무 적어요",
+          icon: "error"
+        });
         setIsLoading(false)
       }
     })
