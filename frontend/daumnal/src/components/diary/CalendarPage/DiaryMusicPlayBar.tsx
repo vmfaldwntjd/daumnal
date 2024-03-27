@@ -66,13 +66,13 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
     onPlay={() => setPlaying(true)} // 재생 시 재생 상태 업데이트
     onPause={() => setPlaying(false)} // 정지 시 재생 상태 업데이트
     />
-    <div className='w-[350px] flex flex-row items-center justify-between mb-8 p-2  rounded-lg bg-[#FFFCF7] shadow-md'>
+    <div className='w-[350px] flex flex-row items-center justify-between p-2  rounded-lg bg-[#FFFCF7] shadow-md'>
         <div className='flex flex-row items-center'>
             <img src={diaryMusicCover} alt="" className='w-[50px]'/>
             <div className='ml-2'>
                 <div>{diaryMusicTitle}</div>
                 <div className='text-sm'>{diaryMusicSinger}</div>
-            </div>  -
+            </div> 
         </div>
         <div className='flex flex-row items-center'>
             {playing ? (
