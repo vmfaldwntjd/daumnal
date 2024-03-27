@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 
-import static com.ssafy.daumnal.music.constants.PlaylistContants.PLAYLIST_DEFAULT_COVER_URL;
+import static com.ssafy.daumnal.music.constants.PlaylistConstants.PLAYLIST_DEFAULT_COVER_URL;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
