@@ -56,12 +56,14 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
   return (
     <Container>
       {/* 플레이리스트 상세 컴포넌트 전환을 위한 클릭 이벤트 핸들러 */}
-      <button onClick={handleMovePlaylist(playlistId)}>
-        <img className="h-[200px]"
-          src={playlistCoverUrl || defaultImageUrl}
-          alt="플레이리스트 커버 이미지"
-        />
-      </button>
+      <div className="flex items-center justify-center">
+        <button onClick={handleMovePlaylist(playlistId)}>
+          <img className="h-[200px]"
+            src={playlistCoverUrl || defaultImageUrl}
+            alt="플레이리스트 커버 이미지"
+          />
+        </button>
+      </div>
       <Wrapper>
         {/* 플레이리스트 이름 */}
         <button className="self-start font-NanumSquare" onClick={handleMovePlaylist(playlistId)}>{playlistName}</button>
