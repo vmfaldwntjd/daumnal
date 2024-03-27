@@ -106,4 +106,29 @@ public class BackgroundMusicServiceImpl implements BackgroundMusicService {
                 .backgroundMusicCategory(backgroundMusic.getCategory())
                 .build();
     }
+
+    @Override
+    public GetBackGroundMusicResponse getBackgroundMusicMemberSelect(String memberId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        Long backgroundMusicId = member.getBackgroundMusicId();
+
+        BackgroundMusic backgroundMusic = backgroundMusicRepository.findById(backgroundMusicId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_BACKGROUND_MUSIC));
+
+
+        return GetBackGroundMusicResponse.builder()
+                .backgroundMusicId(String.valueOf(backgroundMusicId))
+                .backgroundMusicYoutubeId(backgroundMusic.getYoutubeId())
+                .backgroundMusicTitle(backgroundMusic.getTitle())
+                .backgroundMusicCategory(backgroundMusic.getCategory())
+                .build();
+    }
 }

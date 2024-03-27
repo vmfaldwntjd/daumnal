@@ -29,6 +29,12 @@ public class BackgroundMusicController {
                 backgroundMusicService.getAllBackgroundMusic(jwtProvider.getMemberInfo(authentication)));
     }
 
+    @GetMapping("/member-select")
+    public ApiResponse<?> getBackgroundMusicMemberSelect(Authentication authentication) {
+        return ApiResponse.success(GET_BACKGROUND_MUSIC_MEMBER,
+                backgroundMusicService.getBackgroundMusicMemberSelect(jwtProvider.getMemberInfo(authentication)));
+    }
+
     /**
      * 선택한 배경음악 조회 API
      *
