@@ -40,17 +40,18 @@ class Diary(Base):
 class QuerySet:
     def __init__(self):
         self.engine = EngineConn()
-        self.session = self.engine.sessionmaker()
 
     def get_diary_with_emotion(self, diary_id):
-        query1 = self.session.query(Diary).filter(Diary.id == diary_id)
+        session = self.engine.sessionmaker()
+        query1 = session.query(Diary).filter(Diary.id == diary_id)
         tmp_q = query1.subquery()
-        query2 = self.session.query(Emotion).join(tmp_q, tmp_q.c.emotion_id == Emotion.id)
+        query2 = session.query(Emotion).join(tmp_q, tmp_q.c.emotion_id == Emotion.id)
         return query1.all(), query2.all()
 
     def get_music_with_emotion(self, category):
-        query1 = self.session.query(Music).filter(Music.category == category)
+        session = self.engine.sessionmaker()
+        query1 = session.query(Music).filter(Music.category == category)
         tmp_q = query1.subquery()
-        query2 = self.session.query(Emotion).join(tmp_q, tmp_q.c.emotion_id == Emotion.id)
+        query2 = session.query(Emotion).join(tmp_q, tmp_q.c.emotion_id == Emotion.id)
 
         return query1.all(), query2.all()
