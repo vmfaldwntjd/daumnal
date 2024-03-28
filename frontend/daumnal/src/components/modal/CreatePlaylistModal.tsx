@@ -1,5 +1,5 @@
 // 플레이리스트 생성 모달
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axiosImage from '../../pages/api/axiosImage';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

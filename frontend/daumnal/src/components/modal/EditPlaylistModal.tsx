@@ -6,6 +6,7 @@ import { faPenToSquare, faImage } from "@fortawesome/free-solid-svg-icons";
 
 interface EditPlaylistModalProps {
   onClickToggleModal: () => void; // 모달 토글 함수
+  playlistId: number | null;
 }
 
 const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal }) => {
