@@ -27,10 +27,10 @@ public class Playlist extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 200)
     private String name;
 
-    @Column(name = "cover_url")
+    @Column(name = "cover_url", columnDefinition = "TEXT")
     @ColumnDefault(PLAYLIST_DEFAULT_COVER_URL)
     private String coverUrl;
 

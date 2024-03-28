@@ -26,19 +26,19 @@ public class Diary extends BaseEntity {
     @Column(name = "music_id")
     private Long musicId;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 40)
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "hash_tag")
+    @Column(name = "hash_tag", length = 20)
     private String hashTag;
 
-    @Column(name = "photo_url")
+    @Column(name = "photo_url", columnDefinition = "TEXT")
     private String photoUrl;
 
-    @Column(name = "lyrics_line_number")
+    @Column(name = "lyrics_line_number", length = 1000)
     private String lyricsLineNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
