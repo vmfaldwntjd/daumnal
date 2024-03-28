@@ -111,6 +111,7 @@ public class PlaylistController {
      */
     @PatchMapping("/{playlistId}")
     public ApiResponse<?> modifyPlaylist(Authentication authentication, @PathVariable Long playlistId, @ModelAttribute ModifyPlaylistRequest modifyPlaylistRequest) {
+        System.out.println("Request : " + modifyPlaylistRequest.getPlaylistName() + " " + modifyPlaylistRequest.getPlaylistCover());
         playlistService.modifyPlaylist(jwtProvider.getMemberInfo(authentication), playlistId, modifyPlaylistRequest);
 
         return ApiResponse.success(SuccessCode.UPDATE_PLAYLIST);

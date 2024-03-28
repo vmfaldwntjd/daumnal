@@ -218,20 +218,25 @@ public class PlaylistServiceImpl implements PlaylistService {
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
         memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
         memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+        System.out.println("회원 검증 끝");
 
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_PLAYLIST_ID));
         if (!playlist.getMember().equals(member)) {
             throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
         }
+        System.out.println("플레이리스트 검증 끝");
         String coverUrl = null;
         if (modifyPlaylistRequest.getPlaylistCover() != null) {
             if (!playlist.getCoverUrl().equals(PLAYLIST_DEFAULT_COVER_URL)) {
                 s3Service.delete(playlist.getCoverUrl());
+                System.out.println("플레이리스트 커버 삭제 끝");
             }
             coverUrl = s3Service.upload(modifyPlaylistRequest.getPlaylistCover(), PLAYLIST_PATH);
+            System.out.println("플레이리스트 커버 이미지 업로드 끝");
         }
         playlist.updateNameOrCoverUrl(modifyPlaylistRequest.getPlaylistName(), coverUrl);
+        System.out.println("플레이리스트 수정 끝");
     }
 
     /**
