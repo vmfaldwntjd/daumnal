@@ -51,6 +51,16 @@ class Emotion(BaseModel):
     disgust: int = 0
 
 
+class Music(BaseModel):
+    musicYoutubeId: str
+    musicTitle: str
+    musicSingerName: str
+    musicCoverUrl: str
+    musicCategory: str
+    musicLyrics: str
+    musicEmotion: Emotion
+
+
 # 예외 처리
 class UnicornException(Exception):
     def __init__(self, status: str):
