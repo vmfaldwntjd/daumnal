@@ -125,8 +125,8 @@ const Buttons = styled.div`
 
 const MusicModalContainer = styled.div`
   position: absolute;
-  top: 25px;
-  right: 70px;
+  bottom: 20px;
+  right: 75px;
   z-index: 1;
 `;
 

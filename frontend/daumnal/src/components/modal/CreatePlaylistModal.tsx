@@ -120,7 +120,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
             ) : (
               <p className="text-[#9c9388]">
                 <FontAwesomeIcon icon={faImage} className='text-3xl' />
-                <p className="text-xl text-[#a9a9a9] mt-2">플레이리스트 커버 이미지를 첨부해 보세요</p>
+                <p className="text-xl text-[#9c9388] mt-2">플레이리스트 커버 이미지를 첨부해 보세요</p>
               </p>
             )}
           </button>
@@ -170,6 +170,9 @@ const TitleInput = styled.input`
   border: none;
   &:focus {
     outline: none;
+  }
+  &::placeholder {
+    color: #9c9388;
   }
 `;
 

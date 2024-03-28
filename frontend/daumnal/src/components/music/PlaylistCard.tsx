@@ -66,7 +66,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
       </div>
       <Wrapper>
         {/* 플레이리스트 이름 */}
-        <button className="self-start font-NanumSquare" onClick={handleMovePlaylist(playlistId)}>{playlistName}</button>
+        <button className="font-NanumSquare text-left" onClick={handleMovePlaylist(playlistId)}>{playlistName}</button>
         {/* 플레이리스트 수정/삭제 모달 */}
         {isOpenInfoModal && (
           <PlaylistModalContainer ref={modalRef}> {/* 모달을 위한 ref 추가 */}
