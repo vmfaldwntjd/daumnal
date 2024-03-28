@@ -155,4 +155,18 @@ public class DiaryController {
 
         return ApiResponse.success(SuccessCode.ADD_FAVORITE_LYRICS);
     }
+
+    /**
+     * 일기에서 추천된 노래의 가사 정보 조회
+     * @param authentication 로그인 상태인 회원
+     * @param diaryId 노래가 추천된 일기 id
+     * @return
+     */
+    @GetMapping("/{diaryId}/musics/lyrics")
+    public ApiResponse<?> getLyricsOfTodayRecommendedMusic(Authentication authentication, @PathVariable Long diaryId) {
+        GetLyricsOfTodayRecommendedMusic getLyricsOfTodayRecommendedMusic =
+                diaryService.getLyricsOfTodayRecommendedMusic(jwtProvider.getMemberInfo(authentication), diaryId);
+
+        return ApiResponse.success(SuccessCode.GET_LYRICS_OF_TODAY_RECOMMENDED_MUSIC, getLyricsOfTodayRecommendedMusic);
+    }
 }

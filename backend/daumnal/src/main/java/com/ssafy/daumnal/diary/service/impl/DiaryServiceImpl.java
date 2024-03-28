@@ -17,6 +17,7 @@ import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
+import com.ssafy.daumnal.music.entity.Music;
 import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.s3.service.S3Service;
 import jakarta.transaction.Transactional;
@@ -307,7 +308,6 @@ public class DiaryServiceImpl implements DiaryService {
         if (!diary.getMember().equals(member)) {
             throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER);
         }
-
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addFavoriteLyrics.getDiaryLyricsLineNumbers().length; i++) {
             sb.append(addFavoriteLyrics.getDiaryLyricsLineNumbers()[i]);
@@ -316,5 +316,41 @@ public class DiaryServiceImpl implements DiaryService {
             }
         }
         diary.updateLyricsLineNumber(sb.toString());
+    }
+
+    /**
+     * 일기에서 추천된 노래의 가사 정보 조회
+     * @param memberId 로그인 상태인 회원 id
+     * @param diaryId 노래가 추천된 일기 id
+     * @return
+     */
+    @Override
+    public GetLyricsOfTodayRecommendedMusic getLyricsOfTodayRecommendedMusic(String memberId, Long diaryId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        memberUtilService.validateMemberStatusNotLogout(member.getStatus().getValue());
+        memberUtilService.validateMemberStatusNotDelete(member.getStatus().getValue());
+
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
+        if (!diary.getMember().equals(member)) {
+            throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER);
+        }
+        if (diary.getMusicId() == null) {
+            throw new NoExistException(NOT_EXISTS_RECOMMENDED_MUSIC_IN_DIARY);
+        }
+        Music music = musicRepository.findById(diary.getMusicId())
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
+        String[] lyricsLineNumbersStr = diary.getLyricsLineNumber().split(" ");
+        int[] lyricsLineNumbers = new int[lyricsLineNumbersStr.length];
+        for (int i = 0; i < lyricsLineNumbersStr.length; i++) {
+            lyricsLineNumbers[i] = Integer.parseInt(lyricsLineNumbersStr[i]);
+        }
+
+        return GetLyricsOfTodayRecommendedMusic.builder()
+                .musicLyrics(music.getLyrics())
+                .diaryLyricsLineNumbers(lyricsLineNumbers)
+                .build();
     }
 }

@@ -19,6 +19,7 @@ public enum SuccessCode {
     CREATE_MEMBER_NICKNAME(CREATED, "닉네임 정보 입력에 성공하였습니다!"),
     GET_MEMBER(OK, "회원 정보 조회에 성공하였습니다!"),
     GET_MEMBER_NICKNAME(OK, "닉네임 조회에 성공하였습니다!"),
+    GET_LYRICS_OF_TODAY_RECOMMENDED_MUSIC(OK, "일기에서 추천된 노래의 가사 정보를 조회하는데 성공했습니다!"),
     UPDATE_MEMBER_NICKNAME(OK, "닉네임 정보 변경에 성공하였습니다!"),
     UPDATE_MEMBER_LOGOUT(OK, "로그아웃에 성공하였습니다!"),
     UPDATE_MEMBER_STATUS_DELETE(OK, "회원 탈퇴 처리를 완료하였습니다!"),

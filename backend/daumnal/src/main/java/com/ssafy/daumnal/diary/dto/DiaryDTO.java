@@ -66,4 +66,13 @@ public class DiaryDTO {
     public static class AddFavoriteLyrics {
         private int[] diaryLyricsLineNumbers;
     }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class GetLyricsOfTodayRecommendedMusic {
+        private String musicLyrics;
+        private int[] diaryLyricsLineNumbers;
+    }
 }
