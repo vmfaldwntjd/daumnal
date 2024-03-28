@@ -70,8 +70,8 @@ public class Playlist extends BaseEntity {
                 .build();
     }
 
-    public void updateNameOrCoverUrl(String playlistName, String playlistCoverUrl) {
-        this.name = (playlistName != null) ? playlistName : name;
-        this.coverUrl = (playlistCoverUrl != null) ? playlistCoverUrl : coverUrl;
+    public void updateNameOrCoverUrl(String name, String coverUrl) {
+        this.name = (name != null) ? name : this.name;
+        this.coverUrl = (coverUrl != null) ? coverUrl : this.coverUrl;
     }
 }
