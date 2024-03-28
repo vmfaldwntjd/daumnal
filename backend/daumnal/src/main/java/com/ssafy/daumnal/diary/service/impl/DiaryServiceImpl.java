@@ -342,10 +342,13 @@ public class DiaryServiceImpl implements DiaryService {
         }
         Music music = musicRepository.findById(diary.getMusicId())
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
-        String[] lyricsLineNumbersStr = diary.getLyricsLineNumber().split(" ");
-        int[] lyricsLineNumbers = new int[lyricsLineNumbersStr.length];
-        for (int i = 0; i < lyricsLineNumbersStr.length; i++) {
-            lyricsLineNumbers[i] = Integer.parseInt(lyricsLineNumbersStr[i]);
+        int[] lyricsLineNumbers = new int[0];
+        if (diary.getLyricsLineNumber() != null) {
+            String[] lyricsLineNumbersStr = diary.getLyricsLineNumber().split(" ");
+            lyricsLineNumbers = new int[lyricsLineNumbersStr.length];
+            for (int i = 0; i < lyricsLineNumbersStr.length; i++) {
+                lyricsLineNumbers[i] = Integer.parseInt(lyricsLineNumbersStr[i]);
+            }
         }
 
         return GetLyricsOfTodayRecommendedMusic.builder()
