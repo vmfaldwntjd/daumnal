@@ -52,6 +52,7 @@ public enum ErrorCode {
     NOT_EXISTS_DIARY_EMOTION_INPUT(BAD_REQUEST, "감정 정보를 전부 입력하지 않았습니다!"),
     NOT_EXISTS_DIARY_YEAR_INPUT(BAD_REQUEST, "year 정보를 요청받지 못하였습니다!"),
     NOT_EXISTS_DIARY_MONTH_INPUT(BAD_REQUEST, "month 정보를 요청받지 못하였습니다!"),
+    NOT_EXISTS_RECOMMENDED_MUSIC_IN_DIARY(NOT_FOUND, "일기에 추천된 노래가 없습니다!"),
 
     INVALID_DIARY_ID(BAD_REQUEST, "일기 id 입력 형식이 올바르지 않습니다!"),
     INVALID_DIARY_EMOTION_ID(BAD_REQUEST, "감정 id 입력 형식이 올바르지 않습니다!"),
