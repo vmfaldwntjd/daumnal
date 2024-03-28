@@ -1,17 +1,19 @@
 // 플레이리스트 수정 모달
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faImage } from "@fortawesome/free-solid-svg-icons";
+import axiosInstance from '../../pages/api/axiosInstance';
+import axiosImage from '../../pages/api/axiosImage';
 
 interface EditPlaylistModalProps {
   onClickToggleModal: () => void; // 모달 토글 함수
   playlistId: number | null;
 }
 
-const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal }) => {
+const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal, playlistId }) => {
   // 플레이리스트 제목 상태
-  const [playlistTitle, setPlaylistTitle] = useState('');
+  const [playlistName, setPlaylistName] = useState('');
   // 플레이리스트 커버 이미지 상태
   const [playlistCover, setPlaylistCover] = useState<File | null>(null);
   // 플레이리스트 커버 이미지 미리보기 상태
@@ -21,7 +23,7 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
 
   // 플레이리스트 제목 변경 이벤트 핸들러
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPlaylistTitle(event.target.value);
+    setPlaylistName(event.target.value);
   };
 
   // 플레이리스트 커버 이미지 변경 이벤트 핸들러
@@ -49,13 +51,59 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
     }
   };
 
+  // 플레이리스트 정보 변경
+  useEffect(() => {
+    if (playlistId) {
+      axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}`)
+        .then(response => {
+          console.log('해당 플레이리스트 정보 요청 성공!', response.data);
+          if (response.data.code === 200) {
+            console.log(`${response.data.status}: ${response.data.message}`);
+            setPlaylistName(response.data.data.playlistName);
+            setPreviewImage(response.data.data.playlistCoverUrl);
+          } else {
+            console.log(`${response.data.status}: ${response.data.message}`);
+          }
+        })
+        .catch(error => {
+          console.error('해당 플레이리스트 정보 요청 실패!', error);
+        });
+    }
+  }, [playlistId]);
+
+  // 수정 확인 요청 함수
+  const handleConfirm = () => {
+    if (playlistId) {
+      const formData = new FormData();
+      formData.append('playlistName', playlistName);
+      if (playlistCover) {
+        formData.append('playlistCover', playlistCover);
+      }
+
+      axiosImage.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}`, formData)
+        .then(response => {
+          console.log('해당 플레이리스트 정보 수정 요청 성공!', response.data);
+          if (response.data.code === 200) {
+            console.log(`${response.data.status}: ${response.data.message}`);
+            alert('플레이리스트 정보 수정이 완료되었습니다');
+            window.location.reload(); // 페이지 새로고침
+          } else {
+            console.log(`${response.data.status}: ${response.data.message}`);
+          }
+        })
+        .catch(error => {
+          console.error('해당 플레이리스트 정보 수정 요청 실패!', error);
+        });
+    }
+  };
+
   return (
     <ModalBackdrop onClick={onClickToggleModal}> {/* 배경 클릭 시 모달 닫기 */}
       <ModalContent onClick={(e) => e.stopPropagation()}> {/* 모달 컨텐츠 클릭 시 버블링 방지 */}
         {/* 플레이리스트 제목 */}
         <div className="flex items-center justify-center w-full border-b-2 border-[#9c9388] mb-8">
           <FontAwesomeIcon icon={faPenToSquare} className='text-3xl text-[#9c9388]' />
-          <TitleInput type="text" value={playlistTitle} placeholder='플레이리스트 이름을 입력해 주세요' onChange={handleTitleChange} />
+          <TitleInput type="text" value={playlistName} placeholder='플레이리스트 이름을 입력해 주세요' onChange={handleTitleChange} />
         </div>
         {/* 플레이리스트 커버 이미지 */}
         <div className="relative w-full mb-8">
@@ -90,7 +138,7 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
             </button>
           )}
         </div>
-        <Button>확인</Button>
+        <Button onClick={handleConfirm}>확인</Button>
       </ModalContent>
     </ModalBackdrop>
   );
