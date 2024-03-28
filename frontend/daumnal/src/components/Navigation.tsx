@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NavItem from './NavItem';
 
 interface NavItem {
@@ -20,43 +20,54 @@ const navigationItems: NavItem[] = [
 
 const Navigation: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getBackgroundColor = (index: number) => {
     const activePath = navigationItems[index]?.path;
     const isPlaylistPage = location.pathname === '/playlistpage';
-    const isActive = location.pathname === activePath;
-  
-    if (isPlaylistPage) {
-      return isActive ? navigationItems[index]?.color : 'rgba(0,0,0,0)';
-    } else {
-      return isActive ? navigationItems[index]?.color : 'rgba(0,0,0,0)';
-    }
+    const isActive = location.pathname === activePath || 
+      (location.pathname === '/monthly-result' && activePath === '/calendar') ||
+      (location.pathname === '/select-character' && activePath === '/create-diary') ||
+      (location.pathname === '/music-result' && activePath === '/create-diary');
+    return isActive ? navigationItems[index]?.color : 'rgba(0,0,0,0)';
   };
 
   const isClickable = !(location.pathname === '/' || location.pathname.startsWith('/oauth'));
 
+  const navigateToMain = () => {
+    navigate('/main');
+  };
+
   return (
-    <nav className="h-screen flex justify-center items-center">
-        <div className="flex w-[150px] h-screen fixed top-0 right-0">
-            <div className="w-4 h-screen flex flex-col justify-center">
-              {navigationItems.map((_, index) => (
-                <div className="h-20" key={index} style={{backgroundColor: getBackgroundColor(index) }}></div>
-              ))}
+        <nav className="h-screen flex justify-center items-center">
+            <div className="flex w-[150px] h-screen fixed top-0 right-0">
+                <div className="w-4 h-screen flex flex-col justify-center">
+                  {navigationItems.map((_, index) => (
+                    <div className="h-20" key={index} style={{backgroundColor: getBackgroundColor(index) }}></div>
+                  ))}
+                </div>
+                <div className="flex flex-grow h-screen justify-between items-center bg-bg_nav flex-col"> {/* flex-col 추가 */}
+                  {/* 로고 이미지를 상단에 위치시키는 div */}
+                  <div className="flex justify-center items-center p-4 " style={{flexGrow: 0}}>
+                    <img src="./image/logo.png" alt="메인" style={{ cursor: 'pointer' }} onClick={navigateToMain} />
+                  </div>
+                  {/* 기존 내비게이션 아이템들의 위치를 유지 */}
+                  <div className='w-full'>
+                    {navigationItems.map((item) => (
+                        <NavItem
+                            data={{ name: item.name, address: item.path, color: item.color, image: item.image, width: item.width, height : item.height }}
+                            key={item.path}
+                            clickable={isClickable}
+                        />
+                    ))}
+                  </div>
+                  <div className="flex justify-center items-center p-4 invisible" style={{flexGrow: 0}}>
+                    <img src="./image/logo.png" alt="메인" style={{ cursor: 'pointer' }} onClick={navigateToMain} />
+                  </div>
+                </div>
             </div>
-            <div className="flex flex-grow h-screen justify-center items-center bg-bg_nav">
-              <div className='w-full'>
-                {navigationItems.map((item) => (
-                    <NavItem
-                        data={{ name: item.name, address: item.path, color: item.color, image: item.image, width: item.width, height : item.height }}
-                        key={item.path}
-                        clickable={isClickable}
-                    />
-                ))}
-              </div>
-            </div>
-        </div>
-    </nav>
-  );
+        </nav>
+    );
 };
 
 export default Navigation;

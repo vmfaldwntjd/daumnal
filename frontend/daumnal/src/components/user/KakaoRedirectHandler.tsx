@@ -73,49 +73,58 @@ const KakaoRedirectHandler = () => {
     handleKakaoLogin();
   }, []);
 
- // 닉네임 제출 후 처리
- const handleNicknameSubmit = async (nickname: string) => {
-  try {
-    const memberId = localStorage.getItem('memberId'); // 로컬 스토리지에서 memberId 가져오기
-    if (!memberId) {
-      console.error('memberId 정보를 찾을 수 없습니다.');
-      return;
-    }
-
-    const response = await axiosInstance.post(
-      `${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/nickname`,
-      { memberNickname: nickname },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+  const handleNicknameSubmit = async (nickname: string) => {
+    try {
+      const memberId = localStorage.getItem('memberId'); // 로컬 스토리지에서 memberId 가져오기
+      if (!memberId) {
+        console.error('memberId 정보를 찾을 수 없습니다.');
+        return;
       }
-    );
-
-    if (response.data.code === 201) {
-      // 성공 응답 처리
-      console.log(response.data.message); // 성공 메시지 로그로 출력
-      navigate('/main', { replace: true }); // 메인 페이지로 이동
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const statusCode = error.response?.status;
-      switch (statusCode) {
-        case 400:
-          alert('닉네임을 올바르게 입력해주세요.');
-          break;
-        case 403:
-          alert('닉네임 등록이 불가능합니다.');
-          break;
-        default:
-          console.error('닉네임 저장 과정에서 오류가 발생했습니다:', error);
+  
+      const response = await axiosInstance.post(
+        `${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/members/nickname`,
+        { memberNickname: nickname },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      if (response.data.code === 201) {
+        // 성공 응답 처리
+        console.log(response.data.message); // 성공 메시지 로그로 출력
+        navigate('/main', { replace: true }); // 메인 페이지로 이동
       }
-    } else {
-      console.error('알 수 없는 오류가 발생했습니다:', error);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const statusCode = error.response?.status;
+        const errorMessage = error.response?.data.message;
+        switch (statusCode) {
+          case 400:
+            if(errorMessage === "닉네임을 입력해주세요!" || errorMessage === "닉네임 입력시 한글 또는 영어로 입력해주세요!" || errorMessage === "닉네임 입력 길이는 15자 이하로 입력 바랍니다!" || errorMessage === "이미 존재한 닉네임입니다!") {
+              alert(errorMessage);
+            }
+            break;
+          case 403:
+            if(errorMessage === "회원님은 이미 닉네임 등록 완료하였습니다!" || errorMessage === "해당 회원은 로그아웃 한 상태입니다!" || errorMessage === "해당 회원은 탈퇴 처리된 회원입니다!") {
+              alert(errorMessage);
+            }
+            break;
+          case 401:
+            if(errorMessage === "유효하지 않는 토큰입니다!") {
+              alert(errorMessage);
+            }
+            break;
+          default:
+            console.error('닉네임 저장 과정에서 오류가 발생했습니다:', error);
+        }
+      } else {
+        console.error('알 수 없는 오류가 발생했습니다:', error);
+      }
     }
-  }
-};
-
+  };
+  
 // 로그아웃 처리 함수
 const handleLogout = async () => {
   try {
@@ -132,6 +141,7 @@ const handleLogout = async () => {
         isOpen={isFirstLogin === true}
         onClose={() => setIsFirstLogin(false)}
         onSubmit={handleNicknameSubmit}
+        isFromSettingPage={false}
       />
     </>
   );
