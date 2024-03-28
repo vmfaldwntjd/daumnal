@@ -74,7 +74,7 @@ const PlaylistCard: React.FC<PlaylistCardProps> = ({ playlistId, playlistName, p
           </PlaylistModalContainer>
         )}
         {/* 플레이리스트 수정/삭제 모달 버튼 */}
-        <button className="self-end text-2xl" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon className="" icon={faEllipsisVertical} /></button>
+        <button className="self-end text-2xl absolute bottom-1" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon className="" icon={faEllipsisVertical} /></button>
       </Wrapper>
     </Container>
   );
