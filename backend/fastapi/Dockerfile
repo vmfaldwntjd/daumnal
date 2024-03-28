@@ -2,8 +2,8 @@ FROM python:3.8.10
 COPY . /app
 WORKDIR /app
 RUN pip install -U pip==20.3
-RUN pip install 'git+https://github.com/SKTBrain/KoBERT.git#egg=kobert_tokenizer&subdirectory=kobert_hf'
 RUN pip install --use-deprecated=legacy-resolver -r requirements.txt
+RUN pip install 'git+https://github.com/SKTBrain/KoBERT.git#egg=kobert_tokenizer&subdirectory=kobert_hf'
 # Google Chrome 설치
 RUN apt-get -y update
 RUN apt-get -y install wget

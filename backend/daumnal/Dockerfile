@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM openjdk:17-jdk-alpine
 COPY ./build/libs/*.jar daumnal-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "daumnal-0.0.1-SNAPSHOT.jar"]
