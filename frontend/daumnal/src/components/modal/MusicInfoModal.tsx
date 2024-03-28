@@ -103,8 +103,6 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
 };
 
 const ModalContent = styled.div`
-  height: 210px;
-  min-width: 120px;
   display: flex;
   flex-direction: column;
   background-color: white;
