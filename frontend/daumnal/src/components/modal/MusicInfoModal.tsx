@@ -1,4 +1,3 @@
-// 노래 담기/빼기 모달
 import React, { useState, useCallback, useEffect } from 'react';
 import axiosInstance from '../../pages/api/axiosInstance';
 import styled from 'styled-components';
@@ -22,38 +21,77 @@ interface ApiResponse {
 interface Playlist {
   playlistId: number;
   playlistName: string;
+  isSelected: boolean;
 }
 
 const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
-  // 플레이리스트 생성 모달 상태 변수
   const [isOpenCreateModal, setOpenCreateModal] = useState<boolean>(false);
-  // 플레이리스트 목록 상태 변수
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  // 선택된 체크리스트 배열
   const [selectedPlaylists, setSelectedPlaylists] = useState<number[]>([]);
 
-  // 플레이리스트 생성 모달 열고 닫는 함수
   const handleCreatePlaylist = useCallback(() => {
-    setOpenCreateModal(!isOpenCreateModal); // setOpenCreateModal 함수 호출하여 isOpenCreateModal 상태 토글
-  }, [isOpenCreateModal]); // 배열에 있는 값들이 변경될 때에만 새로운 함수 생성
+    setOpenCreateModal(!isOpenCreateModal);
+  }, [isOpenCreateModal]);
 
-  // 체크리스트 선택 핸들러
   const handlePlaylistSelect = (playlistId: number) => {
+    const updatedPlaylists = playlists.map(playlist => {
+      if (playlist.playlistId === playlistId) {
+        const isSelected = !playlist.isSelected; // isSelected 값을 토글
+        if (isSelected) {
+          addMusicToPlaylist(playlistId); // 선택된 경우 노래를 플레이리스트에 추가
+        } else {
+          removeMusicFromPlaylist(playlistId); // 선택이 해제된 경우 노래를 플레이리스트에서 삭제
+        }
+        return { ...playlist, isSelected };
+      }
+      return playlist;
+    });
+
+    setPlaylists(updatedPlaylists);
+
     if (selectedPlaylists.includes(playlistId)) {
-      setSelectedPlaylists(selectedPlaylists.filter(id => id !== playlistId)); // 이미 선택된 항목이면 선택 취소
+      setSelectedPlaylists(selectedPlaylists.filter(id => id !== playlistId));
     } else {
-      setSelectedPlaylists([...selectedPlaylists, playlistId]); // 선택되지 않은 항목이면 선택 추가
+      setSelectedPlaylists([...selectedPlaylists, playlistId]);
     }
   };
 
-  // 노래 담고 뺄 수 있는 플레이리스트 목록 요청
+  const addMusicToPlaylist = (playlistId: number) => {
+    axiosInstance.post<ApiResponse>(
+      `${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`,
+      { musicId: selectedMusicId }
+    )
+      .then(response => {
+        console.log('노래를 플레이리스트에 추가하는 요청 성공!', response.data);
+      })
+      .catch(error => {
+        console.log('노래를 플레이리스트에 추가하는 요청 실패!', error);
+      });
+  };
+
+  const removeMusicFromPlaylist = (playlistId: number) => {
+    axiosInstance.delete<ApiResponse>(
+      `${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`
+    )
+      .then(response => {
+        console.log('플레이리스트에서 노래를 삭제하는 요청 성공!', response.data);
+      })
+      .catch(error => {
+        console.log('플레이리스트에서 노래를 삭제하는 요청 실패!', error);
+      });
+  };
+
   useEffect(() => {
     axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${selectedMusicId}/playlists`)
       .then(response => {
         console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 성공!', response.data);
         if (response.data.code === 200) {
           console.log(`${response.data.status}: ${response.data.message}`);
-          setPlaylists(response.data.data.playlists);
+          const initialPlaylists: Playlist[] = response.data.data.playlists.map((playlist: Playlist) => ({
+            ...playlist,
+            isSelected: false
+          }));
+          setPlaylists(initialPlaylists);
         } else {
           console.log(`${response.data.status}: ${response.data.message}`);
         }
@@ -61,38 +99,28 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
       .catch(error => {
         console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 실패!', error);
       });
-  }, [playlists]);
+  }, [isOpenCreateModal]);
 
   return (
     <div className="text-left text-[#776B5D] z-1">
       <ModalContent onClick={(e) => e.stopPropagation()}>
-        {/* 플레이리스트 목록 */}
         <div className="font-NanumSquare">
-          {/* 플레이리스트 목록 체크리스트 */}
           {playlists.map(playlist => (
             <PlaylistItem
               key={playlist.playlistId}
               onClick={() => handlePlaylistSelect(playlist.playlistId)}
-              selected={selectedPlaylists.includes(playlist.playlistId)}
+              selected={playlist.isSelected}
             >
-              {selectedPlaylists.includes(playlist.playlistId) ? (
-                <FontAwesomeIcon className="text-[20px]" icon={faSquareCheck} />
-              ) : (
-                <FontAwesomeIcon className="text-[20px]" icon={faSquare} />
-              )}
+              <FontAwesomeIcon className="text-[20px]" icon={playlist.isSelected ? faSquareCheck : faSquare} />
               <span className="ml-1">{playlist.playlistName}</span>
             </PlaylistItem>
           ))}
         </div>
-        {/* 구분선 */}
-        <hr className="border-none h-[0.5px] bg-[#cacaca]" />
-        {/* 새 플레이리스트 생성 모달 */}
         {isOpenCreateModal && (
           <CreatePlaylistModalContainer>
             <CreatePlaylistModal onClickToggleModal={handleCreatePlaylist} />
           </CreatePlaylistModalContainer>
         )}
-        {/* 새 플레이리스트 생성 모달 버튼 */}
         <button className="flex mt-[6px]" onClick={handleCreatePlaylist}>
           <span className="text-[18px]"><FontAwesomeIcon icon={faPlus} /></span>
           <span className="font-NanumSquare">&nbsp;새 플레이리스트</span>
@@ -103,6 +131,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
 };
 
 const ModalContent = styled.div`
+  max-height: 185px;
   display: flex;
   flex-direction: column;
   background-color: white;

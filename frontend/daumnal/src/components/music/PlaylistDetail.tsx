@@ -154,6 +154,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: 7px;
+  z-index: 1;
 `;
 
 const PlaylistModalContainer = styled.div`
