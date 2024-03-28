@@ -5,6 +5,7 @@ import DailyResultModal from './DailyResultModal';
 import axiosInstance from '../../pages/api/axiosInstance';
 import DiaryMusicPlayBar from '../diary/CalendarPage/DiaryMusicPlayBar';
 import Swal from 'sweetalert2'
+import AddLyricsModal from './AddLyricsModal';
 
 
 interface DiaryDetailModalProps {
@@ -19,6 +20,7 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
   const [currentDiaryIndex, setCurrentDiaryIndex] = useState<number>(-1)
 
   const [isDailyResultModalOpen, setIsDailyResultModalOpen] = useState<boolean>(false)
+  const [isAddLyricsModalOpen, setIsAddLyricsModalOpen] = useState<boolean>(false)
   const [isPrevDiary, setIsPrevDiary] = useState<boolean>(false)
   const [isNextDiary, setIsNextDiary] = useState<boolean>(false)
   const [isDeletedHovered, setIsDeletedHovered] = useState<boolean>(false)
@@ -30,6 +32,8 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
   const [diaryImage, setDiaryImage] = useState<string | null>(null)
   const [diaryMusicId, setDiaryMusicId] = useState<string>()
   const [diaryEmotionId, setDiaryEmotionId] = useState<string>()
+  const [diaryMusicLyrics, setDiaryMusicLyrics] = useState<string[]>([])
+  const [diaryRegisteredLyrics, setDiaryRegisteredLyrics] = useState<number[]>([])
 
 
   // diaryId로 해당 diary 정보 가져오기 로직 구현
@@ -45,9 +49,22 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
       setDiaryImage(diaryInfo.diaryPhotoUrl)
       setDiaryMusicId(diaryInfo.musicId)
       setDiaryEmotionId(diaryInfo.emotionId)
+
     })
     .catch(function (error:any) {
       console.log('일기 상세 조회 에러 발생', error.response);
+    });
+  }
+
+  const getDiaryLyrics = () => {
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/${selectedDiaryId}/musics/lyrics`)
+    .then (function (response:any) {
+      const lyrics: string[] = response.data.data.musicLyrics.split('\n')
+      setDiaryMusicLyrics(lyrics)
+      setDiaryRegisteredLyrics(response.data.data.diaryLyricsLineNumbers)
+    })
+    .catch(function (error:any) {
+      console.log('일기 가사 조회 에러 발생', error.response);
     });
   }
 
@@ -69,9 +86,15 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
     setIsNextDiary(showNext);
 
     getDiaryInfo()
-
+    getDiaryLyrics()
 
   }, [selectedDiaryId])
+
+  useEffect(() => {
+    if (!isAddLyricsModalOpen) {
+      getDiaryLyrics()
+    }
+  }, [isAddLyricsModalOpen])
 
 
   useEffect(() => {
@@ -141,7 +164,8 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
       }
     });
     
-  } 
+  }
+
 
   
 
@@ -174,7 +198,16 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
                 <div className='text-2xl text-bold'>{diaryTitle}</div>
                 {diaryHashTag && <div className='mt-2 '>{diaryHashTag.split(' ').map(tag => `#${tag}`).join(' ')}</div> }
                 {diaryImage && <img src={diaryImage} alt="Diary" className="max-h-[250px] mt-8 mb-4"/>}
-                <div dangerouslySetInnerHTML={{ __html: diaryContent }} className='mt-4'></div>
+                <div dangerouslySetInnerHTML={{ __html: diaryContent }} className='mt-4 w-[90%]'></div>
+                <div className='w-[90%] mt-8 border-t-2 border-b-2 border-[rgba(105,104,100,0.5)] py-4 flex flex-col items-center'>
+                {diaryRegisteredLyrics.length > 0 ? (
+                  diaryRegisteredLyrics.map((index) => (
+                    <p key={index}>{diaryMusicLyrics[index]}</p>))) 
+                    : (<><p className=''>마음에 드는 가사를 등록해보세요!</p></>)}
+                <button onClick={() => {setIsAddLyricsModalOpen(true)}} className='flex flex-row text-sm underline underline-offset-4 mt-[3px]'>가사 등록하기 <img src="./image/lyrics_pencil.png" alt="" className='w-[17px] ml-[2px]'/></button>
+                {isAddLyricsModalOpen && 
+                <AddLyricsModal setIsAddLyricsModalOpen = {setIsAddLyricsModalOpen} diaryId = {selectedDiaryId} diaryMusicLyrics = {diaryMusicLyrics} diaryRegisteredLyrics = {diaryRegisteredLyrics}  />}
+                </div>
                 <button onClick={() => setIsDailyResultModalOpen(true)} className='mt-8 border text-sm py-2 px-4 border-button_border bg-bg_button rounded-lg lg:text-[17px] lg:px-4'>오늘의 감정분석 {`>>`}</button>
                 
               </div>
