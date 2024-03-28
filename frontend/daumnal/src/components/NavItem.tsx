@@ -18,7 +18,10 @@ export default function NavItem({ data, clickable = true }: NavProps): JSX.Eleme
   const location = useLocation();
   const navigate = useNavigate(); // React Router v6
   const { name, address, color, image, width, height } = data;
-  const isActive = location.pathname === address;
+  const isActive = location.pathname === address || 
+    (location.pathname === '/monthly-result' && address === '/calendar') ||
+    (location.pathname === '/select-character' && address === '/create-diary') ||
+    (location.pathname === '/music-result' && address === '/create-diary');
 
   const handleClick = async () => {
     if (address === '/create-diary') {
