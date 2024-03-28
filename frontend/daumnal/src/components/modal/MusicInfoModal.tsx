@@ -6,8 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquare } from '@fortawesome/free-regular-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import CreatePlaylistModal from './CreatePlaylistModal';
-import { response } from 'express';
-
 
 interface MusicInfoModalProps {
   onClickToggleModal: (playlistId: number) => void;
@@ -24,7 +22,6 @@ interface ApiResponse {
 interface Playlist {
   playlistId: number;
   playlistName: string;
-  playlistCoverUrl: string;
 }
 
 const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {

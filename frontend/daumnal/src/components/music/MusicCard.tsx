@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faBarsStaggered, faCompactDisc } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import MusicInfoModal from '../modal/MusicInfoModal';
 
 interface MusicCardProps {
