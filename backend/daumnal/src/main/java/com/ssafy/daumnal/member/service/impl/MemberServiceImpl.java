@@ -36,7 +36,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public GetMemberLoginResponse login(String socialId, String socialProvider) {
 
-
         memberUtilService.validateExistsSocialId(socialId);
         memberUtilService.validateExistsSocialProvider(socialProvider);
         memberUtilService.validateSocialIdNumber(socialId);

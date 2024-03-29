@@ -13,8 +13,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicResponse;
 
-import java.util.List;
-
 public class PlaylistDTO {
 
     @Getter
