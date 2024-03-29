@@ -21,8 +21,8 @@ const KakaoRedirectHandler = () => {
       }
   
       const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      // const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
-      const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
+      const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
+      // const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
   
       const response = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
