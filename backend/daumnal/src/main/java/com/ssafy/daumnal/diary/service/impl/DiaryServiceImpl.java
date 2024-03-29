@@ -348,7 +348,7 @@ public class DiaryServiceImpl implements DiaryService {
         Music music = musicRepository.findById(diary.getMusicId())
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
         int[] lyricsLineNumbers = new int[0];
-        if (diary.getLyricsLineNumber() != null) {
+        if (diary.getLyricsLineNumber() != null && !diary.getLyricsLineNumber().isEmpty()) {
             String[] lyricsLineNumbersStr = diary.getLyricsLineNumber().split(" ");
             lyricsLineNumbers = new int[lyricsLineNumbersStr.length];
             for (int i = 0; i < lyricsLineNumbersStr.length; i++) {
