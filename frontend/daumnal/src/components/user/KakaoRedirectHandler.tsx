@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import NicknameModal from '../modal/NicknameModal';
 import axiosInstance from '../../pages/api/axiosInstance';
+import Swal from 'sweetalert2';
 
 const { Kakao } = window;
 
@@ -103,17 +104,29 @@ const KakaoRedirectHandler = () => {
         switch (statusCode) {
           case 400:
             if(errorMessage === "닉네임을 입력해주세요!" || errorMessage === "닉네임 입력시 한글 또는 영어로 입력해주세요!" || errorMessage === "닉네임 입력 길이는 15자 이하로 입력 바랍니다!" || errorMessage === "이미 존재한 닉네임입니다!") {
-              alert(errorMessage);
+              Swal.fire({
+                title: "닉네임 입력 오류",
+                text: errorMessage,
+                icon: "info"
+              });
             }
             break;
           case 403:
             if(errorMessage === "회원님은 이미 닉네임 등록 완료하였습니다!" || errorMessage === "해당 회원은 로그아웃 한 상태입니다!" || errorMessage === "해당 회원은 탈퇴 처리된 회원입니다!") {
-              alert(errorMessage);
+              Swal.fire({
+                title: "닉네임 입력 오류",
+                text: errorMessage,
+                icon: "info"
+              });
             }
             break;
           case 401:
             if(errorMessage === "유효하지 않는 토큰입니다!") {
-              alert(errorMessage);
+              Swal.fire({
+                title: "닉네임 입력 오류",
+                text: errorMessage,
+                icon: "info"
+              });
             }
             break;
           default:

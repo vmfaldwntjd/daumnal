@@ -41,15 +41,15 @@ const Navigation: React.FC = () => {
   return (
         <nav className="h-screen flex justify-center items-center">
             <div className="flex w-[150px] h-screen fixed top-0 right-0">
-                <div className="w-4 h-screen flex flex-col justify-center">
+                <div className=" w-16 h-screen flex flex-col justify-center">
                   {navigationItems.map((_, index) => (
                     <div className="h-20" key={index} style={{backgroundColor: getBackgroundColor(index) }}></div>
                   ))}
                 </div>
                 <div className="flex flex-grow h-screen justify-between items-center bg-bg_nav flex-col"> {/* flex-col 추가 */}
                   {/* 로고 이미지를 상단에 위치시키는 div */}
-                  <div className="flex justify-center items-center p-4 " style={{flexGrow: 0}}>
-                    <img src="./image/logo.png" alt="메인" style={{ cursor: 'pointer' }} onClick={navigateToMain} />
+                  <div className="flex justify-center items-center p-2 " style={{flexGrow: 0}}>
+                    <img src="./image/logo.png" alt="메인" style={{ cursor: isClickable ? 'pointer' : 'default' }} onClick={() => isClickable && navigateToMain()} />
                   </div>
                   {/* 기존 내비게이션 아이템들의 위치를 유지 */}
                   <div className='w-full'>
@@ -61,7 +61,7 @@ const Navigation: React.FC = () => {
                         />
                     ))}
                   </div>
-                  <div className="flex justify-center items-center p-4 invisible" style={{flexGrow: 0}}>
+                  <div className="flex justify-center items-center p-2 invisible" style={{flexGrow: 0}}>
                     <img src="./image/logo.png" alt="메인" style={{ cursor: 'pointer' }} onClick={navigateToMain} />
                   </div>
                 </div>
