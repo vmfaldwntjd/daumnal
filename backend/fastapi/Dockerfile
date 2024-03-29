@@ -1,8 +1,8 @@
-FROM python:3.8.10
+FROM python:3.8.10-slim
 EXPOSE 8000
 # 필요한 패키지 설치
-#RUN apt-get update && \
-#    apt-get install -y gcc git wget
+RUN apt-get update && \
+    apt-get install -y gcc git wget
 # Google Chrome 설치
 RUN apt-get -y update && \
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
