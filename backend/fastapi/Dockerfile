@@ -1,8 +1,6 @@
-FROM python:3.8.10-slim
+FROM python:3.8.10
 COPY . /app
 WORKDIR /app
-# 필요한 패키지 설치
-RUN apt-get install -y gcc git
 # requirements.txt 설치
 RUN pip install -U pip==20.3
 RUN pip install --use-deprecated=legacy-resolver -r requirements.txt
