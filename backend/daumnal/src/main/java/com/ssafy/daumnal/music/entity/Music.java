@@ -26,19 +26,19 @@ public class Music extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "youtube_id", nullable = false)
+    @Column(name = "youtube_id", nullable = false, length = 200)
     private String youtubeId;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Column(name = "lyrics", nullable = false)
+    @Column(name = "lyrics", nullable = false, columnDefinition = "TEXT")
     private String lyrics;
 
-    @Column(name = "singer_name", nullable = false)
+    @Column(name = "singer_name", nullable = false, length = 200)
     private String singerName;
 
-    @Column(name = "cover_url")
+    @Column(name = "cover_url", columnDefinition = "TEXT")
     @ColumnDefault("'https://daumnal.s3.ap-northeast-2.amazonaws.com/musicCover/basic_cover.jpg'")
     private String coverUrl;
 

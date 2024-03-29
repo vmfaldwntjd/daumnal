@@ -2,8 +2,6 @@ package com.ssafy.daumnal.diary.controller;
 
 import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.service.DiaryService;
-import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
-import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
@@ -26,9 +24,8 @@ public class DiaryController {
      */
     @GetMapping("/today")
     public ApiResponse<?> getDiaryWritten(Authentication authentication) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-        GetDiaryWrittenTodayResponse diaryWrittenTodayResponse = diaryService.getDiaryWritten(memberId);
-        return ApiResponse.success(SuccessCode.GET_DIARY_STATUS, diaryWrittenTodayResponse);
+        return ApiResponse.success(SuccessCode.GET_DIARY_STATUS,
+                diaryService.getDiaryWritten(jwtProvider.getMemberInfo(authentication)));
     }
 
     /**
@@ -39,11 +36,10 @@ public class DiaryController {
     @PostMapping
     public ApiResponse<?> addDiary(Authentication authentication,
                                    @ModelAttribute DiaryRequest diaryRequest) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-
-        AddDiaryResponse response = diaryService.addDiary(memberId, diaryRequest.getDiaryTitle(), diaryRequest.getDiaryContent(),
-                diaryRequest.getDiaryHashTag(), diaryRequest.getDiaryPhoto(), diaryRequest.getDiaryEmotion());
-        return ApiResponse.success(SuccessCode.CREATE_DIARY, response);
+        return ApiResponse.success(SuccessCode.CREATE_DIARY, diaryService.addDiary(jwtProvider.getMemberInfo(authentication),
+                diaryRequest.getDiaryTitle(), diaryRequest.getDiaryContent(),
+                diaryRequest.getDiaryHashTag(), diaryRequest.getDiaryPhoto(),
+                diaryRequest.getDiaryEmotion()));
     }
 
     /**
@@ -57,9 +53,8 @@ public class DiaryController {
     public ApiResponse<?> getCalendar(Authentication authentication,
                                    @RequestParam(required = false) String year,
                                    @RequestParam(required = false) String month) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-        GetCalendarResponse response = diaryService.getCalendar(memberId, year, month);
-        return ApiResponse.success(SuccessCode.GET_DIARY_CALENDAR,response);
+        return ApiResponse.success(SuccessCode.GET_DIARY_CALENDAR,
+                diaryService.getCalendar(jwtProvider.getMemberInfo(authentication), year, month));
     }
 
     /**
@@ -86,10 +81,8 @@ public class DiaryController {
      */
     @GetMapping("/{diaryId}")
     public ApiResponse<?> getDiary(Authentication authentication, @PathVariable String diaryId) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-
-        GetDiaryResponse response = diaryService.getDiary(memberId, diaryId);
-        return ApiResponse.success(SuccessCode.GET_DIARY, response);
+        return ApiResponse.success(SuccessCode.GET_DIARY,
+                diaryService.getDiary(jwtProvider.getMemberInfo(authentication), diaryId));
     }
 
     /**
@@ -104,10 +97,8 @@ public class DiaryController {
     public ApiResponse<?> getAllEmotionByMonth(Authentication authentication,
                                       @RequestParam(required = false) String year,
                                       @RequestParam(required = false) String month) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-
-        GetAllEmotionByMonth response = diaryService.getAllEmotionByMonth(memberId, year, month);
-        return ApiResponse.success(SuccessCode.GET_DIARY_MONTH_EMOTION, response);
+        return ApiResponse.success(SuccessCode.GET_DIARY_MONTH_EMOTION,
+                diaryService.getAllEmotionByMonth(jwtProvider.getMemberInfo(authentication), year, month));
     }
 
     /**
@@ -120,10 +111,8 @@ public class DiaryController {
     @GetMapping("/emotions/{emotionId}")
     public ApiResponse<?> getEmotionByDay(Authentication authentication,
                                              @PathVariable String emotionId) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-        DiaryEmotion response = diaryService.getEmotionByDay(memberId, emotionId);
-
-        return ApiResponse.success(SuccessCode.GET_DIARY_DAY_EMOTION, response);
+        return ApiResponse.success(SuccessCode.GET_DIARY_DAY_EMOTION,
+                diaryService.getEmotionByDay(jwtProvider.getMemberInfo(authentication), emotionId));
     }
 
     /**
@@ -136,10 +125,8 @@ public class DiaryController {
     @DeleteMapping("/{diaryId}")
     public ApiResponse<?> removeDiary(Authentication authentication,
                                       @PathVariable String diaryId) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-
-        RemoveDiaryResponse response = diaryService.removeDiary(memberId, diaryId);
-        return ApiResponse.success(SuccessCode.DELETE_DIARY, response);
+        return ApiResponse.success(SuccessCode.DELETE_DIARY,
+                diaryService.removeDiary(jwtProvider.getMemberInfo(authentication), diaryId));
     }
 
     /**
@@ -150,7 +137,8 @@ public class DiaryController {
      * @return
      */
     @PatchMapping("/{diaryId}/lyrics")
-    public ApiResponse<?> addFavoriteLyrics(Authentication authentication, @PathVariable Long diaryId, @RequestBody AddFavoriteLyrics addFavoriteLyrics) {
+    public ApiResponse<?> addFavoriteLyrics(Authentication authentication,
+                                            @PathVariable Long diaryId, @RequestBody AddFavoriteLyrics addFavoriteLyrics) {
         diaryService.addFavoriteLyrics(jwtProvider.getMemberInfo(authentication), diaryId, addFavoriteLyrics);
 
         return ApiResponse.success(SuccessCode.ADD_FAVORITE_LYRICS);
@@ -168,5 +156,16 @@ public class DiaryController {
                 diaryService.getLyricsOfTodayRecommendedMusic(jwtProvider.getMemberInfo(authentication), diaryId);
 
         return ApiResponse.success(SuccessCode.GET_LYRICS_OF_TODAY_RECOMMENDED_MUSIC, getLyricsOfTodayRecommendedMusic);
+    }
+
+    /**
+     * 일기에서의 추천된 최근 30개의 노래 정보 조회
+     * @param authentication
+     * @return
+     */
+    @GetMapping("/recent-music")
+    public ApiResponse<?> getRecentRecommendMusics(Authentication authentication) {
+        return ApiResponse.success(SuccessCode.GET_DIARY_RECENT_RECOMMEND_MUSICS,
+                diaryService.getRecentRecommendMusics(jwtProvider.getMemberInfo(authentication)));
     }
 }
