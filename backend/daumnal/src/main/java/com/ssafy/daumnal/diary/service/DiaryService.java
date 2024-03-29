@@ -7,6 +7,7 @@ import com.ssafy.daumnal.diary.dto.DiaryDTO.GetDiaryResponse;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.RemoveDiaryResponse;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
+import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicsResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DiaryService {
@@ -30,4 +31,6 @@ public interface DiaryService {
     void addFavoriteLyrics(String memberId, Long diaryId, AddFavoriteLyrics addFavoriteLyrics);
 
     GetLyricsOfTodayRecommendedMusic getLyricsOfTodayRecommendedMusic(String memberId, Long diaryId);
+
+    GetMusicsResponse getRecentRecommendMusics(String memberId);
 }
