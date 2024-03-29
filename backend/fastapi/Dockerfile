@@ -14,5 +14,5 @@ COPY . /app
 WORKDIR /app
 # requirements.txt 설치
 RUN pip install --use-deprecated=legacy-resolver -r requirements.txt
-
+# FastAPI 실행
 ENTRYPOINT ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0"]
