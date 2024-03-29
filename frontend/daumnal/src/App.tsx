@@ -10,6 +10,7 @@ import SettingPage from "./pages/SettingPage";
 import LoginPage from "./pages/LoginPage";
 import KakaoRedirectHandler from "./components/user/KakaoRedirectHandler";
 import MainPage from "./pages/MainPage";
+import CharacterIntroPage from "./pages/CharacterIntroPage";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/music-result" element={<MusicResultPage />} />
           <Route path="/playlist" element={<PlaylistPage />} />
           <Route path="/setting" element={<SettingPage />} />
+          <Route path="/character-intro" element={<CharacterIntroPage />} />
         </Routes>
       </div>
 

@@ -12,6 +12,7 @@ interface NavItem {
 }
 
 const navigationItems: NavItem[] = [
+  { name: '캐릭터 소개', path: '/character-intro', color: '#FF8989', image: '/image/navbar_tree.png', width: '26px', height: '29px'},
   { name: '일기 보기', path: '/calendar', color: '#B5C0D0', image: '/image/navbar_calendar.png', width: '26px', height: '29px'},
   { name: '일기 쓰기', path: '/create-diary', color: '#CCD3CA', image: '/image/navbar_creatediary.png', width: '26px', height: '30px' },
   { name: '노래 듣기', path: '/playlist', color: '#F8D2B2', image: '/image/navber_playlistlist.png', width: '21px', height: '27px' },
