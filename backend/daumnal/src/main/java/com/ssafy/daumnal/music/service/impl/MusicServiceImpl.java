@@ -71,8 +71,10 @@ public class MusicServiceImpl implements MusicService {
     @Transactional
     public void addMusics(AddMusicsRequest addMusicsRequest) {
         for (AddMusicRequest addMusicRequest : addMusicsRequest.getMusics()) {
-            Emotion emotion = emotionRepository.save(addMusicRequest.getMusicEmotion().toEntity());
-            musicRepository.save(addMusicRequest.toEntityWith(emotion));
+            if (!musicRepository.existsByYoutubeId(addMusicRequest.getMusicYoutubeId())) {
+                Emotion emotion = emotionRepository.save(addMusicRequest.getMusicEmotion().toEntity());
+                musicRepository.save(addMusicRequest.toEntityWith(emotion));
+            }
         }
     }
 
