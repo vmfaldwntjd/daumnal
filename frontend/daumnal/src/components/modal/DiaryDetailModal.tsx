@@ -14,7 +14,7 @@ interface DiaryDetailModalProps {
   selectedDiaryDate: Date | null;
   }
 
-const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, diaryModalList, selectedDiaryDate }) => {
+  const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, diaryModalList, selectedDiaryDate }) => {
 
   const [selectedDiaryId, setSelectedDiaryId] = useState<number>(0)
   const [currentDiaryIndex, setCurrentDiaryIndex] = useState<number>(-1)
@@ -175,10 +175,10 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
 
   
 
-    return (
-      <div>
-        { !isDailyResultModalOpen &&
-        <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center" onClick={onDiaryModalClose}>
+  return (
+    <div>
+      { !isDailyResultModalOpen &&
+      <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center" onClick={onDiaryModalClose}>
           <button onClick={(e) => movePrevDiary(e)} className={` ${isPrevDiary ? "visible" : "invisible"} m-auto group`}>
             <FontAwesomeIcon icon={faChevronLeft} size="2xl" className="text-[60px] text-button_faChevron group-hover:text-white" />
           </button> 
@@ -225,7 +225,7 @@ const DiaryDetailModal: React.FC<DiaryDetailModalProps> = ({ onDiaryModalClose, 
             <FontAwesomeIcon icon={faChevronRight} size="2xl" className="text-[60px]  text-button_faChevron group-hover:text-white"  />           
           </button> 
         </div>}
-        { isDailyResultModalOpen && <DailyResultModal onDailyResultModalClose={()=> setIsDailyResultModalOpen(false)}  diaryEmotionId={diaryEmotionId} diaryDate={diaryDate}/> }
+        { isDailyResultModalOpen && <DailyResultModal onDailyResultModalClose={()=> setIsDailyResultModalOpen(false)} onDiaryModalClose={onDiaryModalClose} diaryEmotionId={diaryEmotionId} diaryDate={diaryDate}/> }
       </div>
 
       );

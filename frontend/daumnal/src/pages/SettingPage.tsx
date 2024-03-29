@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from './api/axiosInstance';
 import NicknameModal from '../components/modal/NicknameModal';
 import ChangeBGMModal from '../components/modal/ChangeBgmModal';
+import Swal from 'sweetalert2';
 
 const { Kakao } = window;
 
@@ -52,34 +53,59 @@ const SettingPage: React.FC = () => {
         case 200:
           console.log(response.data.message); 
           localStorage.clear();
-          alert('로그아웃 되었습니다!');
+          Swal.fire({
+            icon: "success",
+            title: "로그아웃 되었습니다!",
+            showConfirmButton: false,
+            timer: 1500
+          });
           navigate('/');
           break;
         case 401:
           // jwt 권한이 없는 경우
           console.error(response.data.message);
-          alert('유효하지 않는 토큰입니다!');
+          Swal.fire({
+            title: "로그아웃 오류",
+            text: "유효하지 않는 토큰입니다!",
+            icon: "warning"
+          });
           navigate('/login'); // 로그인 페이지로 이동하거나 적절한 조치를 취합니다.
           break;
         case 404:
           // 존재하지 않는 회원인 경우
           console.error(response.data.message);
-          alert('존재하지 않는 회원 id입니다!');
+          Swal.fire({
+            title: "로그아웃 오류",
+            text: "존재하지 않는 회원 id입니다!",
+            icon: "warning"
+          });
           break;
         case 403:
           // 이미 로그아웃 된 회원인 경우
           console.error(response.data.message);
-          alert('해당 회원은 이미 로그아웃 상태입니다!');
+          Swal.fire({
+            title: "로그아웃 오류",
+            text: "해당 회원은 이미 로그아웃 상태입니다!",
+            icon: "warning"
+          });
           break;
         default:
           // 회원 탈퇴 처리된 회원 또는 기타 예외 처리
           console.error('로그아웃 처리 중 예외 발생:', response.data.message);
-          alert('처리 중 예외가 발생하였습니다. 다시 시도해주세요.');
+          Swal.fire({
+            title: "로그아웃 오류",
+            text: "로그아웃 처리 중 예외 발생했습니다. 관리자에게 문의해보세요.",
+            icon: "error"
+          });
       }
 
     } catch (error) {
       console.error('서버 통신 에러:', error);
-      alert('서버와의 통신 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      Swal.fire({
+        title: "로그아웃 오류",
+        text: "서버 통신 에러가 발생했습니다. 관리자에게 문의해보세요.",
+        icon: "error"
+      });
     }
   };
 
@@ -91,7 +117,12 @@ const SettingPage: React.FC = () => {
       });
   
       if (response.data.code === 200) {
-        alert('닉네임이 수정되었습니다.');
+        Swal.fire({
+          icon: "success",
+          title: "닉네임이 수정되었습니다.",
+          showConfirmButton: false,
+          timer: 1500
+        });
         setIsModalOpen(false); // 모달을 닫습니다.
         setNickname(newNickname); // 새로운 닉네임으로 상태 업데이트
       } else {
@@ -100,25 +131,49 @@ const SettingPage: React.FC = () => {
           case 403:
             if(response.data.message === "회원님은 닉네임 등록을 하지 않은 상태입니다!" || 
                response.data.message === "초기에 닉네임을 등록하지 않은 회원입니다!") {
-              alert('닉네임을 먼저 등록해주세요!');
+              Swal.fire({
+                title: "닉네임 변경 오류",
+                text: "닉네임을 먼저 등록해주세요!",
+                icon: "warning"
+              });
             } else if(response.data.message === "해당 회원은 로그아웃 한 상태입니다!" || 
                       response.data.message === "해당 회원은 탈퇴 처리된 회원입니다!") {
-              alert('접근 권한이 없습니다. 로그인 상태를 확인해주세요.');
+              Swal.fire({
+                title: "닉네임 변경 오류",
+                text: "접근 권한이 없습니다. 로그인 상태를 확인해주세요.",
+                icon: "warning"
+              });
             }
             break;
           case 400:
-            alert(`닉네임 변경 실패: ${response.data.message}`);
+            Swal.fire({
+              title: "닉네임 변경 실패",
+              text: response.data.message,
+              icon: "warning"
+            });
             break;
           case 401:
-            alert('로그인이 필요합니다. 유효한 세션을 확인해주세요.');
+            Swal.fire({
+              title: "닉네임 변경 실패",
+              text: "로그인이 필요합니다. 유효한 세션을 확인해주세요.",
+              icon: "warning"
+            });
             break;
           default:
-            alert(`오류가 발생했습니다: ${response.data.message}`);
+            Swal.fire({
+              title: "닉네임 변경 실패",
+              text: response.data.message,
+              icon: "error"
+            });
         }
       }
     } catch (error) {
       console.error('닉네임 변경 중 오류가 발생했습니다.', error);
-      alert('닉네임 변경 중 오류가 발생했습니다. 다시 시도해 주세요.');
+      Swal.fire({
+        title: "닉네임 변경 실패",
+        text: "닉네임 변경 중 오류가 발생했습니다. 다시 시도해 주세요.",
+        icon: "error"
+      });
     }
   };
   

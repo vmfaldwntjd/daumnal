@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../pages/api/axiosInstance';
+import Swal from 'sweetalert2';
 
 interface BGM {
   backgroundMusicId: string;
@@ -25,7 +26,11 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
           setBgms(response.data.data.backGroundMusics);
         }
       } catch (error) {
-        console.error('BGM 정보를 가져오는 중 오류가 발생했습니다.', error);
+        Swal.fire({
+          title: "BGM 변경 오류",
+          text: "BGM 정보를 가져오는 중 오류가 발생했습니다. 관리자에게 문의해보세요.",
+          icon: "info"
+        });
       }
     };
 
@@ -36,7 +41,11 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
           setSelectedBGM(response.data.data.backgroundMusicId);
         }
       } catch (error) {
-        console.error('회원의 배경 음악 정보 조회 중 오류가 발생했습니다.', error);
+        Swal.fire({
+          title: "BGM 변경 오류",
+          text: "회원의 배경 음악 정보 조회 중 오류가 발생했습니다.",
+          icon: "warning"
+        });
       }
     };
 
@@ -50,7 +59,12 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
     try {
       const response = await axiosInstance.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/background-musics/${selectedBGM}`);
       if (response.data.code === 200) {
-        alert('BGM이 변경되었습니다!');
+        Swal.fire({
+          title: "BGM이 변경되었습니다!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        });
         onClose();
       }
     } catch (error) {
