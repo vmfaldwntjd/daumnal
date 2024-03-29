@@ -28,3 +28,26 @@ code {
 .ql-size-huge {
   font-size: 2.5em
 }
+
+/* 스크롤바 전체 스타일 */
+::-webkit-scrollbar {
+  width: 7px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바 트랙 (바탕) */
+::-webkit-scrollbar-track {
+  border-radius: 100px; 
+  background:  rgba(119, 107,93, 0.1); /* 트랙의 배경 색상 */
+}
+
+/* 스크롤바 핸들 (움직이는 부분) */
+::-webkit-scrollbar-thumb {
+  border-radius: 100px; 
+  background: rgba(119, 107,93, 0.3); /* 핸들의 배경 색상 */
+}
+
+/* 스크롤바 핸들:hover (마우스 오버 시) */
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 100px; 
+  background: rgba(119, 107,93, 0.5); /* 마우스 오버 시 핸들의 배경 색상 */
+}
