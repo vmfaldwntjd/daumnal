@@ -373,11 +373,9 @@ public class DiaryServiceImpl implements DiaryService {
         memberUtilService.validateMemberStatusNotDelete(status);
         memberUtilService.validateMemberStatusNotLogout(status);
 
-        // 해당 멤버가 쓴 일기를 어제부터 30일 순으로 가지고 오기 -> 최신 순으로 정렬 후 30개를 가져오기(musicId가 null 인 경우도 제외)
-        List<Diary> diaries = findDiaries(member); // 일기 가지고옴
+        List<Diary> diaries = findDiaries(member);
         List<GetMusicResponse> musics = new ArrayList<>();
-
-        // 가지고 온 일기를 바탕으로 음악을 뽑을 수 있도록 하기
+        
         for (Diary diary : diaries) {
             Music music = musicRepository.findById(diary.getMusicId())
                     .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
