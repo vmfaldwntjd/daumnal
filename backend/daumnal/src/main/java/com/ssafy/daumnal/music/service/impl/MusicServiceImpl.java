@@ -14,7 +14,6 @@ import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.music.repository.PlaylistMusicRepository;
 import com.ssafy.daumnal.music.repository.PlaylistRepository;
 import com.ssafy.daumnal.music.service.MusicService;
-import com.ssafy.daumnal.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
