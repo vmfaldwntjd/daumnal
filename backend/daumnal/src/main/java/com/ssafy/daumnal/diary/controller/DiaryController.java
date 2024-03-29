@@ -169,4 +169,15 @@ public class DiaryController {
 
         return ApiResponse.success(SuccessCode.GET_LYRICS_OF_TODAY_RECOMMENDED_MUSIC, getLyricsOfTodayRecommendedMusic);
     }
+
+    /**
+     * 일기에서의 추천된 최근 30개의 노래 정보 조회
+     * @param authentication
+     * @return
+     */
+    @GetMapping("/recent-music")
+    public ApiResponse<?> getRecentRecommendMusics(Authentication authentication) {
+        return ApiResponse.success(SuccessCode.GET_DIARY_RECENT_RECOMMEND_MUSICS,
+                diaryService.getRecentRecommendMusics(jwtProvider.getMemberInfo(authentication)));
+    }
 }
