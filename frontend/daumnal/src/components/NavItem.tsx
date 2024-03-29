@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from '../pages/api/axiosInstance';
+import Swal from 'sweetalert2';
 
 interface NavProps {
   data: {
@@ -28,7 +29,10 @@ export default function NavItem({ data, clickable = true }: NavProps): JSX.Eleme
       try {
         const response = await axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/today`);
         if (response.data.code === 200 && response.data.data.written) {
-          alert("이미 일기 작성을 완료했습니다.");
+          Swal.fire({
+            title: "이미 일기 작성을 완료했습니다.",
+            icon: "info"
+          });
         } else {
           // React Router v6
           navigate(address);
