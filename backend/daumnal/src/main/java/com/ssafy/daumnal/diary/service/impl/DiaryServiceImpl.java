@@ -1,6 +1,5 @@
 package com.ssafy.daumnal.diary.service.impl;
 
-import com.ssafy.daumnal.diary.dto.nativedto.CalendarContent;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
@@ -8,7 +7,6 @@ import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
-import com.ssafy.daumnal.emotion.dto.nativedto.GetEmotionByMonth;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.emotion.util.EmotionUtilService;
