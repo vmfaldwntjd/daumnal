@@ -51,16 +51,6 @@ class Emotion(BaseModel):
     disgust: int = 0
 
 
-class Music(BaseModel):
-    musicYoutubeId: str
-    musicTitle: str
-    musicSingerName: str
-    musicCoverUrl: str
-    musicCategory: str
-    musicLyrics: str
-    musicEmotion: Emotion
-
-
 # 예외 처리
 class UnicornException(Exception):
     def __init__(self, status: str):
@@ -86,6 +76,7 @@ async def analyze_diary(
         if diary_emotion is None:
             raise UnicornException(status="sentenceLack")
         elif diary_emotion.neutral > 5000:
+            # 1등이 중립이 아닌 걸로 예외 처리 필요
             raise UnicornException(status="emotionLack")
 
         # 성공 시 입력된 데이터를 반환
