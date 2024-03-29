@@ -61,12 +61,12 @@ public class Playlist extends BaseEntity {
                 .build();
     }
 
-    public GetPlaylistToSaveMusicResponse toGetPlaylistToSaveMusicResponse(boolean isSelected) {
+    public GetPlaylistToSaveMusicResponse toGetPlaylistToSaveMusicResponse(boolean selected) {
 
         return GetPlaylistToSaveMusicResponse.builder()
                 .playlistId(id)
                 .playlistName(name)
-                .isSelected(isSelected)
+                .selected(selected)
                 .build();
     }
 

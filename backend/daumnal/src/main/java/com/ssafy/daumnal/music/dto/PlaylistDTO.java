@@ -73,7 +73,7 @@ public class PlaylistDTO {
     public static class GetPlaylistToSaveMusicResponse {
         private Long playlistId;
         private String playlistName;
-        private boolean isSelected;
+        private boolean selected;
     }
 
     @Getter
