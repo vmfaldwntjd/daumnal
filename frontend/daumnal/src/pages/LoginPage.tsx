@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const { Kakao } = window;
 
 const LoginPage: React.FC = () => {
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   const loginWithKakao = async () => {
     try {

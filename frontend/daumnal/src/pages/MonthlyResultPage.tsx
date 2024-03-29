@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import MonthlyEmotionButton from '../components/MonthlyEmotionButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 import axiosInstance from './api/axiosInstance';
 import {
   Chart as ChartJS,
@@ -52,7 +53,11 @@ const EmotionGraph = () => {
           setDiaryData(response.data.data.diaryEmotions);
         }
       } catch (error) {
-        console.error("Error:", error);
+        Swal.fire({
+          title: "월별 감정 조회 오류",
+          text: "월별 감정 조회에서 오류가 발생했습니다.",
+          icon: "error"
+        });
       }
     };
     fetchData();
@@ -153,7 +158,7 @@ const EmotionGraph = () => {
       >
         <FontAwesomeIcon icon={faAngleLeft} />
       </button>
-      <h2 className="text-center mb-6 text-base pt-2 px-4 lg:text-xl">
+      <h2 className="text-center mb-6 text-base pt-2 px-4 lg:text-2xl">
         {`${selectedYear || '년도'}년 ${selectedMonth || '월'}월`}
       </h2>
         <div

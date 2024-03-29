@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import DailyEmotionButton from '../DailyEmotionButton';
+import Swal from 'sweetalert2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -82,6 +83,7 @@ interface EmotionData {
 
 interface DailyResultModalProps {
   onDailyResultModalClose: () => void;
+  onDiaryModalClose: () => void;
   diaryEmotionId?: string;
   diaryDate?: string;
 }
@@ -116,7 +118,7 @@ const emotionImages = {
   neutral: '/image/neutral_face.png',
 };
 
-const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalClose, diaryEmotionId, diaryDate }) => {
+const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalClose, onDiaryModalClose, diaryEmotionId, diaryDate }) => {
   const validEmotionId = diaryEmotionId || 5342;
   const [emotionData, setEmotionData] = useState<EmotionData>({});
 
@@ -127,7 +129,11 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
       // 서버 응답 구조에 맞게 `setEmotionData`를 수정합니다.
       setEmotionData(response.data.data);
     } catch (error) {
-      console.error('감정 정보 조회 중 에러가 발생했습니다.', error);
+      Swal.fire({
+        title: "일별 감정 조회 오류",
+        text: "일별 감정 조회에서 오류가 발생했습니다.",
+        icon: "error"
+      });
     }
   };
   
@@ -151,6 +157,20 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
   // 모달 닫기 핸들러
   const handleModalClose = () => {
     setIsModalOpen(false);
+  };
+
+  // 모달 바깥 부분 클릭 핸들러
+  const handleOutsideClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // 결과 모달을 닫습니다.
+    onDailyResultModalClose();
+    // 디테일 모달을 닫습니다.
+    // 이 기능을 구현하기 위해 부모 컴포넌트로부터 전달 받은 함수를 호출합니다.
+    onDiaryModalClose();
+  };
+
+  // 모달 컨테이너 클릭 이벤트 핸들러 (이벤트 버블링 방지)
+  const handleModalClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
   };
 
   const chartData = {
@@ -206,8 +226,8 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
   };
 
   return (
-    <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center"> 
-      <div className="bg-bg_modal p-8 rounded-xl h-[90%] w-[600px] shadow-lg">
+    <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center" onClick={handleOutsideClick}> 
+    <div className="bg-bg_modal p-8 rounded-xl h-[90%] w-[600px] shadow-lg" onClick={handleModalClick}>
           <ChartTitle className='text-2xl'>{diaryDate}</ChartTitle>
           <ChartWrapper className='pb-2'>
             <Doughnut data={chartData} options={chartOptions} />
