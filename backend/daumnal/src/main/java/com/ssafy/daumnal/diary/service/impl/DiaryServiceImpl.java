@@ -72,9 +72,11 @@ public class DiaryServiceImpl implements DiaryService {
         int nowDay = now.getDayOfMonth();
 
         if (diaryRepository.existsByMember(member)) {
-            List<Diary> diaries = diaryRepository.findDiariesByMemberOrderByCreatedAtDesc(member);
-
-            String[] diaryRecent = diaries.get(0).getCreatedAt().split(" ")[0].split("-");
+            String[] diaryRecent = diaryRepository.findDiariesByMemberOrderByCreatedAtDesc(member)
+                    .get(0)
+                    .getCreatedAt()
+                    .split(" ")[0]
+                    .split("-");
             int diaryRecentYear = Integer.parseInt(diaryRecent[0]);
             int diaryRecentMonth = Integer.parseInt(diaryRecent[1]);
             int diaryRecentDay = Integer.parseInt(diaryRecent[2]);
@@ -130,7 +132,6 @@ public class DiaryServiceImpl implements DiaryService {
                 .member(member)
                 .emotion(emotion)
                 .build();
-
         diaryRepository.save(diary);
 
         return AddDiaryResponse.builder()
@@ -151,13 +152,9 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateDiaryYearInput(year);
         diaryUtilService.validateDiaryMonthInput(month);
 
-        //Todo: 비즈니스 로직 구현
-        // 특정 year, 특정 month에 쓴 일기 내역들 시간 순으로 가져오기 (완료)
-        List<CalendarContent> calendarContents = diaryRepository.findDiariesByYearAndMonth(Long.parseLong(memberId),
-                Integer.parseInt(year), Integer.parseInt(month));
-
         return GetCalendarResponse.builder()
-                .calendarContents(calendarContents)
+                .calendarContents(diaryRepository.findDiariesByYearAndMonth(Long.parseLong(memberId),
+                        Integer.parseInt(year), Integer.parseInt(month)))
                 .build();
     }
 
@@ -236,12 +233,9 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateDiaryYearInput(year);
         diaryUtilService.validateDiaryMonthInput(month);
 
-        //Todo: 비즈니스 로직 작성
-        List<GetEmotionByMonth> allEmotionByMonth = diaryRepository.findAllEmotionByMonth(Long.parseLong(memberId),
-                Integer.parseInt(year), Integer.parseInt(month));
-
         return GetAllEmotionByMonth.builder()
-                .diaryEmotions(allEmotionByMonth)
+                .diaryEmotions(diaryRepository.findAllEmotionByMonth(Long.parseLong(memberId),
+                        Integer.parseInt(year), Integer.parseInt(month)))
                 .build();
     }
 
@@ -375,7 +369,7 @@ public class DiaryServiceImpl implements DiaryService {
 
         List<Diary> diaries = findDiaries(member);
         List<GetMusicResponse> musics = new ArrayList<>();
-        
+
         for (Diary diary : diaries) {
             Music music = musicRepository.findById(diary.getMusicId())
                     .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
