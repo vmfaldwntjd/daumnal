@@ -10,9 +10,11 @@ RUN apt-get -y update && \
 # 코버트 설치
 RUN pip install -U pip==20.3
 RUN pip install 'git+https://github.com/SKTBrain/KoBERT.git#egg=kobert_tokenizer&subdirectory=kobert_hf'
-COPY . /app
+RUN mkdir /app
+COPY requirements.txt /app
 WORKDIR /app
 # requirements.txt 설치
 RUN pip install --use-deprecated=legacy-resolver -r requirements.txt
 
+COPY . /app
 ENTRYPOINT ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0"]
