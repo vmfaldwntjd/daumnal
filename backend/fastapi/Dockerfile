@@ -10,7 +10,8 @@ RUN apt-get -y update && \
 # 코버트 설치
 RUN pip install -U pip==20.3
 RUN pip install 'git+https://github.com/SKTBrain/KoBERT.git#egg=kobert_tokenizer&subdirectory=kobert_hf'
-RUN mkdir /app
+RUN mkdir /app && \
+    export TMPDIR='/var/tmp'
 COPY requirements.txt /app
 WORKDIR /app
 # requirements.txt 설치
