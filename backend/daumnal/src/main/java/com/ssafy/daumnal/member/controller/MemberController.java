@@ -2,7 +2,6 @@ package com.ssafy.daumnal.member.controller;
 
 import com.ssafy.daumnal.global.constants.SuccessCode;
 import com.ssafy.daumnal.global.dto.ApiResponse;
-import com.ssafy.daumnal.global.dto.TokenRegenerateResponse;
 import com.ssafy.daumnal.global.util.JwtProvider;
 import com.ssafy.daumnal.global.util.MemberDetails;
 import com.ssafy.daumnal.member.dto.MemberDTO.*;
@@ -29,10 +28,9 @@ public class MemberController {
      */
     @PostMapping("/login")
     public ApiResponse<?> login(@RequestBody LoginMemberRequest loginMemberRequest) {
-        GetMemberLoginResponse memberLoginResponse = memberService.login(loginMemberRequest.getSocialId(),
-                loginMemberRequest.getSocialProvider());
-
-        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_STATUS_LOGIN, memberLoginResponse);
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_STATUS_LOGIN,
+                memberService.login(loginMemberRequest.getSocialId(),
+                loginMemberRequest.getSocialProvider()));
     }
 
     /**
@@ -45,9 +43,9 @@ public class MemberController {
     @PostMapping("/nickname")
     public ApiResponse<?> addMemberNickname(Authentication authentication,
                                             @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-        GetMemberNicknameResponse memberNicknameResponse = memberService.addMemberNickname(memberId, nicknameRequest.getMemberNickname());
-        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME, memberNicknameResponse);
+        return ApiResponse.success(SuccessCode.CREATE_MEMBER_NICKNAME,
+                memberService.addMemberNickname(jwtProvider.getMemberInfo(authentication),
+                nicknameRequest.getMemberNickname()));
     }
 
     /**
@@ -59,9 +57,9 @@ public class MemberController {
     @GetMapping("/reissue")
     public ApiResponse<?> getMemberAccessReIssueToken(@AuthenticationPrincipal MemberDetails memberDetails) {
         Member member = memberDetails.getMember();
-        TokenRegenerateResponse tokenRegenerateResponse = jwtProvider.reGenerateAccessToken(member.getId(), member.getSocialId(),
-                member.getSocialProvider().getName());
-        return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN, tokenRegenerateResponse);
+        return ApiResponse.success(SuccessCode.CREATE_REGENERATE_ACCESS_TOKEN,
+                jwtProvider.reGenerateAccessToken(member.getId(), member.getSocialId(),
+                member.getSocialProvider().getName()));
     }
 
     /**
@@ -74,9 +72,9 @@ public class MemberController {
     @PatchMapping("/nickname")
     public ApiResponse<?> updateMemberNickname(Authentication authentication,
                                                @RequestBody AddMemberNicknameRequest nicknameRequest) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-        GetMemberNicknameResponse memberNicknameResponse = memberService.modifyMemberNickname(memberId, nicknameRequest.getMemberNickname());
-        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME, memberNicknameResponse);
+        return ApiResponse.success(SuccessCode.UPDATE_MEMBER_NICKNAME,
+                memberService.modifyMemberNickname(jwtProvider.getMemberInfo(authentication),
+                nicknameRequest.getMemberNickname()));
     }
 
     /**
@@ -87,9 +85,8 @@ public class MemberController {
      */
     @GetMapping("/nickname")
     public ApiResponse<?> getMemberNickname(Authentication authentication) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-        GetMemberNicknameResponse memberNicknameResponse = memberService.getMemberNickname(memberId);
-        return ApiResponse.success(SuccessCode.GET_MEMBER_NICKNAME, memberNicknameResponse);
+        return ApiResponse.success(SuccessCode.GET_MEMBER_NICKNAME,
+                memberService.getMemberNickname(jwtProvider.getMemberInfo(authentication)));
     }
 
     /**
@@ -100,8 +97,7 @@ public class MemberController {
      */
     @PostMapping("/logout")
     public ApiResponse<?> logout(Authentication authentication) {
-        String memberId = jwtProvider.getMemberInfo(authentication);
-        memberService.modifyMemberStatusLogout(memberId);
+        memberService.modifyMemberStatusLogout(jwtProvider.getMemberInfo(authentication));
         return ApiResponse.success(SuccessCode.UPDATE_MEMBER_LOGOUT);
     }
 
