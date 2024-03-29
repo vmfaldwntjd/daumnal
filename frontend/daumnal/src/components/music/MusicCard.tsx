@@ -1,5 +1,5 @@
 // 플레이리스트 상세 내부 단일 노래 컴포넌트
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
@@ -12,9 +12,12 @@ interface MusicCardProps {
   musicSingerName: string;
   musicCoverUrl: string | null;
   musicLyrics: string;
+  playlistId: number;
+  setNowMusicId: Dispatch<SetStateAction<number | null>>;
+  setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
 }
 
-const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl }) => {
+const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, playlistId, setNowMusicId, setNowPlaylistId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -26,7 +29,8 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerN
 
   // 클릭한 노래 재생하는 함수
   const handlePlayMusic = (musicId: number) => () => {
-    alert(`${musicId}번 노래 재생!`);  // 콜백 함수 호출
+    setNowMusicId(musicId)
+    setNowPlaylistId(playlistId)
   }
 
   // 노래 추가/삭제할 플레이리스트 선택 모달 열고 닫는 토글

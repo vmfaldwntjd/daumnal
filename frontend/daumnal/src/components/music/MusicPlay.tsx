@@ -1,21 +1,34 @@
 // 플레이리스트 페이지 우측 노래 재생
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 import LyricsModal from '../modal/LyricsModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRepeat, faBackward, faPlay, faPause, faForward, faFileLines } from '@fortawesome/free-solid-svg-icons';
+import axiosInstance from '../../pages/api/axiosInstance';
 
-const MusicPlay: React.FC = () => {
+interface MusicPlayProps {
+  changeMusicId: number | null;
+  changePlaylistId: number | null;
+}
+
+const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }) => {
   const playerRef = useRef<ReactPlayer>(null); // ReactPlayer 컴포넌트에 대한 Ref 생성
   const [playing, setPlaying] = useState<boolean>(false); // 현재 재생 상태를 저장하는 상태 변수(기본값 false)
   const [looping, setLooping] = useState<boolean>(false); // 루프 상태를 저장하는 상태 변수(기본값 false)
-  const [playlist, setPlaylist] = useState<string[]>([ // 재생할 음악의 URL을 저장하는 상태 변수
-    'https://www.youtube.com/watch?v=x_9850WmI0o',
-    'https://www.youtube.com/watch?v=e48ycyNnts8',
-    'https://www.youtube.com/watch?v=Q-BycrqDhPU',
-    'https://www.youtube.com/watch?v=AIEakY2cRvs'
+  const [playlist, setPlaylist] = useState<string[]>([ // 재생할 음악의 플레이리스트 내용 저장하는 상태 변수
+    // 'https://www.youtube.com/watch?v=x_9850WmI0o',
+    // 'https://www.youtube.com/watch?v=e48ycyNnts8',
+    // 'https://www.youtube.com/watch?v=Q-BycrqDhPU',
+    // 'https://www.youtube.com/watch?v=AIEakY2cRvs'
   ]);
+  const [musicIdList, setMusicIdList] = useState<number[]>([]); 
+  const [musicYoutubeIdList, setMusicYoutubeIdList] = useState<string[]>([]); 
+  const [musicTitleList, setMusicTitleList ] = useState<string[]>([]); 
+  const [musicSingerNameList, setMusicSingerNameList ] = useState<string[]>([]); 
+  const [musicCoverUrlList, setMusicCoverUrlList ] = useState<string[]>([]); 
+  const [musicLyricsList, setMusicLyricsList ] = useState<string[]>([]); 
+
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0); // 현재 재생 중인 음악의 인덱스를 저장하는 상태 변수(기본값 0)
   const [playedSeconds, setPlayedSeconds] = useState<number>(0); // 현재 재생 중인 노래의 재생 시간을 저장하는 상태 변수
   const [duration, setDuration] = useState<number>(0); // 현재 재생 중인 노래의 총 재생 시간을 저장하는 상태 변수
@@ -61,6 +74,29 @@ const MusicPlay: React.FC = () => {
       playerRef.current.seekTo(value); // ReactPlayer 컴포넌트의 seekTo 메서드를 사용하여 재생 위치 변경
     }
   };
+
+  // 노래 목록 요청
+  useEffect(() => {
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${changePlaylistId}/musics`)
+      .then(response => {
+        console.log('플레이리스트 정보 요청 성공!', response.data);
+        if (response.data.code === 200) {
+          {response.data.data.musics.map((music) => (
+          setMusicIdList(music.musicId)
+          setMusicYoutubeIdList(music.musicYoutubeId)
+          setMusicTitleList(music.musicTitle)
+          setMusicSingerNameList(music.musicSingerName)
+          setMusicCoverUrlList(music.musicCoverUrl)
+          setMusicLyricsList(music.musicLyrics)
+          ))}
+        } else {
+          console.log(`${response.data.status}: ${response.data.message}`);
+        }
+      })
+      .catch(error => {
+        console.log('플레이리스트 정보 요청 오류 발생!', error);
+      });
+  }, []);
 
   return (
     <Container>
