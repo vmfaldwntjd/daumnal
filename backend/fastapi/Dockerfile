@@ -1,4 +1,4 @@
-FROM python:3.8.10
+FROM python:3.8.10-slim
 COPY . /app
 WORKDIR /app
 RUN pip install -U pip==20.3
