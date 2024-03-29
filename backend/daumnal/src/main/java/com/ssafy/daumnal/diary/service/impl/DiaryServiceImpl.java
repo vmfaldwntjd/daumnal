@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -313,6 +314,7 @@ public class DiaryServiceImpl implements DiaryService {
         if (!diary.getMember().equals(member)) {
             throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER);
         }
+        Arrays.sort(addFavoriteLyrics.getDiaryLyricsLineNumbers());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addFavoriteLyrics.getDiaryLyricsLineNumbers().length; i++) {
             sb.append(addFavoriteLyrics.getDiaryLyricsLineNumbers()[i]);
