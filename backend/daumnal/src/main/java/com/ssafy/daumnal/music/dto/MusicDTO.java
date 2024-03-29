@@ -18,6 +18,14 @@ public class MusicDTO {
 	@Setter
 	@AllArgsConstructor
 	@Builder
+	public static class GetMusicsResponse {
+		List<GetMusicResponse> musics;
+	}
+
+	@Getter
+	@Setter
+	@AllArgsConstructor
+	@Builder
 	public static class GetMusicResponse {
 		private Long musicId;
 		private String musicYoutubeId;
