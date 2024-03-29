@@ -1,5 +1,5 @@
 // 플레이리스트 상세 컴포넌트
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
@@ -10,8 +10,9 @@ import axiosInstance from '../../pages/api/axiosInstance';
 interface PlaylistDetailProps {
   selectedPlaylistId: number | null;
   setSelectedPlaylistId: (id: number | null) => void;
-  onMusicSelect: (id: number) => void;
   playlistId: number;
+  setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
+  setNowMusicId: Dispatch<SetStateAction<number | null>>;
 }
 
 interface Musics {
@@ -23,7 +24,7 @@ interface Musics {
   musicLyrics: string;
 }
 
-const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPlaylistId, setSelectedPlaylistId }) => {
+const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPlaylistId, setSelectedPlaylistId, setNowPlaylistId, setNowMusicId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -132,15 +133,15 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
         {musics.map((music) => (
           <MusicCard
             key={music.musicId}
-            // playlistName={playlist.playlistName}
-            // playlistCoverUrl={playlist.playlistCoverUrl}
             musicId={music.musicId}
             musicYoutubeId={music.musicYoutubeId}
             musicTitle={music.musicTitle}
             musicSingerName={music.musicSingerName}
             musicCoverUrl={music.musicCoverUrl}
             musicLyrics={music.musicLyrics}
-            // onMusicClick={onMusicSelect}
+            playlistId={playlistId}
+            setNowMusicId={setNowMusicId}
+            setNowPlaylistId={setNowPlaylistId}
           />
         ))}
       </Musics>
