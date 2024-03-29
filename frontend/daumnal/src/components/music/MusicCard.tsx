@@ -6,8 +6,6 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import MusicInfoModal from '../modal/MusicInfoModal';
 
 interface MusicCardProps {
-  // playlistName: string;
-  // playlistCoverUrl: string;
   musicId: number;
   musicYoutubeId: string;
   musicTitle: string;
@@ -16,7 +14,7 @@ interface MusicCardProps {
   musicLyrics: string;
 }
 
-const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTitle, musicSingerName, musicCoverUrl, musicLyrics }) => {
+const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -49,7 +47,6 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
         handleCloseMusicModal();
       }
     }
-
     // 모달 외부를 클릭한 이벤트 핸들러 등록
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -125,7 +122,7 @@ const Buttons = styled.div`
 
 const MusicModalContainer = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: -8px;
   right: 75px;
   z-index: 1;
 `;
