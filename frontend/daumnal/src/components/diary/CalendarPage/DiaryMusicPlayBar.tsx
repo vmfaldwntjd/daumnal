@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import DiaryLyricsModal from '../../modal/DiaryLyricsModal';
+import DiaryMusicInfoModal from '../../modal/DiaryMusicInfoModal';
 import axiosInstance from '../../../pages/api/axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faFileLines } from '@fortawesome/free-solid-svg-icons';
@@ -19,6 +20,11 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
     const [diaryMusicSinger, setDiaryMusicSinger] = useState<string>('')
     const [diaryMusicCode, setDiaryMusicCode] = useState<string>('')
     const [diaryMusicLyrics, setDiaryMusicLyrics] = useState<string>('')
+
+      // 모달 열려 있는지 확인
+    const [isOpenMusicModal, setOpenMusicModal] = useState<boolean>(false);
+    // 모달 참조를 위한 useRef
+    const modalRef = useRef<HTMLDivElement>(null);
 
 
     // 가사 모달 상태 변수
@@ -51,6 +57,38 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
 
 
     }, [diaryMusicId])
+
+        // 노래 추가/삭제할 플레이리스트 선택 모달 열고 닫는 토글
+    const handlePlaylistClick = useCallback((diaryMusicId: number) => {
+        setOpenMusicModal(true);
+    }, [isOpenMusicModal]);
+
+    // 노래 추가/삭제할 플레이리스트 선택 모달 닫기
+    const handleCloseMusicModal = useCallback(() => {
+        setOpenMusicModal(false);
+    }, []);
+
+    useEffect(() => {
+        // 모달 바깥 클릭을 감지하는 함수
+        const handleClickOutside = (event: any) => {
+          if (modalRef.current && !modalRef.current.contains(event.target)) {
+            handleCloseMusicModal(); // 모달을 닫는 함수 호출
+          }
+        };
+      
+        if (isOpenMusicModal) {
+          // 모달이 열려있을 때, 클릭 이벤트 리스너 추가
+          document.addEventListener("mousedown", handleClickOutside);
+        } else {
+          // 모달이 닫혔을 때, 클릭 이벤트 리스너 제거
+          document.removeEventListener("mousedown", handleClickOutside);
+        }
+      
+        // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+      }, [isOpenMusicModal]);
     
 
   return (
@@ -66,7 +104,7 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
     onPlay={() => setPlaying(true)} // 재생 시 재생 상태 업데이트
     onPause={() => setPlaying(false)} // 정지 시 재생 상태 업데이트
     />
-    <div className='w-[350px] flex flex-row items-center justify-between p-2  rounded-lg bg-[#FFFCF7] shadow-md'>
+    <div className='w-[350px] relative flex flex-row items-center justify-between p-2  rounded-lg bg-[#FFFCF7] shadow-md'>
         <div className='flex flex-row items-center'>
             <img src={diaryMusicCover} alt="" className='w-[50px]'/>
             <div className='ml-2'>
@@ -83,8 +121,13 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
             {isOpenLyricsModal && (
                 <DiaryLyricsModal onClickToggleModal={handleLyrics} diaryMusicLyrics={diaryMusicLyrics}/>
             )}
-            <button onClick={handleLyrics}><FontAwesomeIcon className="text-xl text-[#776B5D] mx-2 pt-1" icon={faFileLines} /></button>  
-            <button><img src="./image/playlist_icon.png" alt="" className='h-[20px] mx-2'/></button>
+            <button onClick={handleLyrics}><FontAwesomeIcon className="text-xl text-[#776B5D] mx-2 pt-1" icon={faFileLines} /></button> 
+            {isOpenMusicModal && (
+              <div ref={modalRef} className='absolute top-[60px] right-[0px] z-10'>
+                <DiaryMusicInfoModal onClickToggleModal={handleCloseMusicModal} selectedMusicId={Number(diaryMusicId)} />
+              </div>
+            )} 
+            <button onClick={() => handlePlaylistClick(Number(diaryMusicId))} ><img src="./image/playlist_icon.png" alt="" className='h-[20px] mx-2'/></button>
         </div>
     </div>        
     </div>
