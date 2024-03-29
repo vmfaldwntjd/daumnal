@@ -33,7 +33,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialProvider socialProvider;
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", length = 20)
     private String nickname;
 
     @Column(name = "status", nullable = false)

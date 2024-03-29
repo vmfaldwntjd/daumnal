@@ -1,6 +1,5 @@
 package com.ssafy.daumnal.diary.service.impl;
 
-import com.ssafy.daumnal.diary.dto.nativedto.CalendarContent;
 import com.ssafy.daumnal.diary.dto.DiaryDTO.*;
 import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.diary.repository.DiaryRepository;
@@ -8,7 +7,6 @@ import com.ssafy.daumnal.diary.service.DiaryService;
 import com.ssafy.daumnal.diary.util.DiaryUtilService;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.DiaryEmotion;
 import com.ssafy.daumnal.emotion.dto.EmotionDTO.GetAllEmotionByMonth;
-import com.ssafy.daumnal.emotion.dto.nativedto.GetEmotionByMonth;
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.emotion.repository.EmotionRepository;
 import com.ssafy.daumnal.emotion.util.EmotionUtilService;
@@ -17,17 +15,23 @@ import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
+import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicResponse;
+import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicsResponse;
 import com.ssafy.daumnal.music.entity.Music;
 import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.ssafy.daumnal.diary.constants.DiaryConstants.*;
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
@@ -67,9 +71,11 @@ public class DiaryServiceImpl implements DiaryService {
         int nowDay = now.getDayOfMonth();
 
         if (diaryRepository.existsByMember(member)) {
-            List<Diary> diaries = diaryRepository.findDiariesByMemberOrderByCreatedAtDesc(member);
-
-            String[] diaryRecent = diaries.get(0).getCreatedAt().split(" ")[0].split("-");
+            String[] diaryRecent = diaryRepository.findDiariesByMemberOrderByCreatedAtDesc(member)
+                    .get(0)
+                    .getCreatedAt()
+                    .split(" ")[0]
+                    .split("-");
             int diaryRecentYear = Integer.parseInt(diaryRecent[0]);
             int diaryRecentMonth = Integer.parseInt(diaryRecent[1]);
             int diaryRecentDay = Integer.parseInt(diaryRecent[2]);
@@ -125,7 +131,6 @@ public class DiaryServiceImpl implements DiaryService {
                 .member(member)
                 .emotion(emotion)
                 .build();
-
         diaryRepository.save(diary);
 
         return AddDiaryResponse.builder()
@@ -146,13 +151,9 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateDiaryYearInput(year);
         diaryUtilService.validateDiaryMonthInput(month);
 
-        //Todo: 비즈니스 로직 구현
-        // 특정 year, 특정 month에 쓴 일기 내역들 시간 순으로 가져오기 (완료)
-        List<CalendarContent> calendarContents = diaryRepository.findDiariesByYearAndMonth(Long.parseLong(memberId),
-                Integer.parseInt(year), Integer.parseInt(month));
-
         return GetCalendarResponse.builder()
-                .calendarContents(calendarContents)
+                .calendarContents(diaryRepository.findDiariesByYearAndMonth(Long.parseLong(memberId),
+                        Integer.parseInt(year), Integer.parseInt(month)))
                 .build();
     }
 
@@ -231,12 +232,9 @@ public class DiaryServiceImpl implements DiaryService {
         diaryUtilService.validateDiaryYearInput(year);
         diaryUtilService.validateDiaryMonthInput(month);
 
-        //Todo: 비즈니스 로직 작성
-        List<GetEmotionByMonth> allEmotionByMonth = diaryRepository.findAllEmotionByMonth(Long.parseLong(memberId),
-                Integer.parseInt(year), Integer.parseInt(month));
-
         return GetAllEmotionByMonth.builder()
-                .diaryEmotions(allEmotionByMonth)
+                .diaryEmotions(diaryRepository.findAllEmotionByMonth(Long.parseLong(memberId),
+                        Integer.parseInt(year), Integer.parseInt(month)))
                 .build();
     }
 
@@ -308,6 +306,7 @@ public class DiaryServiceImpl implements DiaryService {
         if (!diary.getMember().equals(member)) {
             throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_DIARY_WRITER);
         }
+        Arrays.sort(addFavoriteLyrics.getDiaryLyricsLineNumbers());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addFavoriteLyrics.getDiaryLyricsLineNumbers().length; i++) {
             sb.append(addFavoriteLyrics.getDiaryLyricsLineNumbers()[i]);
@@ -343,7 +342,7 @@ public class DiaryServiceImpl implements DiaryService {
         Music music = musicRepository.findById(diary.getMusicId())
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
         int[] lyricsLineNumbers = new int[0];
-        if (diary.getLyricsLineNumber() != null) {
+        if (diary.getLyricsLineNumber() != null && !diary.getLyricsLineNumber().isEmpty()) {
             String[] lyricsLineNumbersStr = diary.getLyricsLineNumber().split(" ");
             lyricsLineNumbers = new int[lyricsLineNumbersStr.length];
             for (int i = 0; i < lyricsLineNumbersStr.length; i++) {
@@ -355,5 +354,46 @@ public class DiaryServiceImpl implements DiaryService {
                 .musicLyrics(music.getLyrics())
                 .diaryLyricsLineNumbers(lyricsLineNumbers)
                 .build();
+    }
+
+    @Override
+    public GetMusicsResponse getRecentRecommendMusics(String memberId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        List<Diary> diaries = findDiaries(member);
+        List<GetMusicResponse> musics = new ArrayList<>();
+
+        for (Diary diary : diaries) {
+            Music music = musicRepository.findById(diary.getMusicId())
+                    .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
+
+            musics.add(GetMusicResponse.builder()
+                    .musicId(music.getId())
+                    .musicYoutubeId(music.getYoutubeId())
+                    .musicTitle(music.getTitle())
+                    .musicSingerName(music.getSingerName())
+                    .musicCoverUrl(music.getCoverUrl())
+                    .musicLyrics(music.getLyrics())
+                    .build());
+        }
+
+        return GetMusicsResponse.builder()
+                .musics(musics)
+                .build();
+    }
+
+    public List<Diary> findDiaries(Member member) {
+        return diaryRepository.findAllByMemberAndMusicIdNotNull(member,
+                        Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream()
+                .limit(30)
+                .collect(Collectors.toList());
     }
 }

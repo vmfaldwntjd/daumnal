@@ -4,6 +4,7 @@ import com.ssafy.daumnal.diary.dto.nativedto.CalendarContent;
 import com.ssafy.daumnal.diary.entity.Diary;
 import com.ssafy.daumnal.emotion.dto.nativedto.GetEmotionByMonth;
 import com.ssafy.daumnal.member.entity.Member;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,4 +40,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
             "where year(diary.created_at) = :yearSql and month(diary.created_at) = :monthSql and member_id = :memberId and member.status = 1;", nativeQuery = true)
     List<GetEmotionByMonth> findAllEmotionByMonth(@Param("memberId") Long memberId, @Param("yearSql") int yearSql,
                                                   @Param("monthSql") int monthSql);
+
+    List<Diary> findAllByMemberAndMusicIdNotNull(Member member, Sort sort);
 }
