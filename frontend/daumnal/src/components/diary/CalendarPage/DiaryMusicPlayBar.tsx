@@ -38,7 +38,7 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
         axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${diaryMusicId}`)
         .then (function (response:any) {
             const musicData = response.data.data
-            console.log(musicData)
+            // console.log(musicData)
             setDiaryMusicTitle(musicData.musicTitle)
             setDiaryMusicSinger(musicData.musicSingerName)
             setDiaryMusicCover(musicData.musicCoverUrl)

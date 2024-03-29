@@ -28,7 +28,7 @@ const AddLyricsModal: React.FC<AddLyricsModalProps> = ({ setIsAddLyricsModalOpen
       };
 
     const addLyrics = () => {
-        console.log(diaryAddLyrics)
+        console.log('diaryAddLyrics', diaryAddLyrics)
         axiosInstance.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/${diaryId}/lyrics`, {
             "diaryLyricsLineNumbers" : diaryAddLyrics
         })
