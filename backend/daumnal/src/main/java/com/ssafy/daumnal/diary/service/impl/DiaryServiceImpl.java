@@ -17,17 +17,22 @@ import com.ssafy.daumnal.global.exception.NotSameException;
 import com.ssafy.daumnal.member.entity.Member;
 import com.ssafy.daumnal.member.repository.MemberRepository;
 import com.ssafy.daumnal.member.util.MemberUtilService;
+import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicResponse;
+import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicsResponse;
 import com.ssafy.daumnal.music.entity.Music;
 import com.ssafy.daumnal.music.repository.MusicRepository;
 import com.ssafy.daumnal.s3.service.S3Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.ssafy.daumnal.diary.constants.DiaryConstants.*;
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
@@ -355,5 +360,48 @@ public class DiaryServiceImpl implements DiaryService {
                 .musicLyrics(music.getLyrics())
                 .diaryLyricsLineNumbers(lyricsLineNumbers)
                 .build();
+    }
+
+    @Override
+    public GetMusicsResponse getRecentRecommendMusics(String memberId) {
+        memberUtilService.validateMemberIdNumber(memberId);
+
+        Member member = memberRepository.findById(Long.parseLong(memberId))
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+
+        int status = member.getStatus().getValue();
+        memberUtilService.validateMemberStatusNotDelete(status);
+        memberUtilService.validateMemberStatusNotLogout(status);
+
+        // 해당 멤버가 쓴 일기를 어제부터 30일 순으로 가지고 오기 -> 최신 순으로 정렬 후 30개를 가져오기(musicId가 null 인 경우도 제외)
+        List<Diary> diaries = findDiaries(member); // 일기 가지고옴
+        List<GetMusicResponse> musics = new ArrayList<>();
+
+        // 가지고 온 일기를 바탕으로 음악을 뽑을 수 있도록 하기
+        for (Diary diary : diaries) {
+            Music music = musicRepository.findById(diary.getMusicId())
+                    .orElseThrow(() -> new NoExistException(NOT_EXISTS_MUSIC_ID));
+
+            musics.add(GetMusicResponse.builder()
+                    .musicId(music.getId())
+                    .musicYoutubeId(music.getYoutubeId())
+                    .musicTitle(music.getTitle())
+                    .musicSingerName(music.getSingerName())
+                    .musicCoverUrl(music.getCoverUrl())
+                    .musicLyrics(music.getLyrics())
+                    .build());
+        }
+
+        return GetMusicsResponse.builder()
+                .musics(musics)
+                .build();
+    }
+
+    public List<Diary> findDiaries(Member member) {
+        return diaryRepository.findAllByMemberAndMusicIdNotNull(member,
+                        Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream()
+                .limit(30)
+                .collect(Collectors.toList());
     }
 }
