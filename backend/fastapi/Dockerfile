@@ -3,7 +3,7 @@ COPY . /app
 WORKDIR /app
 RUN pip install -U pip==20.3
 RUN apt-get update && \
-    apt-get install -y gcc
+    apt-get install -y gcc git
 RUN pip install --use-deprecated=legacy-resolver -r requirements.txt
 RUN pip install 'git+https://github.com/SKTBrain/KoBERT.git#egg=kobert_tokenizer&subdirectory=kobert_hf'
 # Google Chrome 설치
