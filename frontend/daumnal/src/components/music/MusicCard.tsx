@@ -1,22 +1,23 @@
 // 플레이리스트 상세 내부 단일 노래 컴포넌트
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import MusicInfoModal from '../modal/MusicInfoModal';
 
 interface MusicCardProps {
-  // playlistName: string;
-  // playlistCoverUrl: string;
   musicId: number;
   musicYoutubeId: string;
   musicTitle: string;
   musicSingerName: string;
   musicCoverUrl: string | null;
   musicLyrics: string;
+  selectedPlaylistId: number | null;
+  setNowMusicId: Dispatch<SetStateAction<number | null>>;
+  setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
 }
 
-const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTitle, musicSingerName, musicCoverUrl, musicLyrics }) => {
+const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, selectedPlaylistId, setNowMusicId, setNowPlaylistId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -28,7 +29,8 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
 
   // 클릭한 노래 재생하는 함수
   const handlePlayMusic = (musicId: number) => () => {
-    alert(`${musicId}번 노래 재생!`);  // 콜백 함수 호출
+    setNowMusicId(musicId)
+    setNowPlaylistId(selectedPlaylistId)
   }
 
   // 노래 추가/삭제할 플레이리스트 선택 모달 열고 닫는 토글
@@ -49,7 +51,6 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicYoutubeId, musicTit
         handleCloseMusicModal();
       }
     }
-
     // 모달 외부를 클릭한 이벤트 핸들러 등록
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -125,7 +126,7 @@ const Buttons = styled.div`
 
 const MusicModalContainer = styled.div`
   position: absolute;
-  bottom: 20px;
+  bottom: -8px;
   right: 75px;
   z-index: 1;
 `;

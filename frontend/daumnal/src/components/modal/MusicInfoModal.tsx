@@ -8,7 +8,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import CreatePlaylistModal from './CreatePlaylistModal';
 
 interface MusicInfoModalProps {
-  onClickToggleModal: (playlistId: number) => void;
+  onClickToggleModal: () => void;
   selectedMusicId: number | null;
 }
 
@@ -110,9 +110,9 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
               onClick={() => handlePlaylistSelect(playlist.playlistId, playlist.playlistName)}
             >
               {selectedPlaylists.includes(playlist.playlistId) ? (
-                <FontAwesomeIcon className="text-[20px]" icon={faSquareCheck} />
+                <FontAwesomeIcon className="text-[15px]" icon={faSquareCheck} />
               ) : (
-                <FontAwesomeIcon className="text-[20px]" icon={faSquare} />
+                <FontAwesomeIcon className="text-[15px]" icon={faSquare} />
               )}
               <span className="ml-1">{playlist.playlistName}</span>
             </PlaylistItem>
@@ -125,9 +125,9 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
           </CreatePlaylistModalContainer>
         )}
         {/* 새 플레이리스트 생성 모달 버튼 */}
-        <button className="flex mt-[6px]" onClick={handleCreatePlaylist}>
-          <span className="text-[18px]"><FontAwesomeIcon icon={faPlus} /></span>
-          <span className="font-NanumSquare">&nbsp;새 플레이리스트</span>
+        <button className="flex items-center h-[15px] text-[15px] mt-[10px]" onClick={handleCreatePlaylist}>
+          <span><FontAwesomeIcon icon={faPlus} /></span>
+          <span className="font-NanumSquare mb-[3px]">&nbsp;새 플레이리스트</span>
         </button>
       </ModalContent>
     </div>
@@ -135,22 +135,24 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
 };
 
 const ModalContent = styled.div`
-  max-height: 185px;
+  max-height: 94px;
   display: flex;
   flex-direction: column;
   background-color: white;
   border: 0.5px solid #efefef;
   box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
-  padding: 0px 10px;
+  padding: 2px 8px;
   overflow-y: auto;
+  font-size: 16px;
 `;
 
 const PlaylistItem = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin: 5px 0px;
+  height: 15px;
+  margin-top: 6px;
 `;
 
 const CreatePlaylistModalContainer = styled.div`
