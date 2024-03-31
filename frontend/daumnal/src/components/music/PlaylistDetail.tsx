@@ -1,5 +1,5 @@
 // 플레이리스트 상세 컴포넌트
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
@@ -10,8 +10,9 @@ import axiosInstance from '../../pages/api/axiosInstance';
 interface PlaylistDetailProps {
   selectedPlaylistId: number | null;
   setSelectedPlaylistId: (id: number | null) => void;
-  onMusicSelect: (id: number) => void;
-  playlistId: number;
+  // playlistId: number;
+  setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
+  setNowMusicId: Dispatch<SetStateAction<number | null>>;
 }
 
 interface Musics {
@@ -23,7 +24,7 @@ interface Musics {
   musicLyrics: string;
 }
 
-const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPlaylistId, setSelectedPlaylistId }) => {
+const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, setSelectedPlaylistId, setNowPlaylistId, setNowMusicId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -44,8 +45,8 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
   };
 
   // 모달 열기/닫기 토글
-  const handleInfoPlaylist = useCallback((playlistId: number) => {
-    setSelectedPlaylistId(playlistId);
+  const handleInfoPlaylist = useCallback((selectedPlaylistId: number | null) => {
+    setSelectedPlaylistId(selectedPlaylistId);
     setOpenInfoModal(!isOpenInfoModal);
   }, [isOpenInfoModal]);
 
@@ -72,7 +73,7 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
 
   // 플레이리스트 정보 요청
   useEffect(() => {
-    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}`)
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
       .then(response => {
         console.log('플레이리스트 정보 요청 성공!', response.data);
         if (response.data.code === 200) {
@@ -89,7 +90,7 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
 
   // 플레이리스트 노래 목록 요청
   useEffect(() => {
-    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics`)
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}/musics`)
       .then(response => {
         console.log('플레이리스트 내부 노래 목록 요청 성공!', response.data);
         if (response.data.code === 200) {
@@ -122,7 +123,7 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
             </PlaylistModalContainer>
           )}
           {/* 플레이리스트 수정/삭제 모달 버튼 */}
-          <button className="relative z-1 self-end text-3xl mb-[155px] ml-[15px]" onClick={() => handleInfoPlaylist(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+          <button className="relative z-1 self-end text-3xl mb-[155px] ml-[15px]" onClick={() => handleInfoPlaylist(selectedPlaylistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
         </Top>
         {/* 플레이리스트 이름 */}
         <p className="font-NanumSquare text-2xl mt-2 mb-3">{playlistName}</p>
@@ -132,15 +133,15 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
         {musics.map((music) => (
           <MusicCard
             key={music.musicId}
-            // playlistName={playlist.playlistName}
-            // playlistCoverUrl={playlist.playlistCoverUrl}
             musicId={music.musicId}
             musicYoutubeId={music.musicYoutubeId}
             musicTitle={music.musicTitle}
             musicSingerName={music.musicSingerName}
             musicCoverUrl={music.musicCoverUrl}
             musicLyrics={music.musicLyrics}
-            // onMusicClick={onMusicSelect}
+            selectedPlaylistId={selectedPlaylistId}
+            setNowMusicId={setNowMusicId}
+            setNowPlaylistId={setNowPlaylistId}
           />
         ))}
       </Musics>

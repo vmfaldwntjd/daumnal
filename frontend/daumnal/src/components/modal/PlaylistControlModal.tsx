@@ -1,6 +1,5 @@
 // 플레이리스트 수정/삭제 모달
 import React, { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import EditPlaylistModal from './EditPlaylistModal';
 import axiosInstance from '../../pages/api/axiosInstance';
@@ -42,7 +41,7 @@ const PlaylistControlModal: React.FC<PlaylistControlModalProps> = ({ selectedPla
         {/* 플레이리스트 정보 수정 모달 */}
         {isOpenEditModal && (
           <EditPlaylistModalContainer>
-            <EditPlaylistModal onClickToggleModal={handleEditPlaylist} playlistId={selectedPlaylistId} />
+            <EditPlaylistModal onClickToggleModal={handleEditPlaylist} selectedPlaylistId={selectedPlaylistId} />
           </EditPlaylistModalContainer>
         )}
         {/* 플레이리스트 정보 수정 모달 버튼 */}
