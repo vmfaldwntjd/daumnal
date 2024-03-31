@@ -12,12 +12,12 @@ interface MusicCardProps {
   musicSingerName: string;
   musicCoverUrl: string | null;
   musicLyrics: string;
-  playlistId: number;
+  selectedPlaylistId: number | null;
   setNowMusicId: Dispatch<SetStateAction<number | null>>;
   setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
 }
 
-const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, playlistId, setNowMusicId, setNowPlaylistId }) => {
+const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, selectedPlaylistId, setNowMusicId, setNowPlaylistId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -30,7 +30,7 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerN
   // 클릭한 노래 재생하는 함수
   const handlePlayMusic = (musicId: number) => () => {
     setNowMusicId(musicId)
-    setNowPlaylistId(playlistId)
+    setNowPlaylistId(selectedPlaylistId)
   }
 
   // 노래 추가/삭제할 플레이리스트 선택 모달 열고 닫는 토글

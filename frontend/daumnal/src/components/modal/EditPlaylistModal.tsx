@@ -8,10 +8,10 @@ import axiosImage from '../../pages/api/axiosImage';
 
 interface EditPlaylistModalProps {
   onClickToggleModal: () => void; // 모달 토글 함수
-  playlistId: number | null;
+  selectedPlaylistId: number | null;
 }
 
-const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal, playlistId }) => {
+const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal, selectedPlaylistId }) => {
   // 플레이리스트 제목 상태
   const [playlistName, setPlaylistName] = useState('');
   // 플레이리스트 커버 이미지 상태
@@ -53,8 +53,8 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
 
   // 플레이리스트 정보 변경
   useEffect(() => {
-    if (playlistId) {
-      axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}`)
+    if (selectedPlaylistId) {
+      axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
         .then(response => {
           console.log('해당 플레이리스트 정보 요청 성공!', response.data);
           if (response.data.code === 200) {
@@ -69,18 +69,18 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
           console.error('해당 플레이리스트 정보 요청 실패!', error);
         });
     }
-  }, [playlistId]);
+  }, [selectedPlaylistId]);
 
   // 수정 확인 요청 함수
   const handleConfirm = () => {
-    if (playlistId) {
+    if (selectedPlaylistId) {
       const formData = new FormData();
       formData.append('playlistName', playlistName);
       if (playlistCover) {
         formData.append('playlistCover', playlistCover);
       }
 
-      axiosImage.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}`, formData)
+      axiosImage.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`, formData)
         .then(response => {
           console.log('해당 플레이리스트 정보 수정 요청 성공!', response.data);
           if (response.data.code === 200) {

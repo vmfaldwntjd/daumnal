@@ -12,23 +12,25 @@ interface MusicPlayProps {
   changePlaylistId: number | null;
 }
 
+interface Music {
+  musicId: number;
+  musicYoutubeId: string;
+  musicTitle: string;
+  musicSingerName: string;
+  musicCoverUrl: string;
+  musicLyrics: string;
+}
+
 const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }) => {
   const playerRef = useRef<ReactPlayer>(null); // ReactPlayer 컴포넌트에 대한 Ref 생성
   const [playing, setPlaying] = useState<boolean>(false); // 현재 재생 상태를 저장하는 상태 변수(기본값 false)
   const [looping, setLooping] = useState<boolean>(false); // 루프 상태를 저장하는 상태 변수(기본값 false)
-  const [playlist, setPlaylist] = useState<string[]>([ // 재생할 음악의 플레이리스트 내용 저장하는 상태 변수
-    // 'https://www.youtube.com/watch?v=x_9850WmI0o',
-    // 'https://www.youtube.com/watch?v=e48ycyNnts8',
-    // 'https://www.youtube.com/watch?v=Q-BycrqDhPU',
-    // 'https://www.youtube.com/watch?v=AIEakY2cRvs'
-  ]);
-  const [musicIdList, setMusicIdList] = useState<number[]>([]); 
-  const [musicYoutubeIdList, setMusicYoutubeIdList] = useState<string[]>([]); 
-  const [musicTitleList, setMusicTitleList ] = useState<string[]>([]); 
-  const [musicSingerNameList, setMusicSingerNameList ] = useState<string[]>([]); 
-  const [musicCoverUrlList, setMusicCoverUrlList ] = useState<string[]>([]); 
-  const [musicLyricsList, setMusicLyricsList ] = useState<string[]>([]); 
-
+  const [musicIdList, setMusicIdList] = useState<number[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 id 목록
+  const [musicYoutubeIdList, setMusicYoutubeIdList] = useState<string[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 id 목록
+  const [musicTitleList, setMusicTitleList ] = useState<string[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 제목 목록
+  const [musicSingerNameList, setMusicSingerNameList ] = useState<string[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 가수 목록
+  const [musicCoverUrlList, setMusicCoverUrlList ] = useState<string[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 커버 사진 목록
+  const [musicLyricsList, setMusicLyricsList ] = useState<string[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 가사 목록
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0); // 현재 재생 중인 음악의 인덱스를 저장하는 상태 변수(기본값 0)
   const [playedSeconds, setPlayedSeconds] = useState<number>(0); // 현재 재생 중인 노래의 재생 시간을 저장하는 상태 변수
   const [duration, setDuration] = useState<number>(0); // 현재 재생 중인 노래의 총 재생 시간을 저장하는 상태 변수
@@ -48,13 +50,13 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
 
   // 이전 곡으로 이동하는 함수
   const handlePrevious = () => {
-    const newIndex = (currentSongIndex - 1 + playlist.length) % playlist.length; // 이전 곡의 인덱스 계산
+    const newIndex = (currentSongIndex - 1 + musicIdList.length) % musicIdList.length; // 이전 곡의 인덱스 계산
     setCurrentSongIndex(newIndex); // 현재 재생 중인 곡 변경
   };
 
   // 다음 곡으로 이동하는 함수
   const handleNext = () => {
-    const newIndex = (currentSongIndex + 1) % playlist.length; // 다음 곡의 인덱스 계산
+    const newIndex = (currentSongIndex + 1) % musicIdList.length; // 다음 곡의 인덱스 계산
     setCurrentSongIndex(newIndex); // 현재 재생 중인 곡 변경
   };
 
@@ -75,20 +77,41 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
     }
   };
 
+  // 노래 목록을 가져와서 상태를 업데이트하는 함수
+  const updateMusicLists = (musics: Music[]) => {
+    // 음악 객체 배열을 새로운 형태로 변환하여 새로운 배열 생성
+    const musicIds: number[] = [];
+    const musicYoutubeIds: string[] = [];
+    const musicTitles: string[] = [];
+    const musicSingerNames: string[] = [];
+    const musicCoverUrls: string[] = [];
+    const musicLyrics: string[] = [];
+
+    musics.forEach((music) => {
+      musicIds.push(music.musicId);
+      musicYoutubeIds.push(music.musicYoutubeId);
+      musicTitles.push(music.musicTitle);
+      musicSingerNames.push(music.musicSingerName);
+      musicCoverUrls.push(music.musicCoverUrl);
+      musicLyrics.push(music.musicLyrics);
+    });
+
+    // 각 배열을 상태로 업데이트
+    setMusicIdList(musicIds);
+    setMusicYoutubeIdList(musicYoutubeIds);
+    setMusicTitleList(musicTitles);
+    setMusicSingerNameList(musicSingerNames);
+    setMusicCoverUrlList(musicCoverUrls);
+    setMusicLyricsList(musicLyrics);
+  };
+
   // 노래 목록 요청
   useEffect(() => {
     axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${changePlaylistId}/musics`)
       .then(response => {
         console.log('플레이리스트 정보 요청 성공!', response.data);
         if (response.data.code === 200) {
-          {response.data.data.musics.map((music) => (
-          setMusicIdList(music.musicId)
-          setMusicYoutubeIdList(music.musicYoutubeId)
-          setMusicTitleList(music.musicTitle)
-          setMusicSingerNameList(music.musicSingerName)
-          setMusicCoverUrlList(music.musicCoverUrl)
-          setMusicLyricsList(music.musicLyrics)
-          ))}
+          updateMusicLists(response.data.data.musics);
         } else {
           console.log(`${response.data.status}: ${response.data.message}`);
         }
@@ -96,19 +119,19 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
       .catch(error => {
         console.log('플레이리스트 정보 요청 오류 발생!', error);
       });
-  }, []);
+  }, [changeMusicId, changePlaylistId]);
 
   return (
     <Container>
       {/* 노래 정보 */}
-      <p className="text-2xl mb-4">노래 제목</p>
-      <p className="text-xl mb-8">아티스트</p>
-      <img className="mb-8 w-60 rounded-full" src="https://lh3.googleusercontent.com/cizq9uWlcIXukhMyfbyhB1j9HABtLOMrsg5SSMZXa5xmgzEd2iEC0I4CLYWIrEAegbW6Vq9akiVUFRHXtw=w544-h544-l90-rj" alt="앨범 커버" />
+      <p className="text-2xl mb-4">{musicTitleList[currentSongIndex]}</p>
+      <p className="text-xl mb-8">{musicSingerNameList[currentSongIndex]}</p>
+      <img className="mb-8 w-60 rounded-full" src={musicCoverUrlList[currentSongIndex]} alt="앨범 커버" />
       {/* 컨트롤박스 */}
       <div>
         <ReactPlayer
           ref={playerRef} // Ref 설정
-          url={playlist[currentSongIndex]} // 현재 재생 중인 곡의 URL 설정
+          url={musicYoutubeIdList[currentSongIndex]} // 현재 재생 중인 곡의 URL 설정
           controls={false} // 기본 컨트롤러를 사용하지 않도록 설정
           width="0" // 화면이 보이지 않도록 설정
           height="0" // 화면이 보이지 않도록 설정
@@ -156,7 +179,7 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
           <button onClick={handleNext}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faForward} /></button>
           {/* 가사 모달 */}
           {isOpenLyricsModal && (
-            <LyricsModal onClickToggleModal={handleLyrics} />
+            <LyricsModal lyrics={musicLyricsList[currentSongIndex]} onClickToggleModal={handleLyrics} />
           )}
           <button onClick={handleLyrics}><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
         </div>
