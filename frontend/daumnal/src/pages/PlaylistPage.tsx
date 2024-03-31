@@ -31,7 +31,7 @@ const PlaylistPage: React.FC = () => {
           <PlaylistDetail 
             selectedPlaylistId={selectedPlaylistId} 
             setSelectedPlaylistId={setSelectedPlaylistId}
-            playlistId={selectedPlaylistId}
+            // playlistId={selectedPlaylistId}
             setNowMusicId={setNowMusicId}
             setNowPlaylistId={setNowPlaylistId}
           />
