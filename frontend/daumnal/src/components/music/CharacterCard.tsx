@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axiosInstance from '../../pages/api/axiosInstance';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ interface CharacterCardProps {
   imageUrl: string;
   name: string;
   category: string;
-  context: string;
+  keywords: string[];
 };
 
 interface ApiResponse {
@@ -18,7 +18,7 @@ interface ApiResponse {
   message: string;
 }
 
-const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, category, context }) => {
+const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, category, keywords }) => {
   const location = useLocation();
   const navigate = useNavigate();
   // 일기 id
@@ -50,7 +50,10 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ imageUrl, name, category,
       <Text>
         <p className="mt-4 text-3xl">{name}</p>
         <p className="text-2xl">- - - - - - - - - - - - - - -</p>
-        <p className="text-xl">{context}</p>
+        <p className="text-2xl">
+          {keywords.map((keyword, index) => (
+            <p className="mb-2" key={index}>{keyword}</p>
+        )) }</p>
       </Text>
       {/* 캐릭터 이미지 */}
       <Image src={imageUrl} alt="캐릭터 이미지" />
@@ -77,8 +80,8 @@ const Text = styled.p`
 `;
 
 const Image = styled.img`
-  margin-top: -50%;
-  width: 300px;
+  margin-top: -45%;
+  height: 350px;
 `;
 
 export default CharacterCard;
