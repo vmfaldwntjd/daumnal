@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquare } from '@fortawesome/free-regular-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import DiaryCreatePlaylistModal from './DiaryCreatePlaylistModal';
+import Swal from 'sweetalert2';
 
 interface DiaryMusicInfoModalProps {
   onClickToggleModal: (playlistId: number) => void;
@@ -55,7 +56,12 @@ const DiaryMusicInfoModal: React.FC<DiaryMusicInfoModalProps> = ({ selectedMusic
     axiosInstance.post<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`, { musicId: selectedMusicId })
     .then(response => {
       console.log('노래를 플레이리스트에 추가하는 요청 성공!', response.data);
-      alert(`${playlistName}에 노래를 추가했습니다`);
+      Swal.fire({
+        position: "bottom-start",
+        text: `${playlistName}에 노래를 추가했습니다`,
+        showConfirmButton: false,
+        timer: 1000
+      });
       setSelectedPlaylists(prevState => [...prevState, playlistId]) // 선택된 플레이리스트에 추가
     })
     .catch(error => {
