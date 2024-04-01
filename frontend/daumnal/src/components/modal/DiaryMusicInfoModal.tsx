@@ -74,7 +74,12 @@ const DiaryMusicInfoModal: React.FC<DiaryMusicInfoModalProps> = ({ selectedMusic
     axiosInstance.delete<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`)
       .then(response => {
         console.log('플레이리스트에서 노래를 삭제하는 요청 성공!', response.data);
-        alert(`${playlistName}에서 노래를 삭제했습니다`);
+        Swal.fire({
+          position: "bottom-start",
+          text: `${playlistName}에서 노래를 삭제했습니다`,
+          showConfirmButton: false,
+          timer: 1000
+        });
         setSelectedPlaylists(prevState => prevState.filter(id => id !== playlistId)); // 선택된 플레이리스트에서 삭제
       })
       .catch(error => {
