@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import EditPlaylistModal from './EditPlaylistModal';
 import axiosInstance from '../../pages/api/axiosInstance';
+import Swal from 'sweetalert2';
 
 interface PlaylistControlModalProps {
   onClickToggleModal: (playlistId: number) => void;
@@ -21,19 +22,32 @@ const PlaylistControlModal: React.FC<PlaylistControlModalProps> = ({ selectedPla
   // 플레이리스트 삭제 요청 함수
   const handleDeletePlaylist = useCallback(() => {
     if (selectedPlaylistId !== null) {
-      const confirmDelete: boolean = window.confirm("해당 플레이리스트를 삭제하시겠습니까?");
-      if (confirmDelete) {
-        axiosInstance.delete(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
-          .then(response => {
-            console.log("플레이리스트 삭제 요청 성공!", response);
-            window.location.reload(); // 페이지 새로고침
-          })
-          .catch(error => {
-            console.error("플레이리스트 삭제 요청 실패!", error);
-          });
-      }
+      Swal.fire({
+        title: "해당 플레이리스트를 삭제하시겠습니까?",
+        icon: "question",
+        showCancelButton: true,
+        cancelButtonText: "취소",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "삭제"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosInstance.delete(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
+            .then(response => {
+              console.log("플레이리스트 삭제 요청 성공!", response);
+              Swal.fire({
+                title: "플레이리스트가 삭제되었습니다",
+                icon: "success"
+              });
+              window.location.reload(); // 페이지 새로고침
+            })
+            .catch(error => {
+              console.error("플레이리스트 삭제 요청 실패!", error);
+            });
+        }
+      });
     }
-  }, []);
+  }, [selectedPlaylistId]);
 
   return (
     <div className="relative z-1">

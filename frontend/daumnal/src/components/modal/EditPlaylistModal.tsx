@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faImage } from "@fortawesome/free-solid-svg-icons";
 import axiosInstance from '../../pages/api/axiosInstance';
 import axiosImage from '../../pages/api/axiosImage';
+import Swal from 'sweetalert2';
 
 interface EditPlaylistModalProps {
   onClickToggleModal: () => void; // 모달 토글 함수
@@ -85,7 +86,11 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
           console.log('해당 플레이리스트 정보 수정 요청 성공!', response.data);
           if (response.data.code === 200) {
             console.log(`${response.data.status}: ${response.data.message}`);
-            alert('플레이리스트 정보 수정이 완료되었습니다');
+            Swal.fire({
+              title: "플레이리스트 정보 수정이 완료되었습니다",
+              icon: "success",
+              timer: 1000
+            });
             window.location.reload(); // 페이지 새로고침
           } else {
             console.log(`${response.data.status}: ${response.data.message}`);

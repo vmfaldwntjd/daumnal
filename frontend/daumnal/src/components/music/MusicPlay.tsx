@@ -1,5 +1,5 @@
 // 플레이리스트 페이지 우측 노래 재생
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useCallback, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 import LyricsModal from '../modal/LyricsModal';
@@ -8,6 +8,8 @@ import { faRepeat, faBackward, faPlay, faPause, faForward, faFileLines } from '@
 import axiosInstance from '../../pages/api/axiosInstance';
 
 interface MusicPlayProps {
+  playing: boolean;
+  setPlaying: Dispatch<SetStateAction<boolean>>;
   changeMusicId: number | null;
   changePlaylistId: number | null;
 }
@@ -21,9 +23,8 @@ interface Music {
   musicLyrics: string;
 }
 
-const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }) => {
+const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicId, changePlaylistId }) => {
   const playerRef = useRef<ReactPlayer>(null); // ReactPlayer 컴포넌트에 대한 Ref 생성
-  const [playing, setPlaying] = useState<boolean>(false); // 현재 재생 상태를 저장하는 상태 변수(기본값 false)
   const [looping, setLooping] = useState<boolean>(false); // 루프 상태를 저장하는 상태 변수(기본값 false)
   const [musicIdList, setMusicIdList] = useState<number[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 id 목록
   const [musicYoutubeIdList, setMusicYoutubeIdList] = useState<string[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 id 목록
@@ -51,29 +52,29 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
   // 이전 곡으로 이동하는 함수
   const handlePrevious = () => {
     const newIndex = (currentSongIndex - 1 + musicIdList.length) % musicIdList.length; // 이전 곡의 인덱스 계산
-    setCurrentSongIndex(newIndex); // 현재 재생 중인 곡 변경
+    setCurrentSongIndex(newIndex);
   };
 
   // 다음 곡으로 이동하는 함수
   const handleNext = () => {
     const newIndex = (currentSongIndex + 1) % musicIdList.length; // 다음 곡의 인덱스 계산
-    setCurrentSongIndex(newIndex); // 현재 재생 중인 곡 변경
+    setCurrentSongIndex(newIndex);
   };
 
   // 반복재생 버튼 함수
   const handleLoop = () => {
-    setLooping((prevLooping) => !prevLooping); // 루프 상태 토글
+    setLooping((prevLooping) => !prevLooping);
   };
 
   // 재생 중인 노래의 재생 시간 측정 함수
   const handleProgress = (state: { playedSeconds: number, played: number }) => {
-    setPlayedSeconds(state.playedSeconds); // 현재 재생 중인 노래의 재생 시간 업데이트
+    setPlayedSeconds(state.playedSeconds);
   };
 
   // 컨트롤 바를 이동하여 노래의 재생 위치 변경하는 함수
   const handleSeek = (value: number) => {
     if (playerRef.current) {
-      playerRef.current.seekTo(value); // ReactPlayer 컴포넌트의 seekTo 메서드를 사용하여 재생 위치 변경
+      playerRef.current.seekTo(value);
     }
   };
 
@@ -120,6 +121,7 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
         console.log('플레이리스트 정보 요청 성공!', response.data);
         if (response.data.code === 200) {
           updateMusicLists(response.data.data.musics);
+          setPlaying(true);
         } else {
           console.log(`${response.data.status}: ${response.data.message}`);
         }

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck, faSquare } from '@fortawesome/free-regular-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import CreatePlaylistModal from './CreatePlaylistModal';
+import Swal from 'sweetalert2';
 
 interface MusicInfoModalProps {
   onClickToggleModal: () => void;
@@ -55,7 +56,12 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
     axiosInstance.post<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`, { musicId: selectedMusicId })
     .then(response => {
       console.log('노래를 플레이리스트에 추가하는 요청 성공!', response.data);
-      alert(`${playlistName}에 노래를 추가했습니다`);
+      Swal.fire({
+        position: "bottom-start",
+        text: `${playlistName}에 노래를 추가했습니다`,
+        showConfirmButton: false,
+        timer: 1000
+      });
       setSelectedPlaylists(prevState => [...prevState, playlistId]) // 선택된 플레이리스트에 추가
     })
     .catch(error => {
@@ -68,7 +74,12 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
     axiosInstance.delete<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`)
       .then(response => {
         console.log('플레이리스트에서 노래를 삭제하는 요청 성공!', response.data);
-        alert(`${playlistName}에서 노래를 삭제했습니다`);
+        Swal.fire({
+          position: "bottom-start",
+          text: `${playlistName}에서 노래를 삭제했습니다`,
+          showConfirmButton: false,
+          timer: 1000
+        });
         setSelectedPlaylists(prevState => prevState.filter(id => id !== playlistId)); // 선택된 플레이리스트에서 삭제
       })
       .catch(error => {
@@ -141,7 +152,7 @@ const ModalContent = styled.div`
   background-color: white;
   border: 0.5px solid #efefef;
   box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 2px 8px;
   overflow-y: auto;
   font-size: 16px;

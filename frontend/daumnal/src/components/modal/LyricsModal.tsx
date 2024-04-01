@@ -21,7 +21,7 @@ const LyricsModal: React.FC<LyricsModalProps> = ({ lyrics, onClickToggleModal })
       <ModalContent onClick={(e) => e.stopPropagation()}> {/* 모달 컨텐츠 클릭 시 버블링 방지 */}
         {/* 가사 */}
         {lyricsLines.map((line, index) => (
-          <p key={index} className="mt-5">{line}</p>
+          <p key={index} className="mt-4">{line}</p>
         ))}
       </ModalContent>
     </ModalBackdrop>
@@ -47,12 +47,11 @@ const ModalContent = styled.div`
   overflow-y: auto; /* 세로 스크롤 추가 */
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: white;
   box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
   color: #776B5D;
   font-size: 20px;
-  padding-bottom: 15px;
+  padding: 0px 16px 16px 16px;
   border-radius: 3px;
 `;
 

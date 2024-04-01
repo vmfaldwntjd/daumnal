@@ -1,8 +1,6 @@
 // 플레이리스트 상세 내부 단일 노래 컴포넌트
 import React, { useState, useCallback, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import MusicInfoModal from '../modal/MusicInfoModal';
 
 interface MusicCardProps {
@@ -13,11 +11,14 @@ interface MusicCardProps {
   musicCoverUrl: string | null;
   musicLyrics: string;
   selectedPlaylistId: number | null;
+  playing: boolean;
+  setPlaying: Dispatch<SetStateAction<boolean>>;
+  nowMusicId: number | null;
   setNowMusicId: Dispatch<SetStateAction<number | null>>;
   setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
 }
 
-const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, selectedPlaylistId, setNowMusicId, setNowPlaylistId }) => {
+const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, selectedPlaylistId, playing, setPlaying, nowMusicId, setNowMusicId, setNowPlaylistId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -29,8 +30,13 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerN
 
   // 클릭한 노래 재생하는 함수
   const handlePlayMusic = (musicId: number) => () => {
-    setNowMusicId(musicId)
-    setNowPlaylistId(selectedPlaylistId)
+    if (nowMusicId === musicId) {
+      setPlaying(!playing);
+    } else {
+      setNowMusicId(musicId);
+      setNowPlaylistId(selectedPlaylistId);
+      setPlaying(true);
+    }
   }
 
   // 노래 추가/삭제할 플레이리스트 선택 모달 열고 닫는 토글
@@ -78,7 +84,9 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerN
           {/* 컨트롤 버튼 */}
           <Buttons>
             {/* 노래 재생 버튼 */}
-            <button className="text-2xl text-[#776B5D]" onClick={handlePlayMusic(musicId)}><FontAwesomeIcon icon={faPlay} /></button>
+            <button className="text-2xl text-[#776B5D]" onClick={handlePlayMusic(musicId)}>
+              <img className="w-8" src="image/play_pause.png" alt="play_pause" />
+            </button>
             {/* 플레이리스트 추가/삭제 모달 */}
             {isOpenMusicModal && (
               <MusicModalContainer ref={modalRef}>
@@ -87,7 +95,11 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerN
             )}
             {/* 플레이리스트 추가/삭제 모달 버튼 */}
             <button className="text-2xl" onClick={() => handlePlaylistClick(musicId)}>
-              {isOpenMusicModal ? (<img className="w-[32px]" src="./image/playlist_icon_edit.png" />) : (<img className="w-[30px]" src="./image/playlist_icon.png" />)}
+              {isOpenMusicModal ? (
+                <img className="w-[32px]" src="./image/playlist_icon_edit.png" />
+              ) : (
+                <img className="w-[29px]" src="./image/playlist_icon.png" />
+              )}
             </button>
           </Buttons>
         </Wrapper>
@@ -126,7 +138,7 @@ const Buttons = styled.div`
 
 const MusicModalContainer = styled.div`
   position: absolute;
-  bottom: -8px;
+  bottom: -4px;
   right: 75px;
   z-index: 1;
 `;
