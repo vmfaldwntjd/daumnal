@@ -7,6 +7,7 @@ import PlaylistDetail from '../components/music/PlaylistDetail';
 
 const PlaylistPage: React.FC = () => {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
+  const [playing, setPlaying] = useState<boolean>(true); // 현재 재생 상태를 저장하는 상태 변수(기본값 false)
   const [nowMusicId, setNowMusicId] = useState<number | null>(null);
   const [nowPlaylistId, setNowPlaylistId] = useState<number | null>(null);
   const [changeMusicId, setChangeMusicId] = useState<number | null>(null);
@@ -29,9 +30,11 @@ const PlaylistPage: React.FC = () => {
         {selectedPlaylistId !== null ? (
           // 플레이리스트 상세 컴포넌트 렌더링
           <PlaylistDetail 
-            selectedPlaylistId={selectedPlaylistId} 
+            selectedPlaylistId={selectedPlaylistId}
             setSelectedPlaylistId={setSelectedPlaylistId}
-            // playlistId={selectedPlaylistId}
+            playing={playing}
+            setPlaying={setPlaying}
+            nowMusicId={nowMusicId}
             setNowMusicId={setNowMusicId}
             setNowPlaylistId={setNowPlaylistId}
           />
@@ -43,6 +46,8 @@ const PlaylistPage: React.FC = () => {
       <RightBox>
         {/* 노래 재생 */}
         <MusicPlay
+          playing={playing}
+          setPlaying={setPlaying}
           changeMusicId={changeMusicId}
           changePlaylistId={changePlaylistId}
         />

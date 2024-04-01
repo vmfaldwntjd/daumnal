@@ -10,7 +10,9 @@ import axiosInstance from '../../pages/api/axiosInstance';
 interface PlaylistDetailProps {
   selectedPlaylistId: number | null;
   setSelectedPlaylistId: (id: number | null) => void;
-  // playlistId: number;
+  playing: boolean;
+  setPlaying: Dispatch<SetStateAction<boolean>>;
+  nowMusicId: number | null;
   setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
   setNowMusicId: Dispatch<SetStateAction<number | null>>;
 }
@@ -24,7 +26,7 @@ interface Musics {
   musicLyrics: string;
 }
 
-const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, setSelectedPlaylistId, setNowPlaylistId, setNowMusicId }) => {
+const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, setSelectedPlaylistId, playing, setPlaying, nowMusicId, setNowPlaylistId, setNowMusicId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -142,6 +144,9 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, set
             selectedPlaylistId={selectedPlaylistId}
             setNowMusicId={setNowMusicId}
             setNowPlaylistId={setNowPlaylistId}
+            playing={playing}
+            setPlaying={setPlaying}
+            nowMusicId={nowMusicId}
           />
         ))}
       </Musics>
