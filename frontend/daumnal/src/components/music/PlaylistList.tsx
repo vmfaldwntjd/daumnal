@@ -101,6 +101,7 @@ const Playlists = styled.div`
   gap: 50px;
   padding: 53px;
   border-top-left-radius: 10px;
+  border-top-right-radius: 5px;
   z-index: 1;
 `;
 

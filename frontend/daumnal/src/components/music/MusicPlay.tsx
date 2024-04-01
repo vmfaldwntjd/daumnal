@@ -103,6 +103,14 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
     setMusicSingerNameList(musicSingerNames);
     setMusicCoverUrlList(musicCoverUrls);
     setMusicLyricsList(musicLyrics);
+
+    // 변경된 플레이리스트의 음악 목록 중에서 현재 재생 중인 음악의 인덱스를 찾아서 설정
+    if (changeMusicId !== null) {
+      const currentMusicIndex = musicIds.indexOf(changeMusicId);
+      if (currentMusicIndex !== -1) {
+        setCurrentSongIndex(currentMusicIndex);
+      }
+    }
   };
 
   // 노래 목록 요청
@@ -124,14 +132,24 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
   return (
     <Container>
       {/* 노래 정보 */}
-      <p className="text-2xl mb-4">{musicTitleList[currentSongIndex]}</p>
-      <p className="text-xl mb-8">{musicSingerNameList[currentSongIndex]}</p>
-      <img className="mb-8 w-60 rounded-full" src={musicCoverUrlList[currentSongIndex]} alt="앨범 커버" />
+      {changeMusicId !== null && changePlaylistId !== null ? (
+        <>
+          <p className="text-2xl mb-4">{musicTitleList[currentSongIndex]}</p>
+          <p className="text-xl mb-8">{musicSingerNameList[currentSongIndex]}</p>
+          <img className="mb-8 w-60 rounded-full" src={musicCoverUrlList[currentSongIndex]} alt="앨범 커버" />
+        </>
+      ) : (
+        <>
+          <p className="text-2xl mb-4">노래를 재생해 보세요</p>
+          <p className="text-xl mb-8">재생중인 노래가 이곳에 보여집니다</p>
+          <img className="mb-8 w-60 rounded-full" src="image/playlist_default.png" alt="기본 앨범 커버" />
+        </>
+      )}
       {/* 컨트롤박스 */}
       <div>
         <ReactPlayer
           ref={playerRef} // Ref 설정
-          url={musicYoutubeIdList[currentSongIndex]} // 현재 재생 중인 곡의 URL 설정
+          url={`https://www.youtube.com/watch?v=${musicYoutubeIdList[currentSongIndex]}`} // 현재 재생 중인 곡의 URL 설정
           controls={false} // 기본 컨트롤러를 사용하지 않도록 설정
           width="0" // 화면이 보이지 않도록 설정
           height="0" // 화면이 보이지 않도록 설정
@@ -181,7 +199,11 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ changeMusicId, changePlaylistId }
           {isOpenLyricsModal && (
             <LyricsModal lyrics={musicLyricsList[currentSongIndex]} onClickToggleModal={handleLyrics} />
           )}
-          <button onClick={handleLyrics}><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
+          {changeMusicId !== null && changePlaylistId !== null ? (
+            <button onClick={handleLyrics}><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
+          ) : (
+            <button><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
+          )}
         </div>
       </div>
     </Container>

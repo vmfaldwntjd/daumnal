@@ -3,13 +3,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface LyricsModalProps {
-  lyrics: string;
+  lyrics: string | null;
   onClickToggleModal: () => void; // 모달 토글 함수
 }
 
 const LyricsModal: React.FC<LyricsModalProps> = ({ lyrics, onClickToggleModal }) => {
+  let lyricsLines = null;
   // 줄 단위로 가사 분할
-  const lyricsLines = lyrics.split('\n');
+  if (lyrics !== null) {
+    lyricsLines = lyrics.split('\n');
+  } else {
+    lyricsLines = ["노래를 재생하면 이곳에 가사가 보여집니다"];
+  };
 
   return (
     <ModalBackdrop onClick={onClickToggleModal}> {/* 배경 클릭 시 모달 닫기 */}
@@ -48,6 +53,7 @@ const ModalContent = styled.div`
   color: #776B5D;
   font-size: 20px;
   padding-bottom: 15px;
+  border-radius: 3px;
 `;
 
 export default LyricsModal;
