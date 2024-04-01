@@ -180,6 +180,8 @@ const Musics = styled.div`
   flex-direction: column;
   padding-left: 10px;
   padding-right: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 export default PlaylistDetail;
