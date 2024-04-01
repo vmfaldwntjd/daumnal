@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuoteLeft, faQuoteRight } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 interface ApiResponse {
   data: any;
@@ -65,6 +66,23 @@ const MusicResultPage: React.FC = () => {
     .catch(error => {
       console.log('추천된 노래 정보 요청 오류 발생!', error);
     });
+  }, []);
+
+  useEffect(() => {
+    // 브라우저 히스토리 스택에 현재 페이지를 추가
+    window.history.pushState({}, "", window.location.href);
+
+    const handlePopstate = (event: PopStateEvent) => {
+      // 사용자를 특정 페이지로 리다이렉트
+      navigate('/calendar')
+    };
+
+    window.addEventListener('popstate', handlePopstate);
+
+    return () => {
+      // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거
+      window.removeEventListener('popstate', handlePopstate);
+    };
   }, []);
 
   return (

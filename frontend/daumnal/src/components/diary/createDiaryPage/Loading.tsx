@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import axiosImage from '../../../pages/api/axiosImage';
 import axiosInstance from '../../../pages/api/axiosInstance';
 import Swal from 'sweetalert2'
+import LoadingGif from './image/LoadingBar.gif'
 
 const Images = styled.div`
   width: 100%;
@@ -25,10 +26,9 @@ const Text = styled.p`
   justify-content: center;
   align-items: center;
   margin: 30px;
-  border-radius: 40px;
-  font-size: 60px;
-  background-color: #F8F6EE;
+  font-size: 50px;
 `;
+
 
 interface LoadingProps {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
@@ -151,7 +151,10 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
         <Image src="/image/daeul.png" onLoad={handleImageLoad}/>
         <Image src="/image/daseol.png" onLoad={handleImageLoad}/>
       </Images>
-      <Text>오늘 적은 일기에서 감정을 추출하고 있어요!</Text>
+      <div className='flex flex-col w-[1200px] text-[45px] h-[250px] justify-center items-center py-8'>
+        <div>오늘 적은 일기에서 감정을 추출하고 있어요!</div>
+        <img src='./image/LoadingBar.gif' alt="" className='w-[500px] mt-4'/>
+      </div>
       <Images>
         <Image src="/image/daseol.png" onLoad={handleImageLoad}/>
         <Image src="/image/daeul.png" onLoad={handleImageLoad}/>

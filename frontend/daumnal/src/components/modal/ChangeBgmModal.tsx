@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../pages/api/axiosInstance';
 import Swal from 'sweetalert2';
+import styled from 'styled-components';
+import Select, { SingleValue } from 'react-select';
 
 interface BGM {
   backgroundMusicId: string;
   backgroundMusicYoutubeId: string;
   backgroundMusicTitle: string;
   backgroundMusicCategory: string;
+}
+
+interface OptionType {
+  value: string;
+  label: string;
 }
 
 interface Props {
@@ -55,6 +62,11 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  const options: OptionType[] = bgms.map((bgm: BGM) => ({
+    value: bgm.backgroundMusicId,
+    label: bgm.backgroundMusicTitle,
+  }));
+
   const handleBGMChange = async () => {
     try {
       const response = await axiosInstance.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/background-musics/${selectedBGM}`);
@@ -72,7 +84,14 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleChange = (selectedOption: SingleValue<OptionType>) => {
+    if (selectedOption) {
+      setSelectedBGM(selectedOption.value);
+    }
+  };
+
   if (!isOpen) return null;
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -84,17 +103,28 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <div className="flex justify-center">
                 <img src="./image/main_tree.png" alt="메인 나무" style={{height: '300px', marginBottom: '2px' }} />
             </div>
-            <select
-                value={selectedBGM}
-                onChange={(e) => setSelectedBGM(e.target.value)}
-                className="focus:outline-none p-2 w-[80%] rounded-md text-center"
-                >
-                {bgms.map((bgm) => (
-                    <option key={bgm.backgroundMusicId} value={bgm.backgroundMusicId}>
-                    {bgm.backgroundMusicTitle}
-                    </option>
-                ))}
-            </select>
+            <Select
+              value={options.find(option => option.value === selectedBGM)}
+              onChange={handleChange}
+              options={options}
+              isSearchable={false} // 드롭다운 내 검색 필드를 비활성화
+              styles={{
+                control: (provided, state) => ({
+                  ...provided,
+                  borderColor: state.isFocused ? 'transparent' : 'transparent', // 포커스 되었을 때와 아닐 때 모두 투명한 테두리 적용
+                  boxShadow: 'none', // 박스 쉐도우 제거
+                  '&:hover': { borderColor: 'transparent' }, // 마우스 호버 시 테두리 색상
+                  width: 'auto',
+                  minWidth: '300px',
+                }),
+                option: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: state.isFocused ? '#f2f2f2' : 'white',
+                  color: 'black',
+                  cursor: 'initial',
+                }),
+              }}
+            />
             <div className="flex justify-center mt-4">
                 <button
                 onClick={handleBGMChange}
