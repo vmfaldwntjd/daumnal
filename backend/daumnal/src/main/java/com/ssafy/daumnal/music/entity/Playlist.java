@@ -30,7 +30,7 @@ public class Playlist extends BaseEntity {
     @Column(name = "name", length = 200)
     private String name;
 
-    @Column(name = "cover_url", columnDefinition = "TEXT")
+    @Column(name = "cover_url", columnDefinition = "VARCHAR(3000)")
     @ColumnDefault(PLAYLIST_DEFAULT_COVER_URL)
     private String coverUrl;
 
