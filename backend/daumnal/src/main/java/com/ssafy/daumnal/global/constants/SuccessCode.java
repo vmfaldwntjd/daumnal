@@ -28,7 +28,7 @@ public enum SuccessCode {
     //일기
     UPLOAD_DIARY_PHOTO(CREATED, "일기 내용 중 사진 업로드 성공"),
     UPLOAD_PLAYLIST_COVER(CREATED, "플레이리스트 커버 업로드 성공"),
-    CREATE_DIARY(OK, "일기 입력에 성공하였습니다!"),
+    CREATE_DIARY(CREATED, "일기 입력에 성공하였습니다!"),
     ADD_FAVORITE_LYRICS(OK, "좋아하는 가사 문장 리스트를 등록하는데 성공했습니다!"),
     GET_DIARY(OK, "선택한 일기 정보 조회에 성공하였습니다!"),
     GET_DIARY_STATUS(OK, "일기 작성 여부 결과를 성공적으로 가져왔습니다!"),
