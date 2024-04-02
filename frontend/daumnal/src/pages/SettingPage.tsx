@@ -35,7 +35,7 @@ const SettingPage: React.FC = () => {
           setNickname(response.data.data.memberNickname);
         }
       })
-      .catch(error => console.error("닉네임 조회 중 오류가 발생했습니다.", error));
+      .catch();
   }, []);
 
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const SettingPage: React.FC = () => {
       // 응답 코드에 따른 조건 분기
       switch(response.data.code) {
         case 200:
-          console.log(response.data.message); 
+          // console.log(response.data.message); 
           localStorage.clear();
           Swal.fire({
             icon: "success",
@@ -63,7 +63,7 @@ const SettingPage: React.FC = () => {
           break;
         case 401:
           // jwt 권한이 없는 경우
-          console.error(response.data.message);
+          // console.error(response.data.message);
           Swal.fire({
             title: "로그아웃 오류",
             text: "유효하지 않는 토큰입니다!",
@@ -73,7 +73,7 @@ const SettingPage: React.FC = () => {
           break;
         case 404:
           // 존재하지 않는 회원인 경우
-          console.error(response.data.message);
+          // console.error(response.data.message);
           Swal.fire({
             title: "로그아웃 오류",
             text: "존재하지 않는 회원 id입니다!",
@@ -82,7 +82,7 @@ const SettingPage: React.FC = () => {
           break;
         case 403:
           // 이미 로그아웃 된 회원인 경우
-          console.error(response.data.message);
+          // console.error(response.data.message);
           Swal.fire({
             title: "로그아웃 오류",
             text: "해당 회원은 이미 로그아웃 상태입니다!",
@@ -91,7 +91,7 @@ const SettingPage: React.FC = () => {
           break;
         default:
           // 회원 탈퇴 처리된 회원 또는 기타 예외 처리
-          console.error('로그아웃 처리 중 예외 발생:', response.data.message);
+          // console.error('로그아웃 처리 중 예외 발생:', response.data.message);
           Swal.fire({
             title: "로그아웃 오류",
             text: "로그아웃 처리 중 예외 발생했습니다. 관리자에게 문의해보세요.",
@@ -100,7 +100,7 @@ const SettingPage: React.FC = () => {
       }
 
     } catch (error) {
-      console.error('서버 통신 에러:', error);
+      // console.error('서버 통신 에러:', error);
       Swal.fire({
         title: "로그아웃 오류",
         text: "서버 통신 에러가 발생했습니다. 관리자에게 문의해보세요.",
@@ -168,7 +168,7 @@ const SettingPage: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error('닉네임 변경 중 오류가 발생했습니다.', error);
+      // console.error('닉네임 변경 중 오류가 발생했습니다.', error);
       Swal.fire({
         title: "닉네임 변경 실패",
         text: "닉네임 변경 중 오류가 발생했습니다. 다시 시도해 주세요.",

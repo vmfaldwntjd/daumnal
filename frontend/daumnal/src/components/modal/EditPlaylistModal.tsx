@@ -57,17 +57,17 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
     if (selectedPlaylistId) {
       axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
         .then(response => {
-          console.log('해당 플레이리스트 정보 요청 성공!', response.data);
+          // console.log('해당 플레이리스트 정보 요청 성공!', response.data);
           if (response.data.code === 200) {
-            console.log(`${response.data.status}: ${response.data.message}`);
+            // console.log(`${response.data.status}: ${response.data.message}`);
             setPlaylistName(response.data.data.playlistName);
             setPreviewImage(response.data.data.playlistCoverUrl);
           } else {
-            console.log(`${response.data.status}: ${response.data.message}`);
+            // console.log(`${response.data.status}: ${response.data.message}`);
           }
         })
         .catch(error => {
-          console.error('해당 플레이리스트 정보 요청 실패!', error);
+          // console.error('해당 플레이리스트 정보 요청 실패!', error);
         });
     }
   }, [selectedPlaylistId]);
@@ -83,9 +83,9 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
 
       axiosImage.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`, formData)
         .then(response => {
-          console.log('해당 플레이리스트 정보 수정 요청 성공!', response.data);
+          // console.log('해당 플레이리스트 정보 수정 요청 성공!', response.data);
           if (response.data.code === 200) {
-            console.log(`${response.data.status}: ${response.data.message}`);
+            // console.log(`${response.data.status}: ${response.data.message}`);
             Swal.fire({
               title: "플레이리스트 정보 수정이 완료되었습니다",
               icon: "success",
@@ -93,11 +93,11 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
             });
             window.location.reload(); // 페이지 새로고침
           } else {
-            console.log(`${response.data.status}: ${response.data.message}`);
+            // console.log(`${response.data.status}: ${response.data.message}`);
           }
         })
         .catch(error => {
-          console.error('해당 플레이리스트 정보 수정 요청 실패!', error);
+          // console.error('해당 플레이리스트 정보 수정 요청 실패!', error);
         });
     }
   };

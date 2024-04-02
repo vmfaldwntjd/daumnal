@@ -62,12 +62,12 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
 
   useEffect(() => {
     if (loadedImages === 16) {
-    console.log( removeTagsContent )
+    // console.log( removeTagsContent )
     axiosInstance.post(`${process.env.REACT_APP_FASTAPI_BASE_URL}/diaries`, {
       'diaryContent': removeTagsContent
     })
     .then(function (response) {
-      console.log(response)
+      // console.log(response)
       if (response.data.code === 200) {
         // console.log(response)
 
@@ -81,8 +81,8 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
         const happiness = emotion.happiness.toString()
         const disgust = emotion.disgust.toString()
 
-        console.log('emotion', emotion)
-        console.log('fear', fear)
+        // console.log('emotion', emotion)
+        // console.log('fear', fear)
 
         const formData = new FormData();
 
@@ -99,7 +99,7 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
         if (image != null) formData.append('diaryPhoto', image);
 
         formData.forEach((value, key) => {
-          console.log(key, value, typeof(value));
+          // console.log(key, value, typeof(value));
         });
         
         //일기 등록하는 axios 로직 구현
@@ -109,7 +109,7 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
           navigate('/select-character', { state: { diaryId: response.data.data.diaryId } })
         })
         .catch(function (error:any) {
-          console.log('일기 등록 에러발생', error.response);
+          // console.log('일기 등록 에러발생', error.response);
         });
         
       }
@@ -133,7 +133,7 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
       }
     })
     .catch(function (error:any) {
-      console.log('감정 분석 에러발생', error);
+      // console.log('감정 분석 에러발생', error);
     });
   }
   }, [loadedImages]);

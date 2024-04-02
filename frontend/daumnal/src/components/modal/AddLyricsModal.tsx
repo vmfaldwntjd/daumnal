@@ -28,7 +28,7 @@ const AddLyricsModal: React.FC<AddLyricsModalProps> = ({ setIsAddLyricsModalOpen
       };
 
     const addLyrics = () => {
-        console.log('diaryAddLyrics', diaryAddLyrics)
+        // console.log('diaryAddLyrics', diaryAddLyrics)
         axiosInstance.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/${diaryId}/lyrics`, {
             "diaryLyricsLineNumbers" : diaryAddLyrics
         })
@@ -42,7 +42,7 @@ const AddLyricsModal: React.FC<AddLyricsModalProps> = ({ setIsAddLyricsModalOpen
             }
         })
         .catch(function (error:any) {
-            console.log('가사 등록 에러 발생', error.response);
+            // console.log('가사 등록 에러 발생', error.response);
         });
     }
 
