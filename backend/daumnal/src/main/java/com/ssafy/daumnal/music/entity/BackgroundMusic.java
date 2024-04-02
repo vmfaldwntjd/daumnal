@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "background-music")
+@Table(name = "background_music")
 public class BackgroundMusic extends BaseEntity {
 
     @Id
