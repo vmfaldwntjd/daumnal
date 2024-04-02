@@ -29,6 +29,7 @@ def recomm(diary_emo, music_ids, music_emoes, authorization):
 
     response = requests.get("https://daumnal-d.n-e.kr:4000/api/diaries/recent-music",
                             headers={"Authorization": authorization})
+    # print(response.status_code)
 
     json_list = response.json()['data']['musics']
 
@@ -36,8 +37,8 @@ def recomm(diary_emo, music_ids, music_emoes, authorization):
     for j in json_list:
         recomm_log.append(j['musicId'])
 
-    while music_ids[np.argmax(product_list)] in recomm_log:
-        del product_list[np.argmax(product_list)]
+    while music_ids[np.argmax(product_list)].id in recomm_log:
+        product_list = np.delete(product_list, np.argmax(product_list))
 
-    print(np.argmax(product_list))
+    # print(music_ids[np.argmax(product_list)].id)
     return music_ids[np.argmax(product_list)]
