@@ -8,7 +8,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -17,7 +17,7 @@ spring:
         format_sql: true
         show_sql: true
   jwt:
-    secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUasjioejalksdjfaoigjioejfakls123diojseoifjdklfjwogjdfkjgoszzdjfeiofjoidjf4'
+    secret: ${JWT_SECRET}
     live:
       access: 3600000 # access token 기한 1시간
       refresh: 604800000 # refresh token 기한 일주일
@@ -28,4 +28,9 @@ spring:
   data:
     redis:
       host: ${EC2_ACCESS_IP}
-      port: 6379
+      port: 3370
+
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHashtag, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 interface InputHashTagProps {
-  onTagsChange: (tags: string[]) => void;
+  setHashTags: (tags: string[]) => void;
+  initialTags: string[];
 }
 
-const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
-  const [tags, setTags] = useState<string[]>([]);
+const InputHashTag: React.FC<InputHashTagProps> = ({ setHashTags, initialTags }) => {
+  const [tags, setTags] = useState<string[]>(initialTags);
   const [currentTag, setCurrentTag] = useState<string>('');
 
   const handleHashTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +28,6 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
     if (tags.length < 3 && currentTag !== '') {
       const newTags = [...tags, currentTag];
       setTags(newTags);
-      onTagsChange(newTags); 
       setCurrentTag('');
     }
     else {
@@ -39,12 +39,11 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
     const newTags = [...tags];
     newTags.splice(index, 1);
     setTags(newTags);
-    onTagsChange(newTags);
     setIsAlert(false)
   }
 
   useEffect(() => {
-    onTagsChange(tags);
+    setHashTags(tags)
   }, [tags])
 
   return (
@@ -58,10 +57,10 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ onTagsChange }) => {
               event.preventDefault();
             }
           }} type="text" placeholder='해시태그를 입력해 주세요'/>
-        <button type="button" onClick={handleAddTag} className='px-1 border border-button_border bg-bg_button rounded-lg text-font_main'>추가</button>       
+        <button type="button" onClick={handleAddTag} className='border border-button_border bg-bg_button rounded-lg text-font_main px-2'>추가</button>       
     </div>  
     <div>
-      {isAlert && <div className='text-red-500 px-6'>해시태그는 최대 3개까지 입력 가능합니다.</div>}
+      {isAlert && <div className='text-red-500 px-6 pt-2'>해시태그는 최대 3개까지 입력 가능합니다.</div>}
       <div className='flex flex-wrap px-6 mt-4'>
         {tags.map((tag, index) => (
           <div key={index} className='mr-2 mb-2'>

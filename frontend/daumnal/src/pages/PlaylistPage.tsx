@@ -1,5 +1,5 @@
 // 플레이리스트 페이지
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MusicPlay from '../components/music/MusicPlay';
 import PlaylistList from '../components/music/PlaylistList';
@@ -7,17 +7,21 @@ import PlaylistDetail from '../components/music/PlaylistDetail';
 
 const PlaylistPage: React.FC = () => {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
-  const [selectedMusicId, setSelectedMusicId] = useState<number | null>(null);
+  const [playing, setPlaying] = useState<boolean>(true); // 현재 재생 상태를 저장하는 상태 변수(기본값 false)
+  const [nowMusicId, setNowMusicId] = useState<number | null>(null);
+  const [nowPlaylistId, setNowPlaylistId] = useState<number | null>(null);
+  const [changeMusicId, setChangeMusicId] = useState<number | null>(null);
+  const [changePlaylistId, setChangePlaylistId] = useState<number | null>(null);
 
   // 선택한 플레이리스트 상세 컴포넌트로 교체하는 함수
   const handlePlaylistSelect = (id: number) => {
     setSelectedPlaylistId(id);
   };
 
-  
-  const handleMusicSelect = (id: number) => {
-    setSelectedMusicId(id);
-  };
+  useEffect(() => {
+    setChangeMusicId(nowMusicId)
+    setChangePlaylistId(nowPlaylistId)
+  }, [nowMusicId, nowPlaylistId])
 
   return (
     <div className='flex'>
@@ -26,10 +30,13 @@ const PlaylistPage: React.FC = () => {
         {selectedPlaylistId !== null ? (
           // 플레이리스트 상세 컴포넌트 렌더링
           <PlaylistDetail 
-            selectedPlaylistId={selectedPlaylistId} 
-            setSelectedPlaylistId={setSelectedPlaylistId} 
-            onMusicSelect={handleMusicSelect} 
-            playlistId={selectedPlaylistId} 
+            selectedPlaylistId={selectedPlaylistId}
+            setSelectedPlaylistId={setSelectedPlaylistId}
+            playing={playing}
+            setPlaying={setPlaying}
+            nowMusicId={nowMusicId}
+            setNowMusicId={setNowMusicId}
+            setNowPlaylistId={setNowPlaylistId}
           />
         ) : (
           // 플레이리스트 목록 컴포넌트 렌더링
@@ -38,7 +45,12 @@ const PlaylistPage: React.FC = () => {
       </LeftBox>
       <RightBox>
         {/* 노래 재생 */}
-        <MusicPlay />
+        <MusicPlay
+          playing={playing}
+          setPlaying={setPlaying}
+          changeMusicId={changeMusicId}
+          changePlaylistId={changePlaylistId}
+        />
       </RightBox>
     </div>
   );

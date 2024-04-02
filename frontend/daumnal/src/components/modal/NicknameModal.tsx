@@ -4,9 +4,10 @@ interface NicknameModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (nickname: string) => void;
+  isFromSettingPage?: boolean; // 설정 페이지에서 열렸는지 여부를 나타내는 새로운 prop
 }
 
-const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose, onSubmit, isFromSettingPage = false }) => {
   const [nickname, setNickname] = useState<string>('');
 
   if (!isOpen) return null;
@@ -36,10 +37,19 @@ const NicknameModal: React.FC<NicknameModalProps> = ({ isOpen, onClose, onSubmit
           <div className="flex justify-center mt-4">
             <button
                 onClick={() => onSubmit(nickname)}
-                className="bg-bg_button hover:bg-bg_button text-black font-bold py-2 px-4 rounded-lg"
+                className="bg-bg_button hover:bg-bg_button text-black font-bold py-2 px-4 rounded-lg mr-2"
                 style={{ color: '#696864' }}>
                 확인
             </button>
+            {isFromSettingPage && (
+              <button
+                onClick={onClose} // "취소" 버튼 클릭 시 onClose 함수를 호출하여 모달을 닫음
+                className="bg-bg_button hover:bg-bg_button text-black font-bold py-2 px-4 rounded-lg"
+                style={{ color: '#696864' }}
+              >
+                취소
+              </button>
+            )}
           </div>
         </div>
       </div>

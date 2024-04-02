@@ -1,22 +1,30 @@
 // 플레이리스트 수정 모달
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faImage } from "@fortawesome/free-solid-svg-icons";
+import axiosInstance from '../../pages/api/axiosInstance';
+import axiosImage from '../../pages/api/axiosImage';
+import Swal from 'sweetalert2';
 
 interface EditPlaylistModalProps {
   onClickToggleModal: () => void; // 모달 토글 함수
+  selectedPlaylistId: number | null;
 }
 
-const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal }) => {
-  const [playlistTitle, setPlaylistTitle] = useState(''); // 플레이리스트 제목 상태
-  const [playlistCover, setPlaylistCover] = useState<File | null>(null); // 플레이리스트 커버 이미지 상태
-  const [previewImage, setPreviewImage] = useState<string | null>(null); // 이미지 미리보기 상태
-  const fileInputRef = useRef<HTMLInputElement>(null); // 파일 입력(input[type="file"])의 ref
+const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModal, selectedPlaylistId }) => {
+  // 플레이리스트 제목 상태
+  const [playlistName, setPlaylistName] = useState('');
+  // 플레이리스트 커버 이미지 상태
+  const [playlistCover, setPlaylistCover] = useState<File | null>(null);
+  // 플레이리스트 커버 이미지 미리보기 상태
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  // 파일 입력(input[type="file"])의 ref
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 플레이리스트 제목 변경 이벤트 핸들러
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPlaylistTitle(event.target.value);
+    setPlaylistName(event.target.value);
   };
 
   // 플레이리스트 커버 이미지 변경 이벤트 핸들러
@@ -38,9 +46,59 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
   const handleDeleteCover = () => {
     setPlaylistCover(null);
     setPreviewImage(null);
-    // 파일 입력(input[type="file"])의 값을 초기화합니다.
+    // 파일 입력(input[type="file"]) 값 초기화
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+  };
+
+  // 플레이리스트 정보 변경
+  useEffect(() => {
+    if (selectedPlaylistId) {
+      axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
+        .then(response => {
+          console.log('해당 플레이리스트 정보 요청 성공!', response.data);
+          if (response.data.code === 200) {
+            console.log(`${response.data.status}: ${response.data.message}`);
+            setPlaylistName(response.data.data.playlistName);
+            setPreviewImage(response.data.data.playlistCoverUrl);
+          } else {
+            console.log(`${response.data.status}: ${response.data.message}`);
+          }
+        })
+        .catch(error => {
+          console.error('해당 플레이리스트 정보 요청 실패!', error);
+        });
+    }
+  }, [selectedPlaylistId]);
+
+  // 수정 확인 요청 함수
+  const handleConfirm = () => {
+    if (selectedPlaylistId) {
+      const formData = new FormData();
+      formData.append('playlistName', playlistName);
+      if (playlistCover) {
+        formData.append('playlistCover', playlistCover);
+      }
+
+      axiosImage.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`, formData)
+        .then(response => {
+          console.log('해당 플레이리스트 정보 수정 요청 성공!', response.data);
+          if (response.data.code === 200) {
+            console.log(`${response.data.status}: ${response.data.message}`);
+            Swal.fire({
+              title: "플레이리스트 정보 수정이 완료되었습니다",
+              icon: "success",
+              timer: 1000
+            });
+            window.location.reload(); // 페이지 새로고침
+          } else {
+            console.log(`${response.data.status}: ${response.data.message}`);
+          }
+        })
+        .catch(error => {
+          console.error('해당 플레이리스트 정보 수정 요청 실패!', error);
+        });
     }
   };
 
@@ -49,8 +107,8 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
       <ModalContent onClick={(e) => e.stopPropagation()}> {/* 모달 컨텐츠 클릭 시 버블링 방지 */}
         {/* 플레이리스트 제목 */}
         <div className="flex items-center justify-center w-full border-b-2 border-[#9c9388] mb-8">
-          <FontAwesomeIcon icon={faPenToSquare} className='text-3xl text-[#9c9388]' /> {/* 아이콘 */}
-          <TitleInput type="text" value={playlistTitle} placeholder='플레이리스트 이름을 입력해 주세요' onChange={handleTitleChange} /> {/* 입력 필드 */}
+          <FontAwesomeIcon icon={faPenToSquare} className='text-3xl text-[#9c9388]' />
+          <TitleInput type="text" value={playlistName} placeholder='플레이리스트 이름을 입력해 주세요' onChange={handleTitleChange} />
         </div>
         {/* 플레이리스트 커버 이미지 */}
         <div className="relative w-full mb-8">
@@ -85,8 +143,7 @@ const EditPlaylistModal: React.FC<EditPlaylistModalProps> = ({ onClickToggleModa
             </button>
           )}
         </div>
-        {/* 확인 버튼 */}
-        <Button>확인</Button>
+        <Button onClick={handleConfirm}>확인</Button>
       </ModalContent>
     </ModalBackdrop>
   );
@@ -96,7 +153,7 @@ const ModalBackdrop = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 64%;
+  width: 63.9%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
@@ -113,7 +170,10 @@ const ModalContent = styled.div`
   background-color: white;
   padding: 40px;
   border-radius: 10px;
+  box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.5);
   color: #776B5D;
+  position: absolute;
+  z-index: 2;
 `;
 
 const TitleInput = styled.input`

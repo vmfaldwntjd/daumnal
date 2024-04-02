@@ -1,78 +1,44 @@
 // 플레이리스트 상세 컴포넌트
-import React from 'react';
+import React, { useState, useCallback, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import MusicCard from './MusicCard';
+import PlaylistControlModal from '../modal/PlaylistControlModal';
+import axiosInstance from '../../pages/api/axiosInstance';
 
 interface PlaylistDetailProps {
   selectedPlaylistId: number | null;
   setSelectedPlaylistId: (id: number | null) => void;
-  onMusicSelect: (id: number) => void;
-  playlistId: number;
+  playing: boolean;
+  setPlaying: Dispatch<SetStateAction<boolean>>;
+  nowMusicId: number | null;
+  setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
+  setNowMusicId: Dispatch<SetStateAction<number | null>>;
 }
 
-const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPlaylistId, setSelectedPlaylistId }) => {
+interface Musics {
+  musicId: number;
+  musicYoutubeId: string;
+  musicTitle: string;
+  musicSingerName: string;
+  musicCoverUrl: string;
+  musicLyrics: string;
+}
+
+const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, setSelectedPlaylistId, playing, setPlaying, nowMusicId, setNowPlaylistId, setNowMusicId }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
-
-  // 가상의 playlistId 플레이리스트 데이터
-  const playlist = {
-    playlistName: "매일의 조각",
-    playlistCoverUrl: null
-  }
-
-  // 가상의 playlistId 내부 노래 데이터
-  const musics = [
-    {
-      musicId: 1,
-      musicYoutubeId: "234232",
-      musicTitle: "11:11",
-      musicSingerName: "태연",
-      musicCoverUrl: null,
-      musicLyrics: "It’s 11:11\n오늘이 한 칸이 채 안 남은 그런 시간\n우리 소원을 빌며 웃던 그 시간\n별 게 다 널 떠오르게 하지\n",
-    },
-    {
-      musicId: 2,
-      musicYoutubeId: "16784",
-      musicTitle: "Lovesick Girls",
-      musicSingerName: "BLACKPINK",
-      musicCoverUrl: null,
-      musicLyrics: "Lovesick girls\nLovesick girls\n영원한 밤\n창문 없는 방에 우릴 가둔 love (love)\nWhat can we say?\n매번 아파도 외치는 love (love)\n"
-    },
-    {
-      musicId: 3,
-      musicYoutubeId: "234232",
-      musicTitle: "About Summer",
-      musicSingerName: "이루리",
-      musicCoverUrl: null,
-      musicLyrics: "It’s 11:11\n오늘이 한 칸이 채 안 남은 그런 시간\n우리 소원을 빌며 웃던 그 시간\n별 게 다 널 떠오르게 하지\n",
-    },
-    {
-      musicId: 4,
-      musicYoutubeId: "16784",
-      musicTitle: "Nerdy Love",
-      musicSingerName: "pH-1, 백예린",
-      musicCoverUrl: null,
-      musicLyrics: "Lovesick girls\nLovesick girls\n영원한 밤\n창문 없는 방에 우릴 가둔 love (love)\nWhat can we say?\n매번 아파도 외치는 love (love)\n"
-    },
-    {
-      musicId: 5,
-      musicYoutubeId: "234232",
-      musicTitle: "소행성",
-      musicSingerName: "레인보우 노트",
-      musicCoverUrl: null,
-      musicLyrics: "It’s 11:11\n오늘이 한 칸이 채 안 남은 그런 시간\n우리 소원을 빌며 웃던 그 시간\n별 게 다 널 떠오르게 하지\n",
-    },
-    {
-      musicId: 6,
-      musicYoutubeId: "16784",
-      musicTitle: "밤양갱",
-      musicSingerName: "비비",
-      musicCoverUrl: null,
-      musicLyrics: "Lovesick girls\nLovesick girls\n영원한 밤\n창문 없는 방에 우릴 가둔 love (love)\nWhat can we say?\n매번 아파도 외치는 love (love)\n"
-    }
-  ]
+  // 모달 열려 있는지 확인
+  const [isOpenInfoModal, setOpenInfoModal] = useState<boolean>(false);
+  // 모달 참조를 위한 useRef
+  const modalRef = useRef<HTMLDivElement>(null);
+  // 플레이리스트 이름
+  const [playlistName, setPlaylistName] = useState<string>('');
+  // 플레이리스트 커버 이미지 경로
+  const [playlistCoverUrl, setPlaylistCoverUrl] = useState<string>('');
+  // 플레이리스트 내부 노래 목록
+  const [musics, setMusics] = useState<Musics[]>([]);
 
   // 플레이리스트 목록 컴포넌트로 교체하는 함수
   const handleModifySelectedPlaylistId = () => {
@@ -80,42 +46,107 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlistId, selectedPla
     setSelectedPlaylistId(null);
   };
 
-  // 해당 플레이리스트 수정/삭제 모달 띄우는 함수
-  const handleEditClick = (playlistId: number) => () => {
-    alert(`${playlistId}번 플레이리스트 수정/삭제 모달 띄우기!`);
-  };
+  // 모달 열기/닫기 토글
+  const handleInfoPlaylist = useCallback((selectedPlaylistId: number | null) => {
+    setSelectedPlaylistId(selectedPlaylistId);
+    setOpenInfoModal(!isOpenInfoModal);
+  }, [isOpenInfoModal]);
+
+  // 모달 닫기
+  const handleClosePlaylistModal = useCallback(() => {
+    setOpenInfoModal(false);
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // 모달 외부를 클릭했을 때 모달 닫기
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleClosePlaylistModal();
+      }
+    }
+
+    // 모달 외부를 클릭한 이벤트 핸들러 등록
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // 컴포넌트 언마운트 시 이벤트 핸들러 제거
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClosePlaylistModal]);
+
+  // 플레이리스트 정보 요청
+  useEffect(() => {
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
+      .then(response => {
+        console.log('플레이리스트 정보 요청 성공!', response.data);
+        if (response.data.code === 200) {
+          setPlaylistName(response.data.data.playlistName);
+          setPlaylistCoverUrl(response.data.data.playlistCoverUrl);
+        } else {
+          console.log(`${response.data.status}: ${response.data.message}`);
+        }
+      })
+      .catch(error => {
+        console.log('플레이리스트 정보 요청 오류 발생!', error);
+      });
+  }, []);
+
+  // 플레이리스트 노래 목록 요청
+  useEffect(() => {
+    axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}/musics`)
+      .then(response => {
+        console.log('플레이리스트 내부 노래 목록 요청 성공!', response.data);
+        if (response.data.code === 200) {
+          setMusics(response.data.data.musics);
+        } else {
+          console.log(`${response.data.status}: ${response.data.message}`);
+        }
+      })
+      .catch(error => {
+        console.log('플레이리스트 내부 노래 목록 요청 오류 발생!', error);
+      });
+  }, []);
 
   return (
-    <div className="flex flex-col items-center font-NanumSquare">
+    <div className="flex flex-col items-center">
       {/* 플레이리스트 정보 */}
       <Wrapper>
         <Top>
-          {/* 플레이리스트 목록 이동 버튼 */}
-          <button className="self-end text-4xl pb-[150px]" onClick={handleModifySelectedPlaylistId}><FontAwesomeIcon icon={faAngleLeft} /></button>
+          {/* 플레이리스트 목록 컴포넌트 전환을 위한 클릭 이벤트 핸들러 */}
+          <button className="self-end text-4xl mb-[150px]" onClick={handleModifySelectedPlaylistId}><FontAwesomeIcon icon={faAngleLeft} /></button>
           {/* 플레이리스트 이미지 */}
-          <img className="w-48"
-            src={playlist.playlistCoverUrl || defaultImageUrl}
+          <img className="h-[190px]"
+            src={playlistCoverUrl || defaultImageUrl}
             alt="플레이리스트 커버 이미지"
           />
-          {/* 플레이리스트 수정/삭제 버튼 */}
-          <button className="self-end text-3xl pb-[155px] pl-[15px]" onClick={handleEditClick(playlistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
+          {/* 플레이리스트 수정/삭제 모달 */}
+          {isOpenInfoModal && (
+            <PlaylistModalContainer ref={modalRef}>
+              <PlaylistControlModal onClickToggleModal={handleClosePlaylistModal} selectedPlaylistId={selectedPlaylistId} />
+            </PlaylistModalContainer>
+          )}
+          {/* 플레이리스트 수정/삭제 모달 버튼 */}
+          <button className="relative z-1 self-end text-3xl mb-[155px] ml-[15px]" onClick={() => handleInfoPlaylist(selectedPlaylistId)}><FontAwesomeIcon icon={faEllipsisVertical} /></button>
         </Top>
-        <p className="text-2xl mt-2 mb-3">{playlist.playlistName}</p>
+        {/* 플레이리스트 이름 */}
+        <p className="font-NanumSquare text-2xl mt-2 mb-3">{playlistName}</p>
       </Wrapper>
       {/* 노래 목록 */}
       <Musics>
         {musics.map((music) => (
           <MusicCard
             key={music.musicId}
-            // playlistName={playlist.playlistName}
-            // playlistCoverUrl={playlist.playlistCoverUrl}
             musicId={music.musicId}
             musicYoutubeId={music.musicYoutubeId}
             musicTitle={music.musicTitle}
             musicSingerName={music.musicSingerName}
             musicCoverUrl={music.musicCoverUrl}
             musicLyrics={music.musicLyrics}
-            // onMusicClick={onMusicSelect}
+            selectedPlaylistId={selectedPlaylistId}
+            setNowMusicId={setNowMusicId}
+            setNowPlaylistId={setNowPlaylistId}
+            playing={playing}
+            setPlaying={setPlaying}
+            nowMusicId={nowMusicId}
           />
         ))}
       </Musics>
@@ -128,6 +159,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 7px;
+  z-index: 1;
+`;
+
+const PlaylistModalContainer = styled.div`
+  position: absolute;
+  z-index: 2;
+  right: 47%;
 `;
 
 const Top = styled.div`
@@ -139,12 +178,15 @@ const Top = styled.div`
 
 const Musics = styled.div`
   width: 70%;
-  height: 61vh;
-  overflow-y: auto; /* 세로 스크롤 추가 */
+  height: 60vh;
+  overflow-y: auto;
   background-color: #F8F6EE;
   display: flex;
   flex-direction: column;
-  padding: 10px 10px 0px 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 export default PlaylistDetail;

@@ -33,7 +33,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialProvider socialProvider;
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", length = 20)
     private String nickname;
 
     @Column(name = "status", nullable = false)
@@ -47,5 +47,9 @@ public class Member extends BaseEntity {
 
     public void updateMemberStatus(MemberStatus status) {
         this.status = status;
+    }
+
+    public void updateBackgroundMusicId(Long backgroundMusicId) {
+        this.backgroundMusicId = backgroundMusicId;
     }
 }

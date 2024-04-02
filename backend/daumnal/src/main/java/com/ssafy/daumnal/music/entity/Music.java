@@ -2,8 +2,11 @@ package com.ssafy.daumnal.music.entity;
 
 import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.global.entity.BaseEntity;
+import com.ssafy.daumnal.music.dto.MusicDTO.GetMusicResponse;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -23,19 +26,19 @@ public class Music extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "youtube_id", nullable = false)
+    @Column(name = "youtube_id", nullable = false, length = 200)
     private String youtubeId;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Column(name = "lyrics", nullable = false)
+    @Column(name = "lyrics", nullable = false, columnDefinition = "TEXT")
     private String lyrics;
 
-    @Column(name = "singer_name", nullable = false)
+    @Column(name = "singer_name", nullable = false, length = 200)
     private String singerName;
 
-    @Column(name = "cover_url")
+    @Column(name = "cover_url", columnDefinition = "TEXT")
     @ColumnDefault("'https://daumnal.s3.ap-northeast-2.amazonaws.com/musicCover/basic_cover.jpg'")
     private String coverUrl;
 
@@ -47,4 +50,27 @@ public class Music extends BaseEntity {
     @JoinColumn(name = "emotion_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Emotion emotion;
+
+    @Builder
+    public Music(String youtubeId, String title, String lyrics, String singerName, String coverUrl, MusicCategory category, Emotion emotion) {
+        this.youtubeId = youtubeId;
+        this.title = title;
+        this.lyrics = lyrics;
+        this.singerName = singerName;
+        this.coverUrl = coverUrl;
+        this.category = category;
+        this.emotion = emotion;
+    }
+
+    public GetMusicResponse toGetMusicResponse() {
+
+        return GetMusicResponse.builder()
+            .musicId(id)
+            .musicYoutubeId(youtubeId)
+            .musicTitle(title)
+            .musicSingerName(singerName)
+            .musicCoverUrl(coverUrl)
+            .musicLyrics(lyrics)
+            .build();
+    }
 }

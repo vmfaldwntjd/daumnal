@@ -19,7 +19,8 @@ export const theme = {
       emo_hate: '#00AF7E',
       emo_surprise: '#CC9CFF',
       emo_middle: '#ADADAD',
-      button_border: 'rgba(156, 155, 150, 0.5)'
+      button_border: 'rgba(156, 155, 150, 0.5)',
+      button_faChevron: '#CCCCCC'
       
     },
     fontFamily:{
