@@ -14,6 +14,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import static com.ssafy.daumnal.music.constants.MusicConstants.MUSIC_DEFAULT_COVER_URL;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -38,8 +40,8 @@ public class Music extends BaseEntity {
     @Column(name = "singer_name", nullable = false, length = 200)
     private String singerName;
 
-    @Column(name = "cover_url", columnDefinition = "TEXT")
-    @ColumnDefault("'https://daumnal.s3.ap-northeast-2.amazonaws.com/musicCover/basic_cover.jpg'")
+    @Column(name = "cover_url", columnDefinition = "VARCHAR(3000)")
+    @ColumnDefault(MUSIC_DEFAULT_COVER_URL)
     private String coverUrl;
 
     @Column(name = "category")
@@ -65,12 +67,12 @@ public class Music extends BaseEntity {
     public GetMusicResponse toGetMusicResponse() {
 
         return GetMusicResponse.builder()
-            .musicId(id)
-            .musicYoutubeId(youtubeId)
-            .musicTitle(title)
-            .musicSingerName(singerName)
-            .musicCoverUrl(coverUrl)
-            .musicLyrics(lyrics)
-            .build();
+                .musicId(id)
+                .musicYoutubeId(youtubeId)
+                .musicTitle(title)
+                .musicSingerName(singerName)
+                .musicCoverUrl(coverUrl)
+                .musicLyrics(lyrics)
+                .build();
     }
 }

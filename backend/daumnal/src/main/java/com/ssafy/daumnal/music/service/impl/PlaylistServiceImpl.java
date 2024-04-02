@@ -21,7 +21,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
-import static com.ssafy.daumnal.global.constants.S3Path.PLAYLIST_PATH;
+import static com.ssafy.daumnal.global.constants.S3Path.PLAYLIST_COVER_PATH;
 import static com.ssafy.daumnal.music.constants.MusicConstants.*;
 import static com.ssafy.daumnal.music.constants.PlaylistConstants.PLAYLIST_DEFAULT_COVER_URL;
 
@@ -57,7 +57,7 @@ public class PlaylistServiceImpl implements PlaylistService {
             throw new LimitExceededException(PLAYLIST_LIMIT_EXCEEDED);
         }
         if (addPlaylistRequest.getPlaylistCover() != null) {
-            String coverUrl = s3Service.upload(addPlaylistRequest.getPlaylistCover(), PLAYLIST_PATH);
+            String coverUrl = s3Service.upload(addPlaylistRequest.getPlaylistCover(), PLAYLIST_COVER_PATH);
             playlistRepository.save(addPlaylistRequest.toEntityWithCoverUrl(coverUrl, member));
         }
         if (addPlaylistRequest.getPlaylistCover() == null) {
@@ -229,7 +229,7 @@ public class PlaylistServiceImpl implements PlaylistService {
             if (!playlist.getCoverUrl().equals(PLAYLIST_DEFAULT_COVER_URL)) {
                 s3Service.delete(playlist.getCoverUrl());
             }
-            coverUrl = s3Service.upload(modifyPlaylistRequest.getPlaylistCover(), PLAYLIST_PATH);
+            coverUrl = s3Service.upload(modifyPlaylistRequest.getPlaylistCover(), PLAYLIST_COVER_PATH);
         }
         playlist.updateNameOrCoverUrl(modifyPlaylistRequest.getPlaylistName(), coverUrl);
     }
