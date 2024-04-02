@@ -1,16 +1,30 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeHigh, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faVolumeHigh, faPenToSquare, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import InputHashTag from '../components/diary/createDiaryPage/InputHashTag';
 import QuillEditor from '../components/diary/createDiaryPage/QuillEditor';
 import UploadImage from '../components/diary/createDiaryPage/UploadImage';
-import axios from 'axios';
+import Loading from '../components/diary/createDiaryPage/Loading';
+import DiaryMusicPlayBar from '../components/diary/createDiaryPage/BGMPlayBar';
+import axiosInstance from './api/axiosInstance';
+import Swal from 'sweetalert2'
 
+interface BackgroundMusic {
+  backgroundMusicId: number;
+  backgroundMusicYoutubeId: string;
+  backgroundMusicTitle: string;
+  backgroundMusicCategory: string;
+}
+
+// 응답 객체의 타입을 정의합니다.
+interface ApiResponse {
+  code: number;
+  status: string;
+  message: string;
+  data: BackgroundMusic;
+}
 
 const CreateDiary: React.FC = () => {
-
-  const navigate = useNavigate()
 
   // 오늘의 날짜
   const today:Date = new Date();
@@ -22,9 +36,14 @@ const CreateDiary: React.FC = () => {
   // 변수 지정
   const [title, setTitle] = useState<string>('')
   const [hashTag, setHashTag] = useState<string>('')
+  const [hashTags, setHashTags] = useState<string[]>([])
   const [content, setContent] = useState<string>('')
   const [removeTagsContent, setRemoveTagsContent] = useState<string>('')
   const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [iconState, setIconState] = useState<boolean>(true);
+  const [backgroundMusicYoutubeId, setBackgroundMusicYoutubeId] = useState<string>('');
 
 
   // 일기 제목 변경 이벤트 핸들러
@@ -39,6 +58,7 @@ const CreateDiary: React.FC = () => {
 
   // 해시태그 변경 이벤트 핸들러
   const handleTagsChange = (newTags: string[]) => {
+    setHashTags(newTags);
     setHashTag(newTags.join(' '));
     // console.log('hashTag:', hashTag)
   }
@@ -52,7 +72,9 @@ const CreateDiary: React.FC = () => {
 
   // 입력된 일기에서 태그 삭제 함수
   const removeHTMLTags = (str: string) => {
-    const newStr = str.replace(/<[^>]*>?/gm, '');
+    const newStr = str.replace(/<[^>]*>/gm, (match) => {
+      return match.startsWith('</') ? '.' : '';
+    });
     setRemoveTagsContent(newStr)
     // console.log('removeTagsContent', removeTagsContent)
     return 
@@ -63,39 +85,81 @@ const CreateDiary: React.FC = () => {
     removeHTMLTags(content);
   }, [content]);
 
+  useEffect(() => {
+    const fetchBackgroundMusic = async () => {
+      try {
+        // ApiResponse 타입을 사용하여 axios 응답의 구조를 명시합니다.
+        const response = await axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/background-musics/member-select`);
+        if (response.data && response.data.status === 'OK') {
+          setBackgroundMusicYoutubeId(response.data.data.backgroundMusicYoutubeId);
+        }
+      } catch (error) {
+        console.error('배경 음악 정보를 가져오는 데 실패했습니다.', error);
+      }
+    };
+
+    fetchBackgroundMusic();
+  }, []);
+
 
   // 이미지 변경 이벤트 핸들러
   const handleImageChange = (selectedImage: File | null) => {
     setImage(selectedImage);
  };
 
+
  // 일기등록 버튼을 누르면 실행되는 함수
  const goToLoadingPage = () => {
-  // removeTagsContent의 길이가 20자 이상인지 확인
-  if (title && removeTagsContent && removeTagsContent.length >= 20) {
-    // 조건에 맞으면 /loadingPage로 이동하고, state로 데이터 전달
-    navigate('/loading', { state: { title, hashTag, content, removeTagsContent, image } });
+
+  if (title && removeTagsContent &&  removeTagsContent.length >= 20 && removeTagsContent.length <= 3000 ) {
+    setIsLoading(true);
   }
 
   else if (!title) {
-    alert('제목을 입력해주세요')
+    Swal.fire({
+      title: "제목을 입력해주세요",
+      text: "제목은 최대 20자까지 입력 가능합니다",
+      icon: "warning"
+    });
   }
 
   else if (removeTagsContent.length < 20) {
-    alert('일기 내용을 20자 이상 입력해주세요')
+    Swal.fire({
+      title: "일기가 너무 짧아요",
+      text: "내용을 20자 이상 입력해주세요",
+      icon: "warning"
+    });
+  }
+
+  else if (removeTagsContent.length > 3000) {
+    Swal.fire({
+      title: "일기는 최대 3000자까지 입력 가능합니다.",
+      text: '현재 글자 수 : ' + removeTagsContent.length,
+      icon: "warning"
+    });
   }
 };
 
+// 아이콘 클릭 이벤트 핸들러
+const toggleIcon = () => {
+  setIconState(!iconState);
+};
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen py-16">
-      <div className='w-full flex items-center justify-between px-16'> {/* 위쪽 구역 */}
+    <div>
+    {!isLoading && <div className="flex flex-col items-center justify-center w-full h-screen py-16">
+      <div className='w-full flex items-center justify-between px-16'>
         {/* 오늘 날짜 */}
         <div className='w-[85px]'></div>
         <label className="flex items-center gap-4 justify-center">
-          <p className="bg-bg_main text-3xl text-center">{date}</p>
-          <FontAwesomeIcon icon={faVolumeHigh} />                   
-        </label>
+            <p className="bg-bg_main text-3xl text-center">{date}</p>
+            {/* 조건부 렌더링을 사용하여 아이콘 변경 */}
+            {iconState ? (
+              <button onClick={toggleIcon} ><FontAwesomeIcon icon={faVolumeHigh} /></button>
+            ) : (
+              <button onClick={toggleIcon} ><FontAwesomeIcon icon={faVolumeXmark} style={{color: "#696864"}}/></button>
+            )}
+          </label>
         <div>
           <button onClick={goToLoadingPage} className="border text-xl py-2 px-4 border-button_border bg-bg_button rounded-lg">일기 등록</button>   
         </div>
@@ -110,11 +174,11 @@ const CreateDiary: React.FC = () => {
           </div>
           {/* 해시태그입력 */}
           <div className="w-full flex items-center justify-center mt-10">
-            <InputHashTag onTagsChange={handleTagsChange}/>
+            <InputHashTag setHashTags={handleTagsChange} initialTags={hashTags}/>
           </div>
           {/* 이미지 첨부 */}
           <div className="w-full h-full max-h-[316px] flex items-center justify-center mt-10 ">
-            <UploadImage onImageChange={handleImageChange}/>   
+            <UploadImage setImage={handleImageChange} setImagePreview={setImagePreview} initialImage={image}/>   
           </div> 
         </div>
 
@@ -123,13 +187,24 @@ const CreateDiary: React.FC = () => {
         <div className="w-1/2 flex flex-col items-center px-16"> {/* 오른쪽 구역 */}
           {/* 일기 내용 작성 */}
           <div className="w-full ">
-            <QuillEditor onChange={handleContentChange} placeholder={''} />
+            <QuillEditor setContent={handleContentChange} placeholder={''} initialContent={content} />
           </div>
         </div>
-      </div>
-    </div>
 
+      </div>
+    </div>}
+
+    {/* Loading 모달 */}
+    <div>
+     {isLoading && <Loading setIsLoading={setIsLoading} removeTagsContent={removeTagsContent} title={title} hashTag={hashTag} content={content} image={image} />} 
+    </div>
+    <DiaryMusicPlayBar
+      backgroundMusicYoutubeId={backgroundMusicYoutubeId}
+      playState={iconState}
+    />
+  </div>
   );
 };
+
 
 export default CreateDiary;

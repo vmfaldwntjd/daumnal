@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, HTTPException, Header, Request
+import httpx
 
 from typing import Optional
 from pydantic import BaseModel
@@ -8,8 +9,35 @@ import emotion_classifier
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from model import QuerySet
+import recommend
 
-class Item(BaseModel):
+# FastAPI 호출
+app = FastAPI()
+
+# cors 설정
+origins = ["https://daumnal-d.n-e.kr:4000", "http://localhost:3000"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# kobert 모델 세팅
+@app.on_event("startup")
+async def startup_event():
+    emotion_classifier.init()
+
+
+# db 세팅
+qs = QuerySet()
+
+
+# 객체
+class DiaryContent(BaseModel):
     diaryContent: str
 
 
@@ -23,47 +51,32 @@ class Emotion(BaseModel):
     disgust: int = 0
 
 
-app = FastAPI()
-
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-@app.on_event("startup")
-async def startup_event():
-    emotion_classifier.init()
-
-
+# 예외 처리
 class UnicornException(Exception):
     def __init__(self, status: str):
         self.status = status
 
 
 @app.exception_handler(UnicornException)
-async def unicorn_exception_handler(exc: UnicornException):
+async def unicorn_exception_handler(request: Request, exc: UnicornException):
     return JSONResponse(
         status_code=400,
         content={"status": exc.status}
     )
 
 
+# 일기 검사 api
 @app.post("/api/diaries")
 async def analyze_diary(
-        # authorization: str = Header(..., alias="Authorization"),
-        item: Item
+        diary_content: DiaryContent,
+        authorization: str = Header(..., alias="Authorization")
 ):
     try:
-        diary_emotion = emotion_classifier.analyze_init(item.diaryContent)
+        diary_emotion = emotion_classifier.analyze_init(diary_content.diaryContent)
         if diary_emotion is None:
             raise UnicornException(status="sentenceLack")
         elif diary_emotion.neutral > 5000:
+            # 1등이 중립이 아닌 걸로 예외 처리 필요
             raise UnicornException(status="emotionLack")
 
         # 성공 시 입력된 데이터를 반환
@@ -77,4 +90,42 @@ async def analyze_diary(
         }
     except Exception as e:
         # 에러 발생 시 적절한 에러 메시지와 에러 코드 반환
+        return e
+
+
+# 노래 추천 api
+@app.get("/api/musics/{music_category}/diaries/{diary_id}")
+async def recommend_music(
+        music_category: str, diary_id: int,
+        authorization: str = Header(..., alias="Authorization")
+):
+    try:
+        diary_info, diary_emotion = qs.get_diary_with_emotion(diary_id)
+        if diary_info[0].music_id is not None:
+            raise UnicornException(status="alreadyRecommended")
+        elif diary_emotion[0] is None:
+            raise UnicornException(status="wrongDiaryNumber")
+        music_ids, music_emotions = qs.get_music_with_emotion(music_category)
+        recommended_music_id = recommend.recomm(diary_emotion[0], music_ids, music_emotions)
+
+        base_url = "https://daumnal-d.n-e.kr:4000/api"
+        url = f"{base_url}/diaries/{diary_id}/musics/{recommended_music_id.id}"
+
+        headers = {
+            "Authorization": authorization
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.patch(url, headers=headers)
+            print(response)
+
+        return {
+            "code": 200,
+            "status": "OK",
+            "message": "선택 기반 노래 추천 성공",
+            "data": {
+                "musicId": recommended_music_id.id
+            }
+        }
+    except Exception as e:
         return e

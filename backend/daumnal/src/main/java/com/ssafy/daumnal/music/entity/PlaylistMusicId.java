@@ -1,5 +1,6 @@
 package com.ssafy.daumnal.music.entity;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,10 @@ public class PlaylistMusicId implements Serializable {
     private Playlist playlist;
 
     private Music music;
+
+    @Builder
+    public PlaylistMusicId(Playlist playlist, Music music) {
+        this.playlist = playlist;
+        this.music = music;
+    }
 }

@@ -3,43 +3,69 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 
 interface UploadImageProps {
-    onImageChange: (image: File | null) => void; // 상위 컴포넌트로 이미지 상태를 전달하기 위한 props
+    setImage: (image: File | null) => void; // 상위 컴포넌트로 이미지 상태를 전달하기 위한 props
+    setImagePreview: (imagePreview: string) => void;
+    initialImage: File | null
   }
 
-const UploadImage: React.FC<UploadImageProps> = ({ onImageChange }) => {
+const UploadImage: React.FC<UploadImageProps> = ({ setImage, setImagePreview, initialImage }) => {
     const [uploadImage, setUploadImage] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string>('');
+    const [uploadImagePreview, setUploadImagePreview] = useState<string>('');
 
+    useEffect(() => {
+        // 초기 이미지 및 이미지 변경에 대한 로직을 하나의 useEffect로 통합
+        const imageToPreview = uploadImage || initialImage;
+        if (imageToPreview) {
+            const reader = new FileReader();
+            reader.readAsDataURL(imageToPreview);
+            reader.onloadend = () => {
+                const result = reader.result as string;
+                setUploadImagePreview(result);
+                setImagePreview(result); // 미리보기 URL을 상위 컴포넌트로 직접 전달
+                // console.log(result)
+            };
+        } else {
+            // 이미지가 없는 경우 상태 초기화
+            setUploadImagePreview('');
+            setImagePreview('');
+        }
+    }, [uploadImage, initialImage, setImagePreview]);
 
+    useEffect(() => {
+        setImage(uploadImage); // 상위 컴포넌트로 이미지 파일 전달
+    }, [uploadImage, setImage]);
+
+    
         // 이미지 첨부 변경 이벤트 처리
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 
         if (e.target.files && e.target.files.length > 0) {
         const uploadFile:File = e.target.files[0]
-        setUploadImage(uploadFile);      
-        console.log('uploadImage', e.target.files[0] )
-        const reader = new FileReader();
-        reader.readAsDataURL(uploadFile);
-        reader.onloadend = () => {
-            const dataUrl = reader.result as string;
-            setImagePreview(dataUrl);
-            
-        };
-        console.log('imageUrl', imagePreview )     
+
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+        if (!allowedExtensions.exec(uploadFile.name)) {
+            alert('지원되는 파일 형식이 아닙니다.');
+            return;
+        }
+
+        if (uploadFile.size > 3 * 1024 * 1024) {
+            alert('3MB 이하의 이미지만 첨부 가능합니다');
+            return;
+        }
+
+        setUploadImage(uploadFile);       
         }
 
     };
 
     const handleClick = () => {
-        const fileInput = document.getElementById('fileInput');
-        if (fileInput) {
-        fileInput.click();
-        }
+        document.getElementById('fileInput')?.click();
     };
 
     const handleRemoveImage = () => {
         setUploadImage(null)
-        setImagePreview('')
+        setUploadImagePreview('')
 
         const fileInput = document.getElementById('fileInput') as HTMLInputElement;
         if (fileInput) {
@@ -47,17 +73,14 @@ const UploadImage: React.FC<UploadImageProps> = ({ onImageChange }) => {
         }
     }
 
-    useEffect(() => {
-        onImageChange(uploadImage); // uploadImage 상태가 변경될 때마다 상위 컴포넌트로 전달
-    }, [uploadImage]);
 
   return (
     <div className="w-full h-full max-h-[316px] flex items-center justify-center ">
     <input type="file" onChange={handleImageChange} className="hidden" id="fileInput" />
     <div className="relative w-full h-full">
-        {imagePreview && (
+        {uploadImagePreview && (
         <>
-            <img src={imagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-[90%] max-h-[90%]" />
+            <img src={uploadImagePreview} alt="Diary" className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover object-contain max-w-[90%] max-h-[90%]" />
             <button
             type="button"
             onClick={handleRemoveImage} // 이미지를 삭제하는 함수를 호출
@@ -72,9 +95,9 @@ const UploadImage: React.FC<UploadImageProps> = ({ onImageChange }) => {
         <rect x="1" y="1" width="98%" height="98%" rx="8" ry="8"
             style={{ 
             fill: "none", 
-            stroke: imagePreview ? 'none' : 'rgba(156, 155, 150, 0.7)', 
-            strokeWidth: imagePreview ? 1 : 2, 
-            strokeDasharray: imagePreview ? "none" : "10, 5"
+            stroke: uploadImagePreview ? 'none' : 'rgba(156, 155, 150, 0.7)', 
+            strokeWidth: uploadImagePreview ? 1 : 2, 
+            strokeDasharray: uploadImagePreview ? "none" : "10, 5"
             }} />
         </svg>
         {!uploadImage && (

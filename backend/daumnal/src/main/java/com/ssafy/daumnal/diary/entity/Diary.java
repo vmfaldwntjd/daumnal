@@ -4,16 +4,15 @@ import com.ssafy.daumnal.emotion.entity.Emotion;
 import com.ssafy.daumnal.global.entity.BaseEntity;
 import com.ssafy.daumnal.member.entity.Member;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
 @DynamicUpdate
 @Table(name = "diary")
@@ -27,22 +26,19 @@ public class Diary extends BaseEntity {
     @Column(name = "music_id")
     private Long musicId;
 
-    @Column(name = "title", nullable = false)
-    @Size(max = 30)
+    @Column(name = "title", length = 40)
     private String title;
 
-    @Column(name = "content", nullable = false)
-    @Size(max = 3000)
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "hash_tag")
-    @Size(max = 30)
+    @Column(name = "hash_tag", length = 20)
     private String hashTag;
 
-    @Column(name = "photo_url")
+    @Column(name = "photo_url", columnDefinition = "TEXT")
     private String photoUrl;
 
-    @Column(name = "lyrics_line_number")
+    @Column(name = "lyrics_line_number", length = 1000)
     private String lyricsLineNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,4 +50,12 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "emotion_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Emotion emotion;
+
+    public void updateMusicId(Long musicId) {
+        this.musicId = musicId;
+    }
+
+    public void updateLyricsLineNumber(String lyricsLineNumber) {
+        this.lyricsLineNumber = lyricsLineNumber;
+    }
 }
