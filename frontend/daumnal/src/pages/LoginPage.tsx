@@ -11,8 +11,8 @@ const LoginPage: React.FC = () => {
   const loginWithKakao = async () => {
     try {
       await Kakao.Auth.authorize({
-        // redirectUri: `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`,
-        redirectUri: `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`,
+        redirectUri: `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`,
+        // redirectUri: `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`,
         scope: 'profile_nickname',
         prompt: 'select_account',
       });
