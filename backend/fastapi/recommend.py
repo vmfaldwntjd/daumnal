@@ -1,7 +1,8 @@
 import numpy as np
+import requests
 
 
-def recomm(diary_emo, music_ids, music_emoes):
+def recomm(diary_emo, music_ids, music_emoes, authorization):
     list = np.array([diary_emo.fear,
                      diary_emo.surprise,
                      diary_emo.angry,
@@ -25,5 +26,18 @@ def recomm(diary_emo, music_ids, music_emoes):
     mat = np.delete(mat, 0, axis=0)
     product_list = mat @ list
     print(product_list)
+
+    response = requests.get("https://daumnal-d.n-e.kr:4000/api/diaries/recent-music",
+                            headers={"Authorization": authorization})
+
+    json_list = response.json()['data']['musics']
+
+    recomm_log = []
+    for j in json_list:
+        recomm_log.append(j['musicId'])
+
+    while music_ids[np.argmax(product_list)] in recomm_log:
+        del product_list[np.argmax(product_list)]
+
     print(np.argmax(product_list))
     return music_ids[np.argmax(product_list)]
