@@ -2,6 +2,16 @@
 import React, { useState, useCallback, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import MusicInfoModal from '../modal/MusicInfoModal';
+import axiosInstance from '../../pages/api/axiosInstance';
+
+interface Musics {
+  musicId: number;
+  musicYoutubeId: string;
+  musicTitle: string;
+  musicSingerName: string;
+  musicCoverUrl: string;
+  musicLyrics: string;
+}
 
 interface MusicCardProps {
   musicId: number;
@@ -16,9 +26,11 @@ interface MusicCardProps {
   nowMusicId: number | null;
   setNowMusicId: Dispatch<SetStateAction<number | null>>;
   setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
+  musics: Musics[];
+  setMusics: Dispatch<SetStateAction<Musics[]>>;
 }
 
-const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, selectedPlaylistId, playing, setPlaying, nowMusicId, setNowMusicId, setNowPlaylistId }) => {
+const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerName, musicCoverUrl, selectedPlaylistId, playing, setPlaying, nowMusicId, setNowMusicId, setNowPlaylistId, setMusics }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -48,6 +60,19 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerN
   // 노래 추가/삭제할 플레이리스트 선택 모달 닫기
   const handleCloseMusicModal = useCallback(() => {
     setOpenMusicModal(false);
+    // 모달 닫힐 때마다 해당 플레이리스트 내부 노래 목록 업데이트 요청
+      axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}/musics`)
+        .then(response => {
+          console.log('플레이리스트 내부 노래 목록 요청 성공!', response.data);
+          if (response.data.code === 200) {
+            setMusics(response.data.data.musics);
+          } else {
+            console.log(`${response.data.status}: ${response.data.message}`);
+          }
+        })
+        .catch(error => {
+          console.log('플레이리스트 내부 노래 목록 요청 오류 발생!', error);
+        });
   }, []);
 
   useEffect(() => {
