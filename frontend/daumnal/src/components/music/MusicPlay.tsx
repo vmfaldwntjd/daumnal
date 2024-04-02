@@ -12,6 +12,16 @@ interface MusicPlayProps {
   setPlaying: Dispatch<SetStateAction<boolean>>;
   changeMusicId: number | null;
   changePlaylistId: number | null;
+  musics: Musics[];
+}
+
+interface Musics {
+  musicId: number;
+  musicYoutubeId: string;
+  musicTitle: string;
+  musicSingerName: string;
+  musicCoverUrl: string;
+  musicLyrics: string;
 }
 
 interface Music {
@@ -23,7 +33,7 @@ interface Music {
   musicLyrics: string;
 }
 
-const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicId, changePlaylistId }) => {
+const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicId, changePlaylistId, musics }) => {
   const playerRef = useRef<ReactPlayer>(null); // ReactPlayer 컴포넌트에 대한 Ref 생성
   const [looping, setLooping] = useState<boolean>(false); // 루프 상태를 저장하는 상태 변수(기본값 false)
   const [musicIdList, setMusicIdList] = useState<number[]>([]); // 선택한 노래가 있는 플레이리스트 내부 노래들 id 목록
@@ -129,12 +139,12 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicI
       .catch(error => {
         console.log('플레이리스트 정보 요청 오류 발생!', error);
       });
-  }, [changeMusicId, changePlaylistId]);
+  }, [changeMusicId, changePlaylistId, musics]);
 
   return (
     <Container>
       {/* 노래 정보 */}
-      {changeMusicId !== null && changePlaylistId !== null ? (
+      {changeMusicId !== null && changePlaylistId !== null && musics.length !== 0 ? (
         <>
           <p className="text-2xl mb-4">{musicTitleList[currentSongIndex]}</p>
           <p className="text-xl mb-8">{musicSingerNameList[currentSongIndex]}</p>
