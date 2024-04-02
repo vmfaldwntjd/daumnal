@@ -119,7 +119,7 @@ if __name__ == '__main__':
         # print(music_list)
         # print(response_list)
 
-        res = requests.post("https://daumnal-d.n-e.kr:4000/api/musics", json={"musics": response_list})
+        res = requests.post("https://daumnal.n-e.kr/api/musics", json={"musics": response_list})
         print(res)
 
     finally:
