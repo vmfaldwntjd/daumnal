@@ -63,15 +63,15 @@ const MusicCard: React.FC<MusicCardProps> = ({ musicId, musicTitle, musicSingerN
     // 모달 닫힐 때마다 해당 플레이리스트 내부 노래 목록 업데이트 요청
       axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}/musics`)
         .then(response => {
-          console.log('플레이리스트 내부 노래 목록 요청 성공!', response.data);
+          // console.log('플레이리스트 내부 노래 목록 요청 성공!', response.data);
           if (response.data.code === 200) {
             setMusics(response.data.data.musics);
           } else {
-            console.log(`${response.data.status}: ${response.data.message}`);
+            // console.log(`${response.data.status}: ${response.data.message}`);
           }
         })
         .catch(error => {
-          console.log('플레이리스트 내부 노래 목록 요청 오류 발생!', error);
+          // console.log('플레이리스트 내부 노래 목록 요청 오류 발생!', error);
         });
   }, []);
 

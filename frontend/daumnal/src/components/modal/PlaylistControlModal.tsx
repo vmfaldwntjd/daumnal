@@ -34,7 +34,7 @@ const PlaylistControlModal: React.FC<PlaylistControlModalProps> = ({ selectedPla
         if (result.isConfirmed) {
           axiosInstance.delete(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
             .then(response => {
-              console.log("플레이리스트 삭제 요청 성공!", response);
+              // console.log("플레이리스트 삭제 요청 성공!", response);
               Swal.fire({
                 title: "플레이리스트가 삭제되었습니다",
                 icon: "success"
@@ -42,7 +42,7 @@ const PlaylistControlModal: React.FC<PlaylistControlModalProps> = ({ selectedPla
               window.location.reload(); // 페이지 새로고침
             })
             .catch(error => {
-              console.error("플레이리스트 삭제 요청 실패!", error);
+              // console.error("플레이리스트 삭제 요청 실패!", error);
             });
         }
       });

@@ -128,16 +128,16 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicI
   useEffect(() => {
     axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${changePlaylistId}/musics`)
       .then(response => {
-        console.log('플레이리스트 정보 요청 성공!', response.data);
+        // console.log('플레이리스트 정보 요청 성공!', response.data);
         if (response.data.code === 200) {
           updateMusicLists(response.data.data.musics);
           setPlaying(true);
         } else {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
         }
       })
       .catch(error => {
-        console.log('플레이리스트 정보 요청 오류 발생!', error);
+        // console.log('플레이리스트 정보 요청 오류 발생!', error);
       });
   }, [changeMusicId, changePlaylistId, musics]);
 

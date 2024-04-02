@@ -45,7 +45,7 @@ async function refreshAccessToken(): Promise<string> {
   // 리프레시 토큰을 로컬 스토리지에서 가져옵니다.
   const refreshToken: string | null = localStorage.getItem('memberRefreshToken');
 
-  console.log(refreshToken)
+  // console.log(refreshToken)
 
   const response = await axios({
     method: 'get',

@@ -11,13 +11,13 @@ const LoginPage: React.FC = () => {
   const loginWithKakao = async () => {
     try {
       await Kakao.Auth.authorize({
-        redirectUri: `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`,
-        // redirectUri: `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`,
+        // redirectUri: `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`,
+        redirectUri: `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`,
         scope: 'profile_nickname',
         prompt: 'select_account',
       });
     } catch (error) {
-      console.error('카카오 로그인 에러:', error);
+      // console.error('카카오 로그인 에러:', error);
     }
   };
 

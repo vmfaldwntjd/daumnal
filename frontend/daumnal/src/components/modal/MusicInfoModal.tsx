@@ -55,7 +55,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
   const addMusicToPlaylist = (playlistId: number, playlistName: string) => {
     axiosInstance.post<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`, { musicId: selectedMusicId })
     .then(response => {
-      console.log('노래를 플레이리스트에 추가하는 요청 성공!', response.data);
+      // console.log('노래를 플레이리스트에 추가하는 요청 성공!', response.data);
       Swal.fire({
         position: "bottom-start",
         text: `${playlistName}에 노래를 추가했습니다`,
@@ -65,7 +65,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
       setSelectedPlaylists(prevState => [...prevState, playlistId]) // 선택된 플레이리스트에 추가
     })
     .catch(error => {
-      console.log('노래를 플레이리스트에 추가하는 요청 실패!', error);
+      // console.log('노래를 플레이리스트에 추가하는 요청 실패!', error);
     });
   };
 
@@ -73,7 +73,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
   const removeMusicFromPlaylist = (playlistId: number, playlistName: string) => {
     axiosInstance.delete<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${playlistId}/musics/${selectedMusicId}`)
       .then(response => {
-        console.log('플레이리스트에서 노래를 삭제하는 요청 성공!', response.data);
+        // console.log('플레이리스트에서 노래를 삭제하는 요청 성공!', response.data);
         Swal.fire({
           position: "bottom-start",
           text: `${playlistName}에서 노래를 삭제했습니다`,
@@ -83,7 +83,7 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
         setSelectedPlaylists(prevState => prevState.filter(id => id !== playlistId)); // 선택된 플레이리스트에서 삭제
       })
       .catch(error => {
-        console.log('플레이리스트에서 노래를 삭제하는 요청 실패!', error);
+        // console.log('플레이리스트에서 노래를 삭제하는 요청 실패!', error);
       });
   };
 
@@ -91,9 +91,9 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
   useEffect(() => {
     axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${selectedMusicId}/playlists`)
       .then(response => {
-        console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 성공!', response.data);
+        // console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 성공!', response.data);
         if (response.data.code === 200) {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
           setPlaylists(response.data.data.playlists);
           // isSelected가 true인 모든 플레이리스트를 선택된 플레이리스트로 설정
           const selectedPlaylistIds = response.data.data.playlists
@@ -101,11 +101,11 @@ const MusicInfoModal: React.FC<MusicInfoModalProps> = ({ selectedMusicId }) => {
             .map((playlist: Playlist) => playlist.playlistId);
           setSelectedPlaylists(selectedPlaylistIds);
         } else {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
         }
       })
       .catch(error => {
-        console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 실패!', error);
+        // console.log('해당 노래 추가/삭제 가능한 플레이리스트 정보 요청 실패!', error);
       });
   }, [isOpenCreateModal]);
 

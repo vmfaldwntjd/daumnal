@@ -22,8 +22,8 @@ const KakaoRedirectHandler = () => {
       }
   
       const client_id = process.env.REACT_APP_KAKAO_CLIENT_ID;
-      const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
-      // const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
+      // const redirect_uri = `${process.env.REACT_APP_LOCAL_BASE_URL}/oauth`;
+      const redirect_uri = `${process.env.REACT_APP_SERVER_BASE_URL}/oauth`;
   
       const response = await axios.post(
         `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=${redirect_uri}&code=${code}`,
@@ -63,10 +63,10 @@ const KakaoRedirectHandler = () => {
           navigate('/main', { replace: true });
         }
       } else {
-        console.error('로그인 과정에서 예상치 못한 오류가 발생했습니다:', responseData.message);
+        // console.error('로그인 과정에서 예상치 못한 오류가 발생했습니다:', responseData.message);
       }      
     } catch (error) {
-      console.error('로그인 과정에서 오류가 발생했습니다:', error);
+      // console.error('로그인 과정에서 오류가 발생했습니다:', error);
     }
   };
   
@@ -78,7 +78,7 @@ const KakaoRedirectHandler = () => {
     try {
       const memberId = localStorage.getItem('memberId'); // 로컬 스토리지에서 memberId 가져오기
       if (!memberId) {
-        console.error('memberId 정보를 찾을 수 없습니다.');
+        // console.error('memberId 정보를 찾을 수 없습니다.');
         return;
       }
   
@@ -94,7 +94,7 @@ const KakaoRedirectHandler = () => {
   
       if (response.data.code === 201) {
         // 성공 응답 처리
-        console.log(response.data.message); // 성공 메시지 로그로 출력
+        // console.log(response.data.message); // 성공 메시지 로그로 출력
         navigate('/main', { replace: true }); // 메인 페이지로 이동
       }
     } catch (error) {
@@ -130,10 +130,10 @@ const KakaoRedirectHandler = () => {
             }
             break;
           default:
-            console.error('닉네임 저장 과정에서 오류가 발생했습니다:', error);
+            // console.error('닉네임 저장 과정에서 오류가 발생했습니다:', error);
         }
       } else {
-        console.error('알 수 없는 오류가 발생했습니다:', error);
+        // console.error('알 수 없는 오류가 발생했습니다:', error);
       }
     }
   };
@@ -142,9 +142,9 @@ const KakaoRedirectHandler = () => {
 const handleLogout = async () => {
   try {
     localStorage.clear();
-    console.log('로그아웃 처리 성공')
+    // console.log('로그아웃 처리 성공')
   } catch (error) {
-    console.error('로그아웃 과정에서 오류가 발생했습니다:', error);
+    // console.error('로그아웃 과정에서 오류가 발생했습니다:', error);
   }
 };
 

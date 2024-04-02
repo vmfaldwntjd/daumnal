@@ -78,16 +78,16 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({ onClickToggle
     // POST 요청 보내기
     axiosImage.post<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists`, formData)
       .then(response => {
-        console.log('플레이리스트 생성 요청 성공!', response.data);
+        // console.log('플레이리스트 생성 요청 성공!', response.data);
         if (response.data.code === 201) {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
           onClickToggleModal();
         } else {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
         }
       })
       .catch(error => {
-        console.log('플레이리스트 생성 요청 오류 발생!', error);
+        // console.log('플레이리스트 생성 요청 오류 발생!', error);
       });
   };
 
