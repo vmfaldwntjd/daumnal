@@ -2,6 +2,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 
 DB_URL = 'mysql+pymysql://root:daumnal107@j10a107.p.ssafy.io:3300/daumnal'
+# DB_URL = 'mysql+pymysql://root:daumnal107@j10a107.p.ssafy.io:3306/daumnal'
 # DB_URL = 'mysql+pymysql://root:ssafy@localhost:3306/world'
 
 

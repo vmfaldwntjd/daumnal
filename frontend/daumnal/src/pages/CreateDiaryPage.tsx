@@ -94,7 +94,7 @@ const CreateDiary: React.FC = () => {
           setBackgroundMusicYoutubeId(response.data.data.backgroundMusicYoutubeId);
         }
       } catch (error) {
-        console.error('배경 음악 정보를 가져오는 데 실패했습니다.', error);
+        // console.error('배경 음악 정보를 가져오는 데 실패했습니다.', error);
       }
     };
 

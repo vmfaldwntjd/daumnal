@@ -50,21 +50,21 @@ const MusicResultPage: React.FC = () => {
   const characterImageUrl = getCharacterImageUrl(selectedCharacter);
     
   useEffect(() => {
-    console.log(`추천받은 노래 id: ${musicId}`)
+    // console.log(`추천받은 노래 id: ${musicId}`)
     axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/musics/${musicId}`)
     .then(response => {
-      console.log('추천된 노래 정보 요청 성공!', response.data);
+      // console.log('추천된 노래 정보 요청 성공!', response.data);
       if (response.data.code === 200) {
-        console.log(`${response.data.status}: ${response.data.message}`);
+        // console.log(`${response.data.status}: ${response.data.message}`);
         setMusicCoverUrl(response.data.data.musicCoverUrl)
         setMusicTitle(response.data.data.musicTitle)
         setMusicSingerName(response.data.data.musicSingerName)
       } else {
-        console.log(`${response.data.status}: ${response.data.message}`);
+        // console.log(`${response.data.status}: ${response.data.message}`);
       }
     })
     .catch(error => {
-      console.log('추천된 노래 정보 요청 오류 발생!', error);
+      // console.log('추천된 노래 정보 요청 오류 발생!', error);
     });
   }, []);
 

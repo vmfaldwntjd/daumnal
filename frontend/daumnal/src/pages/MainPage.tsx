@@ -15,7 +15,7 @@ const MainPage: React.FC = () => {
           setNickname(response.data.data.memberNickname);
         }
       })
-      .catch(error => console.error("닉네임 조회 중 오류가 발생했습니다.", error));
+      .catch();
   }, []);
 
   return (

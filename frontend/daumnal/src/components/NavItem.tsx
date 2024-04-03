@@ -38,7 +38,7 @@ export default function NavItem({ data, clickable = true }: NavProps): JSX.Eleme
           navigate(address);
         }
       } catch (error) {
-        console.error("일기 작성 여부 조회 중 오류가 발생했습니다.", error);
+        // console.error("일기 작성 여부 조회 중 오류가 발생했습니다.", error);
       }
     } else {
       // React Router v6

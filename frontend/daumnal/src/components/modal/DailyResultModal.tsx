@@ -125,7 +125,7 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
   const fetchEmotionData = async () => {
     try {
       const response = await axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/emotions/${validEmotionId}`);
-      console.log(response)
+      // console.log(response)
       // 서버 응답 구조에 맞게 `setEmotionData`를 수정합니다.
       setEmotionData(response.data.data);
     } catch (error) {

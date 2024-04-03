@@ -28,7 +28,7 @@ const AddLyricsModal: React.FC<AddLyricsModalProps> = ({ setIsAddLyricsModalOpen
       };
 
     const addLyrics = () => {
-        console.log('diaryAddLyrics', diaryAddLyrics)
+        // console.log('diaryAddLyrics', diaryAddLyrics)
         axiosInstance.patch(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/diaries/${diaryId}/lyrics`, {
             "diaryLyricsLineNumbers" : diaryAddLyrics
         })
@@ -42,7 +42,7 @@ const AddLyricsModal: React.FC<AddLyricsModalProps> = ({ setIsAddLyricsModalOpen
             }
         })
         .catch(function (error:any) {
-            console.log('가사 등록 에러 발생', error.response);
+            // console.log('가사 등록 에러 발생', error.response);
         });
     }
 
@@ -52,9 +52,9 @@ const AddLyricsModal: React.FC<AddLyricsModalProps> = ({ setIsAddLyricsModalOpen
     <div className='fixed mr-[134px] inset-0 bg-white bg-opacity-0 flex justify-center items-center'> {/* 배경 클릭 시 모달 닫기 */}
       <div onClick={(e) => e.stopPropagation()} className='w-[455px] h-[80%] m-auto  shadow-lg bg-white rounded-sm'> {/* 모달 컨텐츠 클릭 시 버블링 방지 */}
         <div className='flex justify-end'><button onClick={() => {setIsAddLyricsModalOpen(false)}} className='mt-2 mr-2 text-xl'><FontAwesomeIcon icon={faX} size="xs" style={{color: "#776b5d",}} /></button></div>
-        <div className='h-[87%] overflow-y-auto flex flex-col items-center font-[20px]'>
+        <div className='h-[87%] overflow-y-auto px-8 flex flex-col font-[20px]'>
         {diaryMusicLyrics.map((lyric, index) => (
-            <button
+            <button className='text-start'
             key={index}
             style={{
                 display: 'block',
@@ -66,7 +66,7 @@ const AddLyricsModal: React.FC<AddLyricsModalProps> = ({ setIsAddLyricsModalOpen
             {lyric}
             </button>
         ))}
-        <button onClick={addLyrics} style={{ fontFamily: "Cafe24Oneprettynight" }} className='mt-4 border py-[4px] px-[10px] border-button_border bg-bg_button rounded-lg'>등록</button>
+        <div className='flex justify-center items-center'><button onClick={addLyrics} style={{ fontFamily: "Cafe24Oneprettynight" }} className='w-[80px] mt-8 border py-[4px] px-[10px] border-button_border bg-bg_button rounded-lg'>등록</button></div>
         </div>
       </div>
     </div>

@@ -96,7 +96,7 @@ const EmotionGraph = () => {
   }, []); // 의존성 배열이 비어있으므로 컴포넌트가 마운트될 때 한 번만 실행됩니다.
 
   useEffect(() => {
-    console.log(`선택된 년도: ${selectedYear}, 선택된 월: ${selectedMonth}`);
+    // console.log(`선택된 년도: ${selectedYear}, 선택된 월: ${selectedMonth}`);
   }, [selectedYear, selectedMonth]);
 
   const toggleEmotion = (emotion: string) => {

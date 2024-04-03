@@ -30,7 +30,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
             "       end as emotionFirst,\n" +
             "       hash_tag as diaryHashTag, day(diary.created_at) as diaryDay from diary\n" +
             "inner join emotion on diary.emotion_id = emotion.id\n" +
-            "where member_id = :memberId and year(diary.created_at) = :yearSql and month(diary.created_at) = :monthSql", nativeQuery = true)
+            "where member_id = :memberId and year(diary.created_at) = :yearSql and month(diary.created_at) = :monthSql order by diary.created_at", nativeQuery = true)
     List<CalendarContent> findDiariesByYearAndMonth(@Param("memberId") Long memberId, @Param("yearSql") int yearSql, @Param("monthSql") int monthSql);
 
     @Query(value = "select emotion.fear as fear, emotion.surprise as surprise, emotion.angry as angry, emotion.sadness as sadness,\n" +

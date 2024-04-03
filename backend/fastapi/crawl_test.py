@@ -25,7 +25,6 @@ def youtube_music(driver):
             playlist_item = driver.find_element(By.XPATH,
                                                 f"//*[@id='contents']/ytmusic-responsive-list-item-renderer[{idx}]")
 
-            # 제목
             title = playlist_item.find_element(By.XPATH, './/div[2]/div[1]/yt-formatted-string/a').text
             # 가수
             artist = playlist_item.find_element(By.XPATH, './/div[2]/div[3]/yt-formatted-string[1]/a').text
@@ -33,7 +32,7 @@ def youtube_music(driver):
             # 노래 재생
             playlist_item.find_element(By.XPATH, './/div[1]/ytmusic-item-thumbnail-overlay-renderer/div/ytmusic-play'
                                                  '-button-renderer/div/yt-icon').click()
-            time.sleep(2)
+            time.sleep(3)
 
             # 모달 창 열기
             driver.find_element(By.XPATH, '/html/body/ytmusic-app/ytmusic-app-layout/ytmusic-player-bar/div['
@@ -50,12 +49,13 @@ def youtube_music(driver):
             if idx == 1:
                 driver.find_element(By.XPATH, '//*[@id="tabsContent"]/tp-yt-paper-tab[2]/div').click()
                 time.sleep(2)
+
             lyrics = driver.find_element(By.XPATH, '//*[@id="contents"]/ytmusic-description-shelf-renderer/yt-formatted'
                                                    '-string[2]').text
 
             # 모달 창 닫기 & 스크롤 다운
             ActionChains(driver).send_keys(Keys.ESCAPE).scroll_by_amount(0, 45).perform()
-            time.sleep(3)
+            time.sleep(4)
 
             music_list.append([youtube_code, title, artist, image_url, lyrics])
             idx += 1
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
         # 4. 로그인 완료 후 YouTube Music 장르 페이지로 리다이렉트
         driver.get('https://music.youtube.com/playlist?list=RDCLAK5uy_kSZ85qHgyyqQCKkCtrjbA3m8Am7GfOTcQ')
-        time.sleep(2)
+        time.sleep(5)
 
         youtube_music(driver)
         response_list = []

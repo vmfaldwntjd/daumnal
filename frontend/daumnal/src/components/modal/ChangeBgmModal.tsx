@@ -80,7 +80,7 @@ const ChangeBGMModal: React.FC<Props> = ({ isOpen, onClose }) => {
         onClose();
       }
     } catch (error) {
-      console.error('BGM 변경 중 오류가 발생했습니다.', error);
+      // console.error('BGM 변경 중 오류가 발생했습니다.', error);
     }
   };
 

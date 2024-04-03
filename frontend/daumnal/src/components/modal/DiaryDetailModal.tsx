@@ -58,7 +58,7 @@ interface DiaryDetailModalProps {
 
     })
     .catch(function (error:any) {
-      console.log('일기 상세 조회 에러 발생', error.response);
+      // console.log('일기 상세 조회 에러 발생', error.response);
     });
   }
 
@@ -70,7 +70,7 @@ interface DiaryDetailModalProps {
       setDiaryRegisteredLyrics(response.data.data.diaryLyricsLineNumbers)
     })
     .catch(function (error:any) {
-      console.log('일기 가사 조회 에러 발생', error.response);
+      // console.log('일기 가사 조회 에러 발생', error.response);
     });
   }
 
