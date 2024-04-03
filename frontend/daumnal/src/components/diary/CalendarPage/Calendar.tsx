@@ -78,7 +78,7 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
           setDiaryList(response.data.data.calendarContents)
         })
         .catch(error => {
-          console.error('캘린더 정보 호출 중 오류 발생:', error);
+          // console.error('캘린더 정보 호출 중 오류 발생:', error);
         });
     }
   }, [activeMonth, setSelectedYear, setSelectedMonth, isDiaryModalOpen])
@@ -86,7 +86,7 @@ const CalendarComponent: React.FC<CalendarProps> = ( {setSelectedMonth, setSelec
 
   useEffect(() => {
     // diaryList의 각 요소에서 diaryDay와 diaryId만 추출하여 새로운 배열을 생성
-    console.log(diaryList)
+    // console.log(diaryList)
     const updatedDiaryModalList = diaryList.map(diary => [parseInt(diary.diaryDay, 10), parseInt(diary.diaryId, 10)]);
     
     // 생성된 배열을 diaryModalList 상태에 저장

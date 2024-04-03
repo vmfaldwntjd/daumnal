@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
         prompt: 'select_account',
       });
     } catch (error) {
-      console.error('카카오 로그인 에러:', error);
+      // console.error('카카오 로그인 에러:', error);
     }
   };
 

@@ -106,7 +106,7 @@ async def recommend_music(
         elif diary_emotion[0] is None:
             raise UnicornException(status="wrongDiaryNumber")
         music_ids, music_emotions = qs.get_music_with_emotion(music_category)
-        recommended_music_id = recommend.recomm(diary_emotion[0], music_ids, music_emotions)
+        recommended_music_id = recommend.recomm(diary_emotion[0], music_ids, music_emotions, authorization)
 
         base_url = "https://daumnal.n-e.kr/api"
         url = f"{base_url}/diaries/{diary_id}/musics/{recommended_music_id.id}"

@@ -5,6 +5,15 @@ import MusicPlay from '../components/music/MusicPlay';
 import PlaylistList from '../components/music/PlaylistList';
 import PlaylistDetail from '../components/music/PlaylistDetail';
 
+interface Musics {
+  musicId: number;
+  musicYoutubeId: string;
+  musicTitle: string;
+  musicSingerName: string;
+  musicCoverUrl: string;
+  musicLyrics: string;
+}
+
 const PlaylistPage: React.FC = () => {
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
   const [playing, setPlaying] = useState<boolean>(true); // 현재 재생 상태를 저장하는 상태 변수(기본값 false)
@@ -12,6 +21,7 @@ const PlaylistPage: React.FC = () => {
   const [nowPlaylistId, setNowPlaylistId] = useState<number | null>(null);
   const [changeMusicId, setChangeMusicId] = useState<number | null>(null);
   const [changePlaylistId, setChangePlaylistId] = useState<number | null>(null);
+  const [musics, setMusics] = useState<Musics[]>([]); // 플레이리스트 내부 노래 목록
 
   // 선택한 플레이리스트 상세 컴포넌트로 교체하는 함수
   const handlePlaylistSelect = (id: number) => {
@@ -37,6 +47,8 @@ const PlaylistPage: React.FC = () => {
             nowMusicId={nowMusicId}
             setNowMusicId={setNowMusicId}
             setNowPlaylistId={setNowPlaylistId}
+            musics={musics}
+            setMusics={setMusics}
           />
         ) : (
           // 플레이리스트 목록 컴포넌트 렌더링
@@ -50,6 +62,7 @@ const PlaylistPage: React.FC = () => {
           setPlaying={setPlaying}
           changeMusicId={changeMusicId}
           changePlaylistId={changePlaylistId}
+          musics={musics}
         />
       </RightBox>
     </div>

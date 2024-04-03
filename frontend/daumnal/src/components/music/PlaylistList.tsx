@@ -37,16 +37,16 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ onPlaylistSelect }) => {
   useEffect(() => {
     axiosInstance.get<ApiResponse>(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists`)
       .then(response => {
-        console.log('플레이리스트 목록 요청 성공!', response.data);
+        // console.log('플레이리스트 목록 요청 성공!', response.data);
         if (response.data.code === 200) {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
           setPlaylists(response.data.data.playlists);
         } else {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
         }
       })
       .catch(error => {
-        console.log('플레이리스트 목록 요청 오류 발생!', error);
+        // console.log('플레이리스트 목록 요청 오류 발생!', error);
       });
   }, [isOpenCreateModal]);
 

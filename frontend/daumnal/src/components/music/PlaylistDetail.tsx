@@ -15,6 +15,8 @@ interface PlaylistDetailProps {
   nowMusicId: number | null;
   setNowPlaylistId: Dispatch<SetStateAction<number | null>>;
   setNowMusicId: Dispatch<SetStateAction<number | null>>;
+  musics: Musics[];
+  setMusics: Dispatch<SetStateAction<Musics[]>>;
 }
 
 interface Musics {
@@ -26,7 +28,7 @@ interface Musics {
   musicLyrics: string;
 }
 
-const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, setSelectedPlaylistId, playing, setPlaying, nowMusicId, setNowPlaylistId, setNowMusicId }) => {
+const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, setSelectedPlaylistId, playing, setPlaying, nowMusicId, setNowPlaylistId, setNowMusicId, musics, setMusics }) => {
   // 기본 이미지 지정
   const defaultImageUrl = '/image/playlist_default.png';
   // 모달 열려 있는지 확인
@@ -37,8 +39,6 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, set
   const [playlistName, setPlaylistName] = useState<string>('');
   // 플레이리스트 커버 이미지 경로
   const [playlistCoverUrl, setPlaylistCoverUrl] = useState<string>('');
-  // 플레이리스트 내부 노래 목록
-  const [musics, setMusics] = useState<Musics[]>([]);
 
   // 플레이리스트 목록 컴포넌트로 교체하는 함수
   const handleModifySelectedPlaylistId = () => {
@@ -77,16 +77,16 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, set
   useEffect(() => {
     axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}`)
       .then(response => {
-        console.log('플레이리스트 정보 요청 성공!', response.data);
+        // console.log('플레이리스트 정보 요청 성공!', response.data);
         if (response.data.code === 200) {
           setPlaylistName(response.data.data.playlistName);
           setPlaylistCoverUrl(response.data.data.playlistCoverUrl);
         } else {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
         }
       })
       .catch(error => {
-        console.log('플레이리스트 정보 요청 오류 발생!', error);
+        // console.log('플레이리스트 정보 요청 오류 발생!', error);
       });
   }, []);
 
@@ -94,15 +94,15 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, set
   useEffect(() => {
     axiosInstance.get(`${process.env.REACT_APP_SPRINGBOOT_BASE_URL}/playlists/${selectedPlaylistId}/musics`)
       .then(response => {
-        console.log('플레이리스트 내부 노래 목록 요청 성공!', response.data);
+        // console.log('플레이리스트 내부 노래 목록 요청 성공!', response.data);
         if (response.data.code === 200) {
           setMusics(response.data.data.musics);
         } else {
-          console.log(`${response.data.status}: ${response.data.message}`);
+          // console.log(`${response.data.status}: ${response.data.message}`);
         }
       })
       .catch(error => {
-        console.log('플레이리스트 내부 노래 목록 요청 오류 발생!', error);
+        // console.log('플레이리스트 내부 노래 목록 요청 오류 발생!', error);
       });
   }, []);
 
@@ -147,6 +147,8 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ selectedPlaylistId, set
             playing={playing}
             setPlaying={setPlaying}
             nowMusicId={nowMusicId}
+            musics={musics}
+            setMusics={setMusics}
           />
         ))}
       </Musics>

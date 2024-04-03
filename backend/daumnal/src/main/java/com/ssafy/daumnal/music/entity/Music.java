@@ -67,12 +67,12 @@ public class Music extends BaseEntity {
     public GetMusicResponse toGetMusicResponse() {
 
         return GetMusicResponse.builder()
-            .musicId(id)
-            .musicYoutubeId(youtubeId)
-            .musicTitle(title)
-            .musicSingerName(singerName)
-            .musicCoverUrl(coverUrl)
-            .musicLyrics(lyrics)
-            .build();
+                .musicId(id)
+                .musicYoutubeId(youtubeId)
+                .musicTitle(title)
+                .musicSingerName(singerName)
+                .musicCoverUrl(coverUrl)
+                .musicLyrics(lyrics)
+                .build();
     }
 }

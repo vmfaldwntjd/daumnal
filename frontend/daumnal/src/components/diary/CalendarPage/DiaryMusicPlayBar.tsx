@@ -52,7 +52,7 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
             setDiaryMusicLyrics(musicData.musicLyrics)
           })
           .catch(function (error:any) {
-            console.log('일기 상세 조회 에러 발생', error.response);
+            // console.log('일기 상세 조회 에러 발생', error.response);
           });
 
 
