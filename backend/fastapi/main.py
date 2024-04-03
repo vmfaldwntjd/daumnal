@@ -111,6 +111,7 @@ async def recommend_music(
         base_url = "https://daumnal.n-e.kr/api"
         url = f"{base_url}/diaries/{diary_id}/musics/{recommended_music_id.id}"
 
+
         headers = {
             "Authorization": authorization
         }
