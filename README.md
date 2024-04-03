@@ -55,11 +55,10 @@
 # 화면 구성 소개
 
 ## 영상 소개
-
 - - -
 # 기술 소개
 ## 시스템 아키텍처
-
+<img src="https://github.com/spring-projects/spring-security/assets/75198221/8de46ad2-bf9d-4bbe-a93f-f7e0c6b63684"/>
 
 ## ERD
 <img src="https://github.com/spring-projects/spring-security/assets/75198221/fb1e1ad9-b723-46d1-adc8-c13d7157ff7f"/>
