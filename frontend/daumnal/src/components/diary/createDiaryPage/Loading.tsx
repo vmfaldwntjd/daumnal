@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import axiosImage from '../../../pages/api/axiosImage';
 import axiosInstance from '../../../pages/api/axiosInstance';
 import Swal from 'sweetalert2'
-import LoadingGif from './image/LoadingBar.gif'
 
 const Images = styled.div`
   width: 100%;
@@ -70,6 +69,13 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
       console.log(response)
       if (response.data.code === 200) {
         // console.log(response)
+
+        Swal.fire({
+          'title': '감정 분석이 완료되었습니다!',
+          'text' : '오늘의 나무를 선택해주세요',
+          'icon' : 'success',
+          confirmButtonText: "확인"
+        })
 
         const emotion: DiaryEmotion = response.data.data.diaryEmotion
 
