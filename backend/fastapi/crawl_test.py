@@ -116,7 +116,6 @@ if __name__ == '__main__':
             i += 1
         # -------------------------- for문 처리 끝 --------------------------
 
-        # print(music_list)
         # print(response_list)
 
         res = requests.post("https://daumnal-d.n-e.kr:4000/api/musics", json={"musics": response_list})
