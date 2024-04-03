@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
+import static com.ssafy.daumnal.global.constants.S3Path.PRODUCTION_SERVER;
 
 @Service
 @RequiredArgsConstructor
@@ -56,14 +57,14 @@ public class S3ServiceImpl implements S3Service {
             //S3에 파일 업로드
             amazonS3Client.putObject(
                     //외부에 공개하는 파일인 경우 Public Read 권한을 추가
-                    new PutObjectRequest(bucket, path + "/" + fileName, file.getInputStream(), metadata)
+                    new PutObjectRequest(bucket, PRODUCTION_SERVER + "/" + path + "/" + fileName, file.getInputStream(), metadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead)
             );
         } catch (IOException e) {
             throw new ServerException(NOT_UPLOADS_FILE);
         }
 
-        return amazonS3Client.getUrl(bucket, path + "/" + fileName).toString();
+        return amazonS3Client.getUrl(bucket, PRODUCTION_SERVER + "/" + path + "/" + fileName).toString();
     }
 
     /**
