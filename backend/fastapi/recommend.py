@@ -27,7 +27,7 @@ def recomm(diary_emo, music_ids, music_emoes, authorization):
     product_list = mat @ list
     print(product_list)
 
-    response = requests.get("https://daumnal-d.n-e.kr:4000/api/diaries/recent-music",
+    response = requests.get("https://daumnal.n-e.kr/api/diaries/recent-music",
                             headers={"Authorization": authorization})
     # print(response.status_code)
 
