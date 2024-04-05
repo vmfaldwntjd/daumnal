@@ -146,15 +146,15 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicI
       {/* 노래 정보 */}
       {changeMusicId !== null && changePlaylistId !== null && musics.length !== 0 ? (
         <>
-          <p className="text-2xl mb-4">{musicTitleList[currentSongIndex]}</p>
-          <p className="text-xl mb-8">{musicSingerNameList[currentSongIndex]}</p>
-          <img className="mb-8 w-60 rounded-full" src={musicCoverUrlList[currentSongIndex]} alt="앨범 커버" />
+          <p className="text-3xl mb-[25px]">{musicTitleList[currentSongIndex]}</p>
+          <p className="text-2xl mb-[45px]">{musicSingerNameList[currentSongIndex]}</p>
+          <img className="mb-[55px] w-[270px] rounded-full" src={musicCoverUrlList[currentSongIndex]} alt="앨범 커버" />
         </>
       ) : (
         <>
-          <p className="text-2xl mb-4">노래를 재생해 보세요</p>
-          <p className="text-xl mb-8">재생중인 노래가 이곳에 보여집니다</p>
-          <img className="mb-8 w-60 rounded-full" src="image/playlist_default.png" alt="기본 앨범 커버" />
+          <p className="text-3xl mb-[25px]">노래를 재생해 보세요</p>
+          <p className="text-2xl mb-[45px]">재생중인 노래가 이곳에 보여집니다</p>
+          <img className="mb-[55px] w-[270px] rounded-full" src="image/playlist_default.png" alt="기본 앨범 커버" />
         </>
       )}
       {/* 컨트롤박스 */}
@@ -172,9 +172,10 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicI
           onEnded={() => handleNext()} // 해당 곡이 끝날 때 다음 곡으로 이동
           onProgress={handleProgress} // 재생 중인 노래의 재생 시간 업데이트
           onDuration={(duration) => setDuration(duration)} // 노래의 총 재생 시간 설정
+          volume={0.01} // 기본 볼륨을 0.01로 설정
         />
         {/* 커스텀 컨트롤바 */}
-        <div className="flex flex-col w-[320px] mt-3">
+        <div className="flex flex-col w-[360px] mt-3 mb-[35px]">
           <Bar
             type="range"
             min={0}
@@ -184,13 +185,13 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicI
             progress={playedSeconds / duration || 0} // progress prop 추가
             onChange={(e) => handleSeek(parseFloat(e.target.value))}
           />
-          <p className="flex justify-between mt-1">
-            <p className="text-sm">{formatTime(playedSeconds)}</p>
-            <p className="text-sm">{formatTime(duration)}</p>
+          <p className="flex justify-between mt-2">
+            <p className="text-base">{formatTime(playedSeconds)}</p>
+            <p className="text-base">{formatTime(duration)}</p>
           </p>
         </div>
         {/* 컨트롤 버튼 */}
-        <div className='flex justify-between mt-7'>
+        <Buttons>
           {/* 반복재생 */}
           {looping ? (
             <button onClick={handleLoop}><FontAwesomeIcon className="text-3xl text-[#776B5D]" icon={faRepeat} /></button>
@@ -212,11 +213,11 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicI
             <LyricsModal lyrics={musicLyricsList[currentSongIndex]} onClickToggleModal={handleLyrics} />
           )}
           {changeMusicId !== null && changePlaylistId !== null ? (
-            <button onClick={handleLyrics}><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
+            <button onClick={handleLyrics}><FontAwesomeIcon className="text-[28px] text-[#776B5D]" icon={faFileLines} /></button>
           ) : (
-            <button><FontAwesomeIcon className="text-[26px] text-[#776B5D]" icon={faFileLines} /></button>
+            <button><FontAwesomeIcon className="text-[28px] text-[#776B5D]" icon={faFileLines} /></button>
           )}
-        </div>
+        </Buttons>
       </div>
     </Container>
   );
@@ -238,7 +239,7 @@ interface BarProps {
 
 const Bar = styled.input<BarProps>`
   width: 100%;
-  height: 5px;
+  height: 10px;
   cursor: pointer;
   -webkit-appearance: none;
   border-radius: 50px;
@@ -251,11 +252,20 @@ const Bar = styled.input<BarProps>`
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: #776B5D;
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
     border-radius: 50px;
     cursor: pointer;
   };
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 45px;
+  background-color: #f2ebe2;
+  border-radius: 10px;
+  padding: 25px 35px;
 `;
 
 // 재생 시간 설정 함수
