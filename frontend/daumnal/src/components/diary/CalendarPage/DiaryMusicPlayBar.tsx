@@ -94,15 +94,16 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
   return (
     <div>
     <ReactPlayer
-    ref={playerRef} // Ref 설정
-    url={`https://www.youtube.com/watch?v=${diaryMusicCode}`} // 현재 재생 중인 곡의 URL 설정
-    controls={false} // 기본 컨트롤러를 사용하지 않도록 설정
-    width="0" // 화면이 보이지 않도록 설정
-    height="0" // 화면이 보이지 않도록 설정
-    playing={playing} // 재생 상태 설정
-    loop={true} // 루프 상태 설정
-    onPlay={() => setPlaying(true)} // 재생 시 재생 상태 업데이트
-    onPause={() => setPlaying(false)} // 정지 시 재생 상태 업데이트
+      ref={playerRef} // Ref 설정
+      url={`https://www.youtube.com/watch?v=${diaryMusicCode}`} // 현재 재생 중인 곡의 URL 설정
+      controls={false} // 기본 컨트롤러를 사용하지 않도록 설정
+      width="0" // 화면이 보이지 않도록 설정
+      height="0" // 화면이 보이지 않도록 설정
+      playing={playing} // 재생 상태 설정
+      loop={true} // 루프 상태 설정
+      onPlay={() => setPlaying(true)} // 재생 시 재생 상태 업데이트
+      onPause={() => setPlaying(false)} // 정지 시 재생 상태 업데이트
+      volume={0.01} // 기본 볼륨을 0.01로 설정
     />
     <div className='w-[350px] relative flex flex-row items-center justify-between p-2  rounded-lg bg-[#FFFCF7] shadow-md'>
         <div className='flex flex-row items-center'>

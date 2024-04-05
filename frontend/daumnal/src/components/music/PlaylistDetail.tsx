@@ -168,7 +168,7 @@ const Wrapper = styled.div`
 const PlaylistModalContainer = styled.div`
   position: absolute;
   z-index: 2;
-  right: 47%;
+  right: 48.5%;
 `;
 
 const Top = styled.div`
@@ -180,7 +180,7 @@ const Top = styled.div`
 
 const Musics = styled.div`
   width: 70%;
-  height: 60vh;
+  height: 64.5vh;
   overflow-y: auto;
   background-color: #F8F6EE;
   display: flex;
