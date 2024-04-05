@@ -172,7 +172,7 @@ const MusicPlay: React.FC<MusicPlayProps> = ({ playing, setPlaying, changeMusicI
           onEnded={() => handleNext()} // 해당 곡이 끝날 때 다음 곡으로 이동
           onProgress={handleProgress} // 재생 중인 노래의 재생 시간 업데이트
           onDuration={(duration) => setDuration(duration)} // 노래의 총 재생 시간 설정
-          volume={0.01} // 기본 볼륨을 0.01로 설정
+          volume={0.2} // 기본 볼륨을 0.01로 설정
         />
         {/* 커스텀 컨트롤바 */}
         <div className="flex flex-col w-[360px] mt-3 mb-[35px]">

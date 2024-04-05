@@ -103,7 +103,7 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ diaryMusicId }) =
       loop={true} // 루프 상태 설정
       onPlay={() => setPlaying(true)} // 재생 시 재생 상태 업데이트
       onPause={() => setPlaying(false)} // 정지 시 재생 상태 업데이트
-      volume={0.01} // 기본 볼륨을 0.01로 설정
+      volume={0.2} // 기본 볼륨을 0.01로 설정
     />
     <div className='w-[350px] relative flex flex-row items-center justify-between p-2  rounded-lg bg-[#FFFCF7] shadow-md'>
         <div className='flex flex-row items-center'>
