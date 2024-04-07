@@ -146,7 +146,7 @@ const LoadingPage: React.FC<LoadingProps> = ({ setIsLoading, removeTagsContent, 
 
  
   return (
-    <div className="flex flex-col items-center p-10">
+    <div className="flex flex-col items-center p-10 mt-20">
       <Images>
         <Image src="/image/dabom.png" onLoad={handleImageLoad}/>
         <Image src="/image/dareum.png" onLoad={handleImageLoad}/>

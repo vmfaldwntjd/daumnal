@@ -149,8 +149,8 @@ const EmotionGraph = () => {
   };
 
   return (
-    <div className='h-screen w-full p-12'>
-      <div className='relative w-full pt-1 pb-1 px-6 bg-white rounded-xl shadow-lg flex flex-col justify-center m-auto'>
+    <div className='h-full w-full p-12'>
+      <div className=' mt-10 relative w-full h-[680px] pt-1 pb-1 px-6 bg-white rounded-xl shadow-lg flex flex-col justify-center m-auto'>
       <button
         onClick={() => navigate('/calendar', { state: { selectedYear, selectedMonth } })}
         className="absolute top-5 left-5 p-2 rounded-full fa-xl"
@@ -158,7 +158,7 @@ const EmotionGraph = () => {
       >
         <FontAwesomeIcon icon={faAngleLeft} />
       </button>
-      <h2 className="text-center mb-6 text-base pt-2 px-4 lg:text-2xl">
+      <h2 className="text-center mt-2 mb-6 text-base pt-2 px-4 lg:text-2xl">
         {`${selectedYear || '년도'}년 ${selectedMonth || '월'}월`}
       </h2>
         <div
