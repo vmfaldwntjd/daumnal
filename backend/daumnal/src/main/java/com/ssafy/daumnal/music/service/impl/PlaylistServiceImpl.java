@@ -253,5 +253,6 @@ public class PlaylistServiceImpl implements PlaylistService {
             throw new NotSameException(NOT_SAME_LOGIN_MEMBER_AND_PLAYLIST_OWNER);
         }
         playlistRepository.deleteById(playlistId);
+        s3Service.delete(playlist.getCoverUrl());
     }
 }
