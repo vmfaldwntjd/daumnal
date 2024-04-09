@@ -281,6 +281,8 @@ public class DiaryServiceImpl implements DiaryService {
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_DIARY_ID));
 
         diaryRepository.deleteById(diary.getId());
+        s3Service.delete(diary.getPhotoUrl());
+        
         return RemoveDiaryResponse.builder()
                 .diaryId(diaryId)
                 .build();
