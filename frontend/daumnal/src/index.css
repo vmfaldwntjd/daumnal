@@ -2,11 +2,12 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* body {
+
+body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background-color: #EBE3D5;
+  color: #696864;
+  font-family: 'Cafe24Oneprettynight';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -14,4 +15,39 @@
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-} */
+}
+
+.ql-size-small {
+  font-size: 0.75em;
+}
+
+.ql-size-large {
+  font-size: 1.5em; /* 원하는 글자 크기로 조정 */
+}
+
+.ql-size-huge {
+  font-size: 2.5em
+}
+
+/* 스크롤바 전체 스타일 */
+::-webkit-scrollbar {
+  width: 7px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바 트랙 (바탕) */
+::-webkit-scrollbar-track {
+  border-radius: 100px; 
+  background:  rgba(119, 107,93, 0.1); /* 트랙의 배경 색상 */
+}
+
+/* 스크롤바 핸들 (움직이는 부분) */
+::-webkit-scrollbar-thumb {
+  border-radius: 100px; 
+  background: rgba(119, 107,93, 0.3); /* 핸들의 배경 색상 */
+}
+
+/* 스크롤바 핸들:hover (마우스 오버 시) */
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 100px; 
+  background: rgba(119, 107,93, 0.5); /* 마우스 오버 시 핸들의 배경 색상 */
+}
