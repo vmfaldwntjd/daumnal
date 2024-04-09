@@ -16,7 +16,7 @@ import recommend
 app = FastAPI()
 
 # cors 설정
-origins = ["https://daumnal-d.n-e.kr:4000", "http://localhost:3000"]
+origins = ["https://daumnal.n-e.kr", "http://localhost:3000"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -108,8 +108,9 @@ async def recommend_music(
         music_ids, music_emotions = qs.get_music_with_emotion(music_category)
         recommended_music_id = recommend.recomm(diary_emotion[0], music_ids, music_emotions, authorization)
 
-        base_url = "https://daumnal-d.n-e.kr:4000/api"
+        base_url = "https://daumnal.n-e.kr/api"
         url = f"{base_url}/diaries/{diary_id}/musics/{recommended_music_id.id}"
+
 
         headers = {
             "Authorization": authorization
