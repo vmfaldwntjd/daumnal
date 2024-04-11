@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import static com.ssafy.daumnal.global.constants.ErrorCode.*;
 import static com.ssafy.daumnal.global.constants.S3Path.PLAYLIST_COVER_PATH;
 import static com.ssafy.daumnal.music.constants.MusicConstants.*;
-import static com.ssafy.daumnal.music.constants.PlaylistConstants.PLAYLIST_DEFAULT_COVER_URL;
+import static com.ssafy.daumnal.music.constants.PlaylistConstants.*;
 
 import java.util.ArrayList;
 import java.util.List;

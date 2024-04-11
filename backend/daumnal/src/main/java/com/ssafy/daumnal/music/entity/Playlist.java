@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 
-import static com.ssafy.daumnal.music.constants.PlaylistConstants.PLAYLIST_DEFAULT_COVER_URL;
+import static com.ssafy.daumnal.music.constants.PlaylistConstants.PLAYLIST_DEFAULT_COVER_URL_DB;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,7 +31,7 @@ public class Playlist extends BaseEntity {
     private String name;
 
     @Column(name = "cover_url", columnDefinition = "VARCHAR(3000)")
-    @ColumnDefault(PLAYLIST_DEFAULT_COVER_URL)
+    @ColumnDefault(PLAYLIST_DEFAULT_COVER_URL_DB)
     private String coverUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
