@@ -22,11 +22,14 @@ const LoginPage: React.FC = () => {
   };
 
   return (
+    // 화면 전체를 채우고 상하 중앙 정렬을 위해 수정된 스타일
     <div className='text-center mt-20' style={{ 
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'center', 
-      justifyContent: 'center',
+      justifyContent: 'center', // 요소들을 상하 중앙에 위치시키기 위해 사용
+      height: '100vh', // 화면 전체 높이를 차지하도록 설정
+      margin: '0', // 상단 여백 제거
       transform: 'translateX(16px)', // 여기에 transform 속성 추가
     }}>
       <style>

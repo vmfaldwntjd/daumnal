@@ -141,7 +141,7 @@ const DiaryCreatePlaylistModal: React.FC<DiaryCreatePlaylistModalProps> = ({ onC
 
 const ModalContent = styled.div`
   width: 30%;
-  height: 75%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
