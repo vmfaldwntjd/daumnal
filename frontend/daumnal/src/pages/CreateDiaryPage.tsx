@@ -45,6 +45,12 @@ const CreateDiary: React.FC = () => {
   const [iconState, setIconState] = useState<boolean>(true);
   const [backgroundMusicYoutubeId, setBackgroundMusicYoutubeId] = useState<string>('');
 
+  const dynamicStyle = `
+    .custom-placeholder::placeholder {
+      color: rgba(105, 104, 100, 0.7);
+    }
+  `;
+
 
   // 일기 제목 변경 이벤트 핸들러
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,8 +152,8 @@ const toggleIcon = () => {
 };
 
   return (
-    <div>
-    {!isLoading && <div className="flex flex-col items-center justify-center w-full h-screen py-16">
+    <div className='mt-10'>
+    {!isLoading && <div className="flex flex-col items-center justify-center w-full h-full py-16">
       <div className='w-full flex items-center justify-between px-16'>
         {/* 오늘 날짜 */}
         <div className='w-[85px]'></div>
@@ -166,11 +172,12 @@ const toggleIcon = () => {
                   
       </div>
       <div className="flex w-full h-full justify-between pt-16"> 
-        <div className="w-1/2 flex flex-col items-center px-16"> {/* 왼쪽 구역 */}          
+        <div className="w-1/2 flex flex-col items-center px-16"> {/* 왼쪽 구역 */}         
           {/* 제목 입력 */}
           <div className="w-full flex items-center justify-center border-b-2 border-font_main">
             <FontAwesomeIcon icon={faPenToSquare} className='text-2xl' />
-            <input value={title} onChange={handleTitleChange} className="bg-bg_main w-full text-center mr-6 text-xl p-2 border-none focus:outline-none " type="text" placeholder='제목을 입력해 주세요' />
+            <style>{dynamicStyle}</style> 
+            <input value={title} onChange={handleTitleChange} className="custom-placeholder bg-bg_main w-full text-center mr-6 text-xl p-2 border-none focus:outline-none " type="text" placeholder='제목을 입력해 주세요' />
           </div>
           {/* 해시태그입력 */}
           <div className="w-full flex items-center justify-center mt-10">
@@ -182,7 +189,7 @@ const toggleIcon = () => {
           </div> 
         </div>
 
-        <div className="w-px bg-bg_line h-full pt-20 pb-10"></div> {/* 구분 선 */}
+        <div className="w-[1px] bg-bg_line h-[480px] pt-20 pb-10"></div> {/* 구분 선 */}
 
         <div className="w-1/2 flex flex-col items-center px-16"> {/* 오른쪽 구역 */}
           {/* 일기 내용 작성 */}

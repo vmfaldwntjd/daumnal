@@ -228,7 +228,7 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
   return (
     <div className="fixed mr-[134px] inset-0 bg-black bg-opacity-40 flex justify-center items-center" onClick={handleOutsideClick}> 
     <div className="bg-bg_modal p-8 rounded-xl h-[90%] w-[600px] shadow-lg" onClick={handleModalClick}>
-          <ChartTitle className='text-2xl'>{diaryDate}</ChartTitle>
+          <ChartTitle className='text-2xl mt-10 mb-6'>{diaryDate}</ChartTitle>
           <ChartWrapper className='pb-2'>
             <Doughnut data={chartData} options={chartOptions} />
           </ChartWrapper>
@@ -261,7 +261,7 @@ const DailyResultModal: React.FC<DailyResultModalProps> = ({ onDailyResultModalC
             </div>
           </div>
           <div className='flex justify-center'>
-            <button onClick={onDailyResultModalClose} className='mt-8 border text-sm py-2 px-4 border-button_border bg-bg_button rounded-lg lg:text-[17px] lg:px-4'>{`<<`} 일기로 돌아가기</button>
+            <button onClick={onDailyResultModalClose} className='mt-12 border text-sm py-2 px-4 border-button_border bg-bg_button rounded-lg lg:text-[17px] lg:px-4'>{`<<`} 일기로 돌아가기</button>
           </div>
       </div>
     </div>
