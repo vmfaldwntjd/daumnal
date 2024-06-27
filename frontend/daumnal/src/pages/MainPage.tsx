@@ -19,23 +19,26 @@ const MainPage: React.FC = () => {
   }, []);
 
   return (
-    <div className='text-center mt-10' style={{ 
+    <div className='text-center mt-20' style={{ 
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'center', 
       justifyContent: 'center', 
+      height: '100vh', // 화면 전체 높이를 차지하도록 설정
+      margin: '0', // 상단 여백 제거
       transform: 'translateX(16px)', // 여기에 transform 속성 추가
     }}>
-      <img src="/image/login_logo.png" alt="메인 로고" style={{ 
-        width: '330px', 
-        height: '198px',
-        margin: 'auto', // 자동 마진을 통해 수평 중앙 정렬
-      }}/>
-      <img src="/image/main_tree.png" alt="메인 나무" style={{
-        width: '165px',
-        height: '207px',
-        margin: 'auto',
-      }}/>
+      <style>
+        {`
+          .mainText {
+            color: #696864;
+            font-size: 25px;
+            font-weight: bold; 
+          }
+        `}
+      </style>
+      <img src="/image/login_logo.png" alt="메인 로고" style={{ width: '330px', height: '198px'}}/>
+      <img src="/image/main_tree.png" alt="메인 나무" style={{ width: '165px', height: '207px', marginTop: '30px'}}/>
       <hr style={{
         width: '500px',
         backgroundColor: '#696864',
@@ -56,11 +59,7 @@ const MainPage: React.FC = () => {
         border: 'none',
         marginTop: '10px',
       }}/>
-      <div style={{ 
-        fontSize: '25px',
-        marginTop: '30px',
-        fontWeight: 'bold',
-      }}>
+      <div className="mainText">
         "일기는 나의 가장 친한 친구, 가장 믿음직한 상담자이다." <br />
         -앤 프랭크-
       </div>

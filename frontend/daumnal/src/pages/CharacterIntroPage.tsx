@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const CharacterIntroPage: React.FC = () => {
 
   return (
-    <div className="p-[30px]">
+    <div className="p-[30px] mt-20">
       <p className="text-4xl mb-[18px]">나무 친구들을 소개할게요</p>
       {/* 캐릭터 목록 */}
       <Characters>

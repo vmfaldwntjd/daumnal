@@ -42,6 +42,12 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ setHashTags, initialTags })
     setIsAlert(false)
   }
 
+  const dynamicStyle = `
+  .custom-placeholder::placeholder {
+    color: rgba(105, 104, 100, 0.7);
+  }
+`;
+
   useEffect(() => {
     setHashTags(tags)
   }, [tags])
@@ -50,7 +56,8 @@ const InputHashTag: React.FC<InputHashTagProps> = ({ setHashTags, initialTags })
     <div className='w-full'>
     <div className='w-full flex items-center justify-between border-b-2 border-font_main'>
         <FontAwesomeIcon icon={faHashtag} className='text-2xl'/>
-        <input className="bg-bg_main w-2/3 p-2 text-center ml-2 text-xl border-none focus:outline-none " value={currentTag} onChange={handleHashTagChange}  
+        <style>{dynamicStyle}</style> 
+        <input className="custom-placeholder bg-bg_main w-2/3 p-2 text-center ml-2 text-xl border-none focus:outline-none " value={currentTag} onChange={handleHashTagChange}  
         onKeyPress={(event) => {
             if (event.key === 'Enter') {
               handleAddTag();
