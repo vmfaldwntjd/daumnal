@@ -18,7 +18,7 @@ const CalendarPage: React.FC = () => {
 
   return (
     <div className='h-full w-full p-12 '>
-    <div className='relative w-full pt-2 pb-6 px-6 bg-white rounded-xl shadow-lg'>   
+    <div className='relative w-full pt-2 pb-6 px-6 bg-white rounded-xl shadow-lg mt-10'>   
       <button onClick={handleButtonClick} className='absolute right-5 top-5 border text-sm py-2 px-2 border-button_border bg-bg_button rounded-lg lg:text-[17px] lg:px-4'>월별 감정 분석</button>
      <div className='w-full h-full'>
       <CalendarComponent 

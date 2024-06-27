@@ -70,12 +70,13 @@ const PlaylistPage: React.FC = () => {
 };
 
 const LeftBox = styled.div`
-  width: calc(70%);
+  width: calc(68%);
   height: 100%;
+  margin-top: 22px;
 `;
 
 const RightBox = styled.div`
-  width: calc(30%);
+  width: calc(32%);
   height: 100%;
   background-color: #FFFCF7;
 `;

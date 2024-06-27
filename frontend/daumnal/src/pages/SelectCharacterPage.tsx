@@ -43,7 +43,7 @@ const SelectCharacterPage: React.FC = () => {
 
 
   return (
-    <div className="p-9">
+    <div className="p-9 mt-20">
       <p className="text-5xl mb-9 mt-3 ml-5">오늘의 나무를 골라 주세요!</p>
       {/* 캐릭터 목록 */}
       <Characters>

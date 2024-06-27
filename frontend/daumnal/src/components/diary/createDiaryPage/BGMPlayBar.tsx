@@ -15,6 +15,7 @@ const DiaryMusicPlayBar: React.FC<DiaryMusicPlayBarProps> = ({ backgroundMusicYo
       height="0"
       playing={playState}
       loop={true}
+      volume={0.2} // 기본 볼륨을 0.01로 설정
     />
   );
 };

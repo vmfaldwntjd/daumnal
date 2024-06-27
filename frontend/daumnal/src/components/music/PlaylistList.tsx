@@ -98,8 +98,8 @@ const Playlists = styled.div`
   background-color: #F8F6EE;
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
-  padding: 53px;
+  gap: 45px;
+  padding: 45px;
   border-top-left-radius: 10px;
   border-top-right-radius: 5px;
   z-index: 1;
