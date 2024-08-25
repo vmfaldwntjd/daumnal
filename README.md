@@ -1,5 +1,5 @@
 
-# <p align="center"><img align="center" src="https://github.com/user-attachments/assets/8b370bc3-6379-4d6e-b2e3-761190171aab" width="80" height="80"></p> <h1 align="center">모이룸 룸메이트 매칭 서비스 </h1>
+# <p align="center"><img align="center" src="https://github.com/user-attachments/assets/8b370bc3-6379-4d6e-b2e3-761190171aab" width="80" height="80"></p> <h1 align="center">다음날 일기 음악 추천 서비스 </h1>
 
 <p align="center">
 힘든 마음을 일기를 통해 풀어내려는 분들을 위한 서비스입니다. 그날에 남긴 감정의 기록을 통해 기분을 분석하고 그에 맞는 음악을 선별하여 사용자에게 추천해줌으로써 좀 더 분위기 있는 일기장 경험을 제공합니다.
@@ -155,9 +155,9 @@
 # 👩‍👦‍👦6. 팀원 소개
 
 ### 🖥️ 프론트엔드
-| [손지은](https://github.com/sje08250)                                                                                  | [정성현](https://github.com/JungSungHyeon)                                                                                   | 조서현                                                                                    |
-|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| <img width="100" alt="Screenshot 2023-06-19 at 2 35 05 PM" src="https://avatars.githubusercontent.com/u/116146923?v=4"> | <img width="100" alt="Screenshot 2023-06-19 at 2 35 05 PM" src="https://avatars.githubusercontent.com/u/107307273?v=4"> | <img width="100" alt="Screenshot 2023-06-19 at 2 35 05 PM" src="https://avatars.githubusercontent.com/u/96514447?v=4"> |
+| [손지은](https://github.com/sje08250)                                                                                  | [정성현](https://github.com/awaySH)                                                                                   | [조서현](https://github.com/j0j00h)                                                                                    |
+|------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| <img width="100" alt="Screenshot 2023-06-19 at 2 35 05 PM" src="https://avatars.githubusercontent.com/u/116146923?v=4"> | <img width="100" alt="Screenshot 2023-06-19 at 2 35 05 PM" src="https://avatars.githubusercontent.com/u/172378447?v=4"> | <img width="100" alt="Screenshot 2023-06-19 at 2 35 05 PM" src="https://avatars.githubusercontent.com/u/172246696?v=4"> |
 
 ### 💻 백엔드
 | [진주성](https://github.com/vmfaldwntjd)                                                                                                                                  | [전새벽](https://github.com/toqurJeon)                                                                | [김예지](https://github.com/ykim-yeji) |
