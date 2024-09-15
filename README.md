@@ -132,7 +132,7 @@
 
 
 # 🔍4. 구현한 기능
-- jwt 토콘 발행 기능 구현 
+- jwt 토큰 발행 기능 구현 
   - 카카오 소셜 로그인을 통해서 프론트에서 회원 정보를 받고 이를 access token 및 refresh token으로 변환하였습니다.
   - 인증이 안되는 토큰을 인증하려고 하는 경우 AuthenticationEntryPoint 객체를 활용하여 에러 내용을 커스텀 하였습니다.
   - access token이 만료가 되면 refresh token을 활용하여 access token을 재발급하도록 기능을 구현했습니다.
